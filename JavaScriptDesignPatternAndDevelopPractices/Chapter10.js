@@ -1,3 +1,4 @@
+"use strict";
 /** Chapter10：组合模式 */
 /**
  * 我们知道地球和一些其他行星围绕着太阳旋转，也知道在一个原子中，
@@ -21,17 +22,17 @@ function t0() {
     var closeDoorCommand = {
         execute: function () {
             console.log('close door');
-        },
+        }
     };
     var openPcCommand = {
         execute: function () {
             console.log('open pc');
-        },
+        }
     };
     var openQQCommand = {
         execute: function () {
             console.log('open qq');
-        },
+        }
     };
     var MacroCommand = function () {
         return {
@@ -43,7 +44,7 @@ function t0() {
                 for (var i = 0, command; (command = this.commandList[i]); i++) {
                     command.execute();
                 }
-            },
+            }
         };
     };
     var macroCommand = MacroCommand();
@@ -125,25 +126,25 @@ function t1() {
                 for (var i = 0, command; (command = this.commandList[i]); i++) {
                     command.execute();
                 }
-            },
+            }
         };
     };
     var openAcCommand = {
         execute: function () {
             console.log('open Ac');
-        },
+        }
     };
     //用一个宏命令来组合打开电视和打开音响的命令
     function combineOpenTvAndOpenSound() {
         var openTvCommand = {
             execute: function () {
                 console.log('open Tv');
-            },
+            }
         };
         var openSoundCommand = {
             execute: function () {
                 console.log('open Sound');
-            },
+            }
         };
         var macroCommand1 = MacroCommand();
         macroCommand1.add(openTvCommand);
@@ -155,17 +156,17 @@ function t1() {
         var closeDoorCommand = {
             execute: function () {
                 console.log('close Door');
-            },
+            }
         };
         var openPcCommand = {
             execute: function () {
                 console.log('open Pc');
-            },
+            }
         };
         var openQQCommand = {
             execute: function () {
                 console.log('login QQ');
-            },
+            }
         };
         var macroCommand2 = MacroCommand();
         macroCommand2.add(closeDoorCommand);
@@ -223,7 +224,7 @@ function t2() {
                 for (var i = 0, command; (command = this.commandList[i]); i++) {
                     command.execute();
                 }
-            },
+            }
         };
     };
     var openTvCommand = {
@@ -232,7 +233,7 @@ function t2() {
         },
         add: function () {
             throw new Error('child nodes cannot be added to the leaf object');
-        },
+        }
     };
     var macroCommand = MacroCommand();
     macroCommand.add(openTvCommand);

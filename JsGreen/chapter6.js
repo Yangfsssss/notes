@@ -10,6 +10,15 @@
 //···使用动态类型系统
 //···支持动态执行
 //···支持丰富的数据外部展示
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 //6.2 动态类型：对象与值类型之间的转换------------------------------------------
 function st() {
     const boolean = Boolean(false);
@@ -1182,3 +1191,353 @@ function s21() {
 //以说明它们与eval()之间的相互影响。这些环境或上下文也包括不同的函数类型，
 //以及严格模式。
 //6.6.2.1 eval使用全局环境
+function s22() {
+    //测试1：eval工作在全局环境
+    var x = 100;
+    eval('x = 1000'); // rewrite 'x'
+    console.log(x);
+    //测试2：eval工作在if语句的块级作用域
+    if (true) {
+        // a new block scope
+        let x = 'a';
+        eval('x = "b"');
+        console.log(x);
+    }
+    console.log(x);
+    //测试3：eval工作在with打开的闭包对象中（注意没有用大括号创建一个新的块）
+    var obj = { eval, x: true };
+    with (obj)
+        eval('x = false');
+    console.log(obj.x);
+    console.log(x);
+}
+// s22();
+/**
+ * .
+ * .
+ * .
+ * .
+ * .
+ */
+//6.6.7 其他的动态执行的逻辑
+//6.6.7.1 动态创建的函数
+function s23() {
+    var AsyncFunction = ((x) => __awaiter(this, void 0, void 0, function* () { return x; })).constructor;
+    var valueInScope = 'window';
+    function test() {
+        var valueInScope = 'function test';
+        (function () {
+            return __awaiter(this, void 0, void 0, function* () {
+                return 'def: ' + valueInScope;
+            });
+        })().then(console.log);
+        new AsyncFunction("return 'new: ' + valueInScope")().then(console.log);
+    }
+    test();
+}
+// s23();
+//6.6.7.2 模板与动态执行
+//6.6.7.3 宿主的动态执行逻辑
+//6.7 动态方法调用（call、apply与bind）----------------------------------------------------
+/**
+ * 函数eval（x）的入口参数x、new Function（x）中作为代码体的x，
+ * 还包括在模板字符串“`${x}`”中的表达式x等，这些都可以视为动态执行的执行体。
+ * 当然，你也可以将一个函数对象视为执行体，并通过运算符“()”来执行它，
+ * 这称为函数调用。
+ *
+ * 无论是动态函数的调用，还是静态函数的调用，又或者是隐式地
+ * 触发一个函数调用（例如，对象的get/set，或者Symbol.iterator符号属性），
+ * 只要它们是面向函数的，那么就存在一个完全相同的动态执行机制：
+ * 它们可以使用apply()和call()方法来动态地执行，或者使用bind()方法来
+ * 提前决定传入的this和其他参数。
+ */
+//6.7.1 动态方法调用以及this引用的管理
+function s24() {
+    function calc_area(w, h) {
+        console.log(w * h);
+    }
+    function Area() {
+        this.name = 'MyObject';
+    }
+    Area.prototype.doCalc = function (v1, v2) {
+        calc_area.call(this, v1, v2);
+    };
+    Area.prototype.doCalc1 = function (v1) {
+        var slice = Array.prototype.slice;
+        calc_area.apply(this, [v1 * 2].concat(slice.call(arguments, 1)));
+    };
+    Area.prototype.doCalc1 = function (v1, ...args) {
+        calc_area.apply(this, [v1 * 2, ...args]);
+    };
+    Area.prototype.doCalc2 = function (v1, ...args) {
+        calc_area.call(this, v1 * 2, ...args);
+    };
+    var area = new Area();
+    area.doCalc(10, 20);
+    var Area1 = {
+        doCalc() {
+            // 未声明形式参数
+            arguments[0] *= 2;
+            calc_area.apply(this, arguments);
+            console.log(this === Area1);
+        },
+    };
+    Area1.doCalc(10, 20);
+    var Area2 = {
+        doCalc(x) {
+            x *= 2;
+            calc_area.apply(this, arguments);
+        },
+    };
+    Area2.doCalc(10, 100);
+    //但在非简单参数中并不支持这样做，因为这种情况下形式参数与arguments并不绑定：
+    var Area3 = {
+        doCalc(x = 5) {
+            x *= 2;
+            console.log('arguments', arguments);
+            calc_area.apply(this, arguments);
+        },
+    };
+    Area3.doCalc(10, 100);
+}
+// s24();
+//6.7.2 丢失的this引用
+//除了非简单参数中“形式参数与arguments不绑定”之外，
+//在JavaScript中还有一种丢失绑定的情况，即在call/apply调用中，
+//对于箭头函数来说this不绑定。
+function s25() {
+    var x = 2, y = 3;
+    //模拟window环境
+    this.x = 2;
+    this.y = 3;
+    //箭头函数使用当前词法上下文（这里的function s25）中的this
+    var calc_area = () => console.log(this.x * this.y);
+    //传入对象a，但calc_area并不使用
+    var a = { x: 100, y: 200 };
+    calc_area.call(a);
+    //相较于这种隐式的丢失绑定，更加常见的其实是显式地丢失this引用。
+    //也就是说，对于一个需要使用this对象的函数（或方法）来说，没有传入this引用。
+    //一般函数
+    var calc_area1 = function () {
+        console.log(this.x * this.y);
+    };
+    //没有传入有效的this
+    calc_area1.call();
+    //或者直接将calc_area作为函数使用，因此没有this传入
+    calc_area1();
+    //可见，在函数内是否使用this是一个关键的设问，然而就目前来说，
+    //函数并没有任何方式向外部暴露这一信息。当这样的问题出现在用户代码中时，
+    //你可能需要为它封装一个“显式绑定this的过程。
+    //例如，使用读写器方法来设置一个“函数类型的属性”：
+    var id = 'global';
+    var obj = { id: 'MyObj' };
+    console.log('outer this', this);
+    Object.defineProperty(obj, 'foo', {
+        // 存取器属性的get和set函数的this永远是其所属对象
+        get() {
+            console.log('this in get()', this);
+            return () => {
+                console.log('this in cb', this);
+                console.log(this.id);
+            };
+        },
+    });
+    obj.foo();
+    var f = obj.foo;
+    f();
+}
+// s25();
+//类似地，这种方法也可以用在方法声明上（包括类的静态方法）。例如：
+function s26() {
+    console.log(this === window);
+    class MyObj {
+        constructor(id) {
+            this.id = id;
+        }
+        // id = 'id in class';
+        get foo() {
+            //普通函数的this是动态的，由其被调用的环境决定并传入
+            //箭头函数的this是静态的，由其被定义时的上下文决定
+            return () => {
+                console.log(this.id);
+            };
+            // console.log('this in get', this);
+            // return function y() {
+            // 	console.log(this.id);
+            // };
+        }
+    }
+    console.log(MyObj);
+    window.f = new MyObj('o1').foo;
+    // console.log(g);
+    f();
+    window.f = new MyObj('o2').foo;
+    f();
+    //示例：箭头函数会忽略其他方法的this绑定
+    window.obj = { id: 'obj', foo: f };
+    window.obj.foo();
+    window.obj.foo.call(obj);
+    window.obj.foo.apply(obj);
+}
+// s26();
+//6.7.3 bind()方法与函数的延迟调用
+//bind()的作用是将函数绑定到一个对象上，并返回绑定后的函数。
+//绑定后的函数总是作为该对象的一个方法来调用的，即this引用指向该对象—
+//无论它是否置为其他对象的属性，或直接作为函数调用。
+function s27() {
+    window.obj = {};
+    function foo() {
+        return this;
+    }
+    window.foo2 = foo.bind(obj);
+    const obj2 = {};
+    obj2.foo2 = foo2;
+    console.log(obj === foo2());
+    console.log(obj === window.foo2());
+    console.log(obj === obj2.foo2());
+}
+// s27();
+//bind()方法也采用类似call()方法的方式传入一系列参数。
+//在这种情况下，这些参数被暂存到调用该函数时才使用，而不是在当前就使用。
+function s28() {
+    window.obj = { msg: 'message' };
+    function foo(a) {
+        console.log(this.msg + a);
+    }
+    //绑定时并不触发foo()的调用，因此参数a被暂存
+    window.foo2 = foo.bind(obj, 'abc');
+    //显示'message:abc'
+    //参数值123被忽略
+    foo2(123);
+}
+// s28();
+//bind()方法绑定后的函数仍然可以作为构造器使用，
+//并允许使用上述的传入参数。在这种情况下，构造出来的对象
+//既是“绑定后的函数”的一个实例，同时也是原来的—绑定前的函数的一个实例。
+function s29() {
+    const obj = {};
+    function foo(a) {
+        console.log(this === obj); //false，进行new运算时，this指向新实例
+        console.log(a); //'abc'，函数只存在一个形参，被bind传入的'abc'占用，new()运算中传入的参数被忽略
+    }
+    const Foo = foo.bind(obj, 'abc');
+    const newInstance = new Foo('123');
+    console.log(newInstance instanceof foo); // true
+    console.log(newInstance instanceof Foo);
+    // true，被bind返回的函数参与instanceof运算时，
+    //向运算返回的是<绑定前的函数>.prototype
+    //亦即是说，bind()方法返回的函数是不存在prototype属性的，见下
+    console.log('prototype' in Foo); // false
+}
+// s29();
+//bind()方法的传入参数，总是被暂存且在调用时作为最开始的几个参数。
+//这里的意思是，最终参数的个数是一个动态的组合（既包括绑定时预设的，
+//也包括调用时新加的），例如：
+function s30() {
+    function foo() {
+        console.log(arguments.length, ...arguments);
+    }
+    //总是绑定前三个参数
+    const f = foo.bind(null, 1, 2, 3);
+    //添加两个新参数，一共5个
+    f('a', 'b');
+    //添加0个新参数
+    f();
+    //并且绑定函数是可以再次绑定的，参数也将向前叠加
+    //再次绑定，并叠加两个参数
+    const f2 = f.bind(new Object(), 'a', 'b');
+    //现在有5个绑定过的参数了，再添加两个动态的
+    f2('x', 'y');
+    //然而在这个例子中，new Object所创建的新对象并不会作为最终foo()
+    //调用的this引用，因为在f()中将总是使用它绑定过的null值。也就是说，
+    //在多次绑定中，参数是向前叠加的，但this绑定并不向前覆盖。
+}
+// s30();
+//6.7.4 栈的可见与修改
+//在之前通过apply()方法传送arguments的例子带来了一种潜在的风险：
+//既然arguments是一个对象，那么在被调用函数中修改arguments对象成员，
+//是不是会影响到调用者中的参数值呢？
+//答案是否定的。下面的例子说明了这一点：
+function s31() {
+    function func_1(v1) {
+        v1 = 100;
+    }
+    function func_2(name) {
+        func_1.apply(this, arguments); //window,['MyName']
+        console.log(name);
+    }
+    //显示传入参数未被修改，值仍为'MyName'
+    func_2('MyName');
+    //尽管看起来func_1与func_2中使用的arguments是同一个，
+    //但事实上在调用func_1.apply()时，arguments被做了一次复制：
+    //值数据被复制，引用数据被创建引用。因此，func_1与func_2中
+    //的arguments看起来是相同的，其实却是被隔离的两套数据。
+    function func_1() {
+        //arguments.callee属性指向arguments所属的函数
+        //Function.caller属性指向调用它的函数，若在全局作用域内被调用，则为null
+        console.log(arguments.callee.caller === func_2);
+    }
+    //尽管arguments在apply()与call()时是通过复制加以隔离的，
+    //但是调用栈对于被调用函数来说仍然可见，被调用函数仍然可以访问栈上的arguments。
+    //如下例：
+    function func_3() {
+        arguments.callee.caller.arguments[0] = 100;
+        Array.prototype.push.call(arguments.callee.caller.arguments, 300, 1, 1, 1, 1);
+    }
+    function func_4(name) {
+        func_3();
+        console.log(arguments[0], arguments.length, name);
+    }
+    func_4('MyName');
+    /**
+     * .
+     * .测试显示arguments不能被修改
+     * .
+     */
+}
+// s31();
+function useStrictMode() {
+    'use strict';
+    //在严格模式下，arguments.callee属性的读取和赋值都会抛出异常
+    console.log(arguments.callee);
+}
+// useStrictMode()
+//6.7.5 严格模式中的this绑定问题
+//函数的call()与apply()方法在严格模式与非严格模式中有一些差异，
+//这些差异也适用于之前讨论到的bind()方法。具体来说会有以下两点区别。
+//其一，在非严格模式（以及ES3标准）中，如果call()/apply()方法的
+//第一个参数传入null或undefined，那么在函数内的this将指向全局对象（global）
+//或顶层对象（例如浏览器中的window）；而在严格模式中，
+//this将仍然使用null或undefined—这意味着在严格模式下的call/apply中，
+//的确会存在访问this引用导致异常的情况。
+//其二，在非严格模式（以及ES3标准）中，如果call()/apply()方法
+//的第一个参数传入一个值类型的数据，那么它会被先包装为对象再送入
+//函数作为this引用；而在严格模式中并不会发生这个包装过程，
+//而是仍然直接送入该值。
+function s32() {
+    function f() {
+        'use strict';
+        var msg = this === undefined ? 'undefined' : this === null ? 'null' : '';
+        console.log(msg || typeof this);
+    }
+    //差异1：在aFunction.call()的第一个参数中传入undefined/null值
+    // - 在严格模式中显示值：undefined/null
+    // - 在非严格模式中显示为（全局对象或顶层对象的类型值）：object
+    f.call(null);
+    f.call(undefined);
+    //差异2：在aFunction.call()的第一个参数中传入值类型数据
+    // - 在严格模式中显示typeof值：string、number等
+    // - 在非严格模式中显示为object
+    f.call('abc');
+    f.call(2);
+    f.call(true);
+}
+// s32();
+//由于在严格模式下call/apply/bind不对第一个参数进行修改而直接传入，
+//因此用户代码中确实会面临this值为null/undefined的情况，
+//也会面临this值不是对象—尽管在使用属性存取运算符时会自动包装为对象—的情况。
+//ES5之后对这一点的设计初衷在于：在非严格模式下，将尽量推测代码的意图，
+//以保证代码不抛出异常；而在严格模式下，如果发生异常则必然是用户代码存有
+//不明确的语义所致的，并且这种异常应当由外围的或严格模式下的try...catch来及时处理。
+//6.8 通用执行环境的实现----------------------------------------------------------------------------
+//略

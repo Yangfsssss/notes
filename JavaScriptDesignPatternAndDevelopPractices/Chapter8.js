@@ -1,3 +1,4 @@
+"use strict";
 /** Chapter8：发布---订阅模式 */
 /**
  * 发布—订阅模式又叫观察者模式，它定义对象间的一种一对多的依赖关系，
@@ -145,7 +146,7 @@ function e3() {
             for (var i = 0, fn; (fn = fns[i]); i++) {
                 fn.apply(this, __spreadArray([], args));
             }
-        },
+        }
     };
     //再定义一个installEvent函数，这个函数可以给所有的对象都动态安装发布—订阅功能：
     var installEvent = function (obj) {
@@ -249,7 +250,7 @@ function e5() {
                 fns.splice(fns.indexOf(fn), 1);
                 console.log(fns);
             }
-        },
+        }
     };
     var data = {};
     setTimeout(function () {
@@ -266,7 +267,7 @@ function e5() {
         return {
             setAvatar: function (data) {
                 console.log('set header avatar');
-            },
+            }
         };
     })();
     var nav = (function () {
@@ -276,7 +277,7 @@ function e5() {
         return {
             setAvatar: function (avatar) {
                 console.log('set nav avatar');
-            },
+            }
         };
     })();
     var refreshAddress = function (obj) {
@@ -287,7 +288,7 @@ function e5() {
         return {
             refresh: function (avatar) {
                 console.log('address refreshed');
-            },
+            }
         };
     })();
     console.log(login.clientList);
@@ -347,7 +348,7 @@ function e6() {
         return {
             listen: listen,
             trigger: trigger,
-            remove: remove,
+            remove: remove
         };
     })();
     // Event.listen('squareMeter88', function (price) {
@@ -528,7 +529,7 @@ function e8() {
                             return offlineStack.push(fn);
                         }
                         return fn();
-                    },
+                    }
                 };
                 return namespace ? (namespaceCache[namespace] ? namespaceCache[namespace] : (namespaceCache[namespace] = ret)) : ret;
             };
@@ -553,7 +554,7 @@ function e8() {
                     }
                     var event = this.create();
                     event.trigger.apply(this, __spreadArray([], args));
-                },
+                }
             };
         })();
         return Event;

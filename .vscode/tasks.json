@@ -10,6 +10,26 @@
       ],
       "group": "build",
       "label": "tsc: 监视 - JavaScriptDesignPatternAndDevelopPractices/tsconfig.json"
+    },
+    {
+      "type": "typescript",
+      "tsconfig": "picAndAlg/tsconfig.json",
+      "option": "watch",
+      "problemMatcher": [
+        "$tsc-watch"
+      ],
+      "group": "build",
+      "label": "tsc: 监视 - picAndAlg/tsconfig.json"
+    },
+    {
+      "type": "typescript",
+      "tsconfig": "JsRed/tsconfig.json",
+      "option": "watch",
+      "problemMatcher": [
+        "$tsc-watch"
+      ],
+      "group": "build",
+      "label": "tsc: 监视 - JsRed/tsconfig.json"
     }
   ]
 }

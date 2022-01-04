@@ -1,0 +1,13 @@
+{
+	"compilerOptions": {
+		"target": "es6",
+		"noImplicitAny": false,
+		"module": "ES6",
+		"removeComments": false,
+		"sourceMap": false,
+		"outDir": "", //你要生成js的目录
+		// "esModuleInterop": true,
+		"isolatedModules": true
+		//  "preserveWhitespace": true
+	}
+}

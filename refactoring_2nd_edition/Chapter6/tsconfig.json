@@ -1,0 +1,13 @@
+{
+	"compilerOptions": {
+		"target": "ES2017",
+		"noImplicitAny": false,
+		"module": "CommonJS",
+		"removeComments": false,
+		"sourceMap": false,
+		"outDir": "" //你要生成js的目录
+		//  "preserveWhitespace": true
+	},
+	// "files": ["Chapter4.test.ts"],
+	"exclude": ["**/*.test.ts"]
+}

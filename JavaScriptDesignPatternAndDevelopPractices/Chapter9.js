@@ -1,3 +1,4 @@
+"use strict";
 /** Chapter9：命令模式 */
 /** 假设有一个快餐店，而我是该餐厅的点餐服务员，
  * 那么我一天的工作应该是这样的：当某位客人点餐或者打来订餐电话后，
@@ -51,7 +52,7 @@ function n0() {
     var MenuBar = {
         refresh: function () {
             console.log('refresh menu bar');
-        },
+        }
     };
     var SubMenu = {
         add: function () {
@@ -59,7 +60,7 @@ function n0() {
         },
         del: function () {
             console.log('delete subMenu');
-        },
+        }
     };
     //命令类
     var RefreshMenuBarCommand = function (receiver) {
@@ -111,7 +112,7 @@ function n1() {
     var MenuBar = {
         refresh: function () {
             console.log('refresh MenuBar');
-        },
+        }
     };
     var SubMenu = {
         add: function () {
@@ -119,7 +120,7 @@ function n1() {
         },
         del: function () {
             console.log('delete subMenu');
-        },
+        }
     };
     //使用绑定函数将功能对象上的功能（方法）绑定到UI（按钮）上
     bindClick(button1, MenuBar.refresh);
@@ -159,7 +160,7 @@ function n2() {
     var MenuBar = {
         refresh: function () {
             console.log('refresh MenuBar');
-        },
+        }
     };
     var RefreshMenuBarCommand = function (receiver) {
         //闭包
@@ -181,13 +182,13 @@ function n3() {
     var MenuBar = {
         refresh: function () {
             console.log('refresh MenuBar');
-        },
+        }
     };
     var RefreshMenuBarCommand = function (receiver) {
         return {
             execute: function () {
                 receiver.refresh();
-            },
+            }
         };
     };
     var setCommand = function (button, command) {
@@ -294,7 +295,7 @@ function n5() {
         },
         crouch: function () {
             console.log('crouch');
-        },
+        }
     };
     var makeCommand = function (receiver, state) {
         //创建命令
@@ -306,7 +307,7 @@ function n5() {
         '119': 'jump',
         '115': 'crouch',
         '97': 'defense',
-        '100': 'attack', //D
+        '100': 'attack'
     };
     //保存命令的堆栈
     var commandStack = [];
@@ -341,17 +342,17 @@ function n6() {
     var closeDoorCommand = {
         execute: function () {
             console.log('关门');
-        },
+        }
     };
     var openPcCommand = {
         execute: function () {
             console.log('开电脑');
-        },
+        }
     };
     var openQQCommand = {
         execute: function () {
             console.log('登录QQ');
-        },
+        }
     };
     //接下来定义宏命令MacroCommand，它的结构也很简单。
     //macroCommand.add方法表示把子命令添加进宏命令对象，
@@ -367,7 +368,7 @@ function n6() {
                 for (var i = 0, command; (command = this.commandList[i]); i++) {
                     command.execute();
                 }
-            },
+            }
         };
     };
     var macroCommand = MacroCommand();

@@ -1,5 +1,7 @@
 在 React 中使用 custom hooks 来分离 container 和 presentational components
 
+https://felixgerschau.com/react-hooks-separation-of-concerns/
+
 Why: 
 1，单一职责原则：每个函数或组件只负责一项功能能够使其更易改变和维护。 
 2，在 React 中，代码会更整洁。 

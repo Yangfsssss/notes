@@ -1655,17 +1655,17 @@ function delay() {
 // aObj.staticMethod()
 
 //7.2.3.1 由Promise()派生的子类------------------------------------------------------------------------
-class MyPromise extends Promise {}
+// class MyPromise extends Promise {}
 
-var executor = function (resolve, reject) {
-	//...;
-};
+// var executor = function (resolve, reject) {
+//...;
+// };
 
 //p是原始实例对象
-const p = new MyPromise(executor);
+// const p = new MyPromise(executor);
 
 //p2是派生对象
-const p2 = p.then(() => {});
+// const p2 = p.then(() => {});
 
 // console.log(Promise[Symbol.species]);
 // console.log(MyPromise[Symbol.species]);
@@ -1680,11 +1680,11 @@ const p2 = p.then(() => {});
 // console.log(p2 instanceof Promise);//true
 // console.log('7',p2 instanceof Promise[Symbol.species]);//true
 
-Promise[Symbol.species] = function () {
-	return this;
-};
+// Promise[Symbol.species] = function () {
+// 	return this;
+// };
 
-const cls = p.constructor[Symbol.species];
+// const cls = p.constructor[Symbol.species];
 
 // console.log(Object.getOwnPropertyDescriptor(Promise,Symbol.species));
 
@@ -2407,6 +2407,7 @@ function test0902() {
 }
 
 /** 测试while循环中return的效果 */
+//执行return语句后会退出while循环
 function whileTest() {
 	let i = 0;
 
@@ -2554,4 +2555,1014 @@ function dynamicProperty() {
 	console.log(returnedObj);
 }
 
-dynamicProperty();
+// dynamicProperty();
+
+// console.log(Number(NaN + 1));
+
+const num = Number((Number('2,246') + Number('1,045')).toFixed(2));
+
+// console.log(num);
+
+const changeObjKey = (ary) => {
+	ary.forEach((item) => {
+		item.value = item.areaCode;
+		item.label = item.areaName;
+
+		if (item.childList) {
+			item.children = item.childList;
+			changeObjKey(item.childList);
+		}
+	});
+
+	return ary;
+};
+
+/** 测试Promise和async函数中的错误处理 */
+//1，在then链中，用catch捕获错误
+//2，在async函数中，用try...catch捕获错误
+//3，try...catch不能捕获rejected的promise
+//4，但是在async函数中可以在await后使用.catch捕获错误
+async function testThrowErrorByPromiseInTryCatch() {
+	// Promise.reject('1st error').catch(console.log);
+	// Promise.reject('1st error').then(null, console.log);
+
+	// try {
+	const res = await Promise.reject('2nd error').catch(console.log);
+	console.log('res', res);
+	// const res = await new Error('2nd error');
+	// throw new Error('2nd error');
+	// 	Promise.reject('2st error');
+	// } catch (e) {
+	// 	console.log('errorLog', e);
+	// }
+}
+
+// testThrowErrorByPromiseInTryCatch();
+
+// console.log(Date.str(1631011960000));
+function downloadFile(content, fileName) {
+	//下载base64图片
+	var base64ToBlob = function (code) {
+		let parts = code.split(';base64,');
+		console.log('parts', parts);
+
+		let contentType = parts[0].split(':')[1];
+		console.log('contentType', contentType);
+
+		let raw = window.atob(parts[1]);
+		console.log('raw', raw);
+
+		let rawLength = raw.length;
+		let uInt8Array = new Uint8Array(rawLength);
+		console.log('uInt8Array', uInt8Array);
+		for (let i = 0; i < rawLength; ++i) {
+			uInt8Array[i] = raw.charCodeAt(i);
+		}
+		return new Blob([uInt8Array], {
+			type: contentType,
+		});
+	};
+
+	let aLink = document.createElement('a');
+	let blob = base64ToBlob(content); //new Blob([content]);
+	let evt = document.createEvent('HTMLEvents');
+	evt.initEvent('click', true, true); //initEvent 不加后两个参数在FF下会报错  事件类型，是否冒泡，是否阻止浏览器的默认行为
+	aLink.download = fileName;
+	aLink.href = URL.createObjectURL(blob);
+	aLink.click();
+}
+
+// downloadFile(base64Img);
+
+function useState(initial) {
+	const hook = {
+		state: initial,
+		queue: [],
+	};
+
+	const actions = [];
+
+	const setState = (action) => {
+		hook.queue.push(action);
+
+		wipRoot = {
+			dom: currentRoot.dom,
+			props: currentRoot.props,
+			alternate: currentRoot,
+		};
+
+		nextUnitOfWork = wipRoot;
+		deletions = [];
+	};
+
+	wipFiber.hooks.push(hook);
+
+	hookIndex++;
+
+	return [hook.state, setState];
+}
+
+// Promise.resolve(1).then(()=>{}).catch()
+// var myValue = '4';
+
+// 即使是同一函数，其引用形式不同导致的调用方式不同也会影响传入其中的this
+function testThisInDifferentRefsWithTheSameFunction() {
+	this.myValue = '6';
+
+	const obj = {
+		myValue: '3',
+		myFunc() {
+			console.log('this in myFunc', this);
+			console.log(this.myValue);
+		},
+	};
+
+	obj.myFunc(); // this指向obj
+
+	const f = obj.myFunc;
+
+	f(); // this指向window
+	// console.log(window.myValue);
+}
+
+// testThisInDifferentRefsWithTheSameFunction();
+
+function thisInConstructorClass() {
+	this.id = 'id in window';
+
+	class C {
+		constructor(id) {
+			this.id = id;
+		}
+
+		get foo() {
+			return function () {
+				console.log(this.id);
+			};
+		}
+	}
+
+	C.id = 'id in C';
+
+	Object.defineProperty(D, 'foo', {
+		get() {
+			return function () {
+				console.log(this.id);
+			};
+		},
+	});
+
+	console.log(C);
+
+	new C().foo();
+	const f = new C().foo;
+	f();
+}
+
+// thisInConstructorClass();
+
+function thisInConstructorFunc() {
+	this.id = 'id in window';
+
+	function D() {
+		this.id = id;
+	}
+
+	D.id = 'id in D';
+
+	Object.defineProperty(D.prototype, 'foo', {
+		get() {
+			return function () {
+				console.log(this.id);
+			};
+		},
+	});
+
+	console.log(D);
+
+	new D().foo();
+	const g = new D().foo;
+	g();
+}
+
+// thisInConstructorFunc();
+
+// dermacare shampoo for dry scalp coconut & hydration anti-dandruff shampoo
+// const aaa = !null && 2
+// console.log(aaa);
+
+async function testAsyncSequenceTasks() {
+	const taskSequence = (function () {
+		return [
+			() => setTimeout(() => console.log(1), 4000),
+			() => setTimeout(() => console.log(2), 3000),
+			() => setTimeout(() => console.log(3), 2000),
+			() => setTimeout(() => console.log(4), 1000),
+		];
+	})();
+
+	for await (const task of taskSequence) {
+		task();
+	}
+}
+
+// testAsyncSequenceTasks();
+
+function testAsyncSequenceTasks1() {
+	const taskSequence = (async function* () {
+		yield new Promise((resolve) => {
+			setTimeout(resolve, 4000);
+		}).then(() => console.log(1));
+
+		yield new Promise((resolve) => {
+			setTimeout(resolve, 3000);
+		}).then(() => console.log(2));
+
+		yield new Promise((resolve) => {
+			setTimeout(resolve, 2000);
+		}).then(() => console.log(3));
+
+		yield new Promise((resolve) => {
+			setTimeout(resolve, 1000);
+		}).then(() => console.log(4));
+		// yield () => setTimeout(() => console.log(1), 1000);
+		// yield () => setTimeout(() => console.log(2), 1000);
+		// yield () => setTimeout(() => console.log(3), 1000);
+		// yield () => setTimeout(() => console.log(4), 1000);
+	})();
+
+	(async function () {
+		for await (const task of taskSequence) {
+			// task();
+		}
+	})();
+}
+
+// testAsyncSequenceTasks1();
+
+//----------------------------------------------------------------------------------------
+function testErrorInOnfulfilled() {
+	const p = Promise.resolve(3);
+
+	const onFulfilled = () => {
+		throw new Error('error in onFulfilled');
+	};
+
+	const onRejected = (error) => {
+		console.log('error caught', error);
+	};
+
+	p.then(onFulfilled, onRejected).catch((error) => console.log('error caught again', error));
+}
+
+// testErrorInOnfulfilled();
+
+//----------------------------------------------------------------------------------------
+function testDeleteRefsAndValuesInObj() {
+	const obj = {
+		key1: 'value1',
+		key2: 'value2',
+	};
+
+	delete obj.key1;
+	console.log('obj1', obj);
+
+	delete obj['key2'];
+	console.log('obj2', obj);
+
+	const ary = ['x', 'y'];
+
+	delete ary[0];
+	console.log('ary1', ary);
+
+	const y = ary.pop();
+	ary.push('y');
+	console.log('ary2', ary);
+	// delete y;
+	console.log('ary3', ary);
+}
+
+// testDeleteRefsAndValuesInObj();
+
+//----------------------------------------------------------------------------------------
+Function.prototype.log = function (...args) {
+	console.log(this(...args));
+};
+
+Array.prototype.log = function () {
+	console.log(this);
+};
+
+/** 实现一个map */
+function implementAMap() {
+	const array = [1, 2, 3];
+
+	const mappedArray = array.map((item, index, array) => {
+		return [item + 1, index, array];
+	});
+
+	mappedArray.log();
+	array.log();
+
+	Array.prototype.map1 = function (cb, thisArg) {
+		let result = [];
+
+		for (const currentValue of this) {
+			result.push(cb.call(thisArg, currentValue, this.indexOf(currentValue), this));
+		}
+
+		return result;
+	};
+
+	const mappedArray1 = array.map1((item, index, array) => {
+		item++;
+		array = [2, 3, 4];
+		return [item + 1, index, array];
+	});
+
+	mappedArray1.log();
+	array.log();
+}
+
+// implementAMap()
+
+//----------------------------------------------------------------------------------------
+function square1(n) {
+	let k = 0;
+
+	while (true) {
+		// console.log(k);
+		// console.log(n*n);
+
+		if (k === n * n) {
+			return k;
+		}
+
+		k++;
+	}
+}
+
+// square1.log(9)
+
+//----------------------------------------------------------------------------------------
+/** 处理金额携带2位小数时的精度问题 */
+function testAccuracy() {
+	// console.log(1029.6 * 100);
+
+	console.log(Number.parseInt(1029.61 * 100, 10));
+	// console.log(parseFloat(1029.62 * 100));
+	// console.log(parseFloat(1029.63 * 100));
+	// console.log(parseFloat(1029.64 * 100));
+	console.log(parseFloat(1029.61 * 100).toFixed(10));
+	// console.log(parseFloat(1029.62 * 100).toFixed(10));
+	// console.log(parseFloat(1029.63 * 100).toFixed(2));
+	// console.log(parseFloat(1029.64 * 100).toFixed(2));
+}
+
+// testAccuracy.log()
+
+//----------------------------------------------------------------------------------------
+/** 广度优先遍历 */
+//1---2(2-1,2-2)---3(3-1,3-2(3-2-1,3-2-2),3-3)---4(4-1(4-1-1,4-1-2),4-2)---5(5-1)---
+// function bfs(){
+//   const targetObj = {
+//     Key1:{
+//       parent: targetObj,
+//       value:1,
+//       children:[]
+//     },
+//     Key2:{
+//       parent: targetObj,
+//       value:2,
+//       children:[
+//         {
+//           parent: key2,
+//           value:21,
+//           children:[]
+//         },
+//         {
+//           parent: key2,
+//           value:22,
+//           children:[]
+//         },
+//       ]
+//     },
+//     Key3:{
+//       parent: targetObj,
+//       value:3,
+//       children:[
+//         {
+//           parent: key3,
+//           value:31,
+//           children:[]
+//         },
+//         {
+//           parent: key3,
+//           value:32,
+//           children:[
+//             {
+//               parent: key32,
+//               value:321,
+//               children:[]
+//             }
+//           ]
+//         },
+//         {
+//           parent: key3,
+//           value:33,
+//           children:[]
+//         },
+//       ]
+//     },
+//   };
+
+//   const resultObj = {};
+
+//   const valueAry = [];
+//   function copy(result = {},target){
+//     if(target.children.length === 0){
+//       return result;
+//     }
+
+//     for(const key of Object.keys(target)){
+//       result[key] = target[key];
+//       valueAry.push(target[key].value);
+//     }
+
+//     copy(result, target.children);
+//   }
+
+// }
+function testSimpleCopy() {
+	function simpleCopy(target) {
+		let obj = {};
+
+		for (const key of Object.keys(target)) {
+			obj[key] = target[key];
+		}
+
+		// obj.complexValue = target.complexValue
+
+		// console.log(obj.complexValue === target.complexValue);
+
+		return obj;
+	}
+
+	const obj = {
+		simpleValue: 3,
+		complexValue: {
+			key: 'value',
+		},
+	};
+
+	const resultObj = simpleCopy(obj);
+
+	// return [resultObj, obj];
+	return resultObj;
+}
+
+// testSimpleCopy.log()
+
+function testObjValue() {
+	const obj = {
+		simpleValue: 3,
+		complexValue: {
+			key: 'value',
+		},
+	};
+
+	const obj1 = {
+		simpleValue: 4,
+		complexValue: obj.complexValue,
+	};
+
+	const obj2 = {
+		simpleValue: 5,
+		complexValue: obj.complexValue,
+	};
+
+	obj1.complexValue.key = 'newValue';
+
+	console.log(obj1);
+	console.log(obj2);
+
+	console.log(obj1.complexValue === obj2.complexValue);
+}
+
+// testObjValue();
+
+function testRefsValueInSwitch() {
+	const obj1 = {
+		key1: 'value1',
+		key11: 'value11',
+	};
+
+	const obj2 = {
+		key2: 'value2',
+		key22: 'value22',
+	};
+
+	function switchObj(obj) {
+		switch (obj) {
+			case { key1: 'value1', key11: 'value11' }: {
+				return 1;
+			}
+			case { key2: 'value2', key22: 'value22' }: {
+				return 2;
+			}
+			default:
+				break;
+		}
+	}
+
+	console.log(switchObj(obj1));
+	switchObj.log(obj2);
+}
+
+// testRefsValueInSwitch()
+
+//------------------------------------------------------------------------------------------------------
+//在then链中，then函数总是返回新的promise对象，其维护的值x只与链上每个then函数的
+//onFulfilled/onRejected处理函数有关，两者是独立的
+function testRegularValueReturnedInThenFunc() {
+	const p = Promise.resolve(3);
+
+	const p2 = p.then((res) => res);
+
+	p2.then((res) => console.log(res instanceof Promise, typeof res));
+}
+
+// testRegularValueReturnedInThenFunc()
+
+//------------------------------------------------------------------------------------------------------
+//HTTP 204 No Content 成功状态响应码，表示该请求已经成功了，
+//但是客户端客户不需要离开当前页面。
+//默认情况下 204 响应是可缓存的。一个 ETag 标头包含在此类响应中。
+//使用惯例是，在 PUT 请求中进行资源更新，但是不需要改变当前展示给用户的页面，
+//那么返回 204 No Content。如果创建了资源，则返回 201 Created 。
+//如果应将页面更改为新更新的页面，则应改用 200 。
+function testReadableStreamInFetch() {
+	// fetch('https://lf3-static.bytednsdoc.com/obj/eden-cn/beeh7uvzhq/users.json')
+	fetch('http://localhost:3001/api/mockedApi/testReadableStreamInFetch', { method: 'POST' }).then((res) => {
+		const { status } = res;
+
+		if (status === 204) {
+			// console.log(res);
+			console.log(res.json());
+		}
+
+		if (status === 200) {
+			console.log(res.json());
+		}
+	});
+}
+
+// testReadableStreamInFetch()
+
+//------------------------------------------------------------------------------------------------------
+//在异步函数中，返回值分3类：
+//1，未指定返回值，异步函数返回状态为resolved,值为undefined的promise
+//2，返回值不为promise，异步函数返回状态为resolved,值为指定的返回值的promise
+//3，返回值为promise，异步函数不做处理，原样返回promise
+async function testPromiseReturnedInAsyncFunc() {
+	const result = await fetch('http://localhost:3001/api/mockedApi/regularData1', { method: 'POST' });
+	console.log(await result.json());
+	// return Promise.resolve(1)
+}
+
+// testPromiseReturnedInAsyncFunc.log()
+
+//------------------------------------------------------------------------------------------------------
+//构造函数一般不指定返回值，使用new运算符调用时，默认返回其实例
+//若指定返回值，当返回值为原始值时，仍然返回其实例
+//当返回值为引用类型值时，用该值代替其实例返回
+function testValuesReturnedInConsFn() {
+	function AConsFn(props) {
+		this.a = props.a;
+
+		return () => {};
+	}
+
+	const value = new AConsFn({ a: 7 });
+
+	return value;
+}
+
+// testValuesReturnedInConsFn.log()
+
+//------------------------------------------------------------------------------------------------------
+function testSwitchARejectedPromiseToResolved() {
+	const p1 = Promise.reject(3).catch((x) => Promise.resolve(x));
+
+	return p1;
+}
+
+// testSwitchARejectedPromiseToResolved()
+
+function awaitWrapper(promise) {
+	if (!(promise instanceof Promise)) {
+		return promise;
+	}
+
+	//onRejected响应函数执行完毕后会隐式执行待返回的promise的resolve()方法
+	//即rejected状态的promise被then中的onRejected响应后，then返回的下一个promise
+	//状态是resolved
+
+	//但finally()方法不会执行该步骤，它返回的新promise会继承其链中上一个promise
+	//的状态和值
+
+	// return promise.finally(x=>Promise.resolve(x))
+	return promise.catch((x) => Promise.resolve(x));
+}
+
+async function testAwaitWrapper() {
+	const p = Promise.reject(3);
+
+	console.log('before p');
+	// const result = await p;
+	const result = await awaitWrapper(p);
+	console.log('after p');
+
+	console.log(result);
+
+	return result;
+}
+
+// testAwaitWrapper()
+
+//------------------------------------------------------------------------------------------------------
+function testFunctionNamesAndPropertyNames() {
+	var b = 30;
+	// let b = 30;
+	function b() {}
+
+	console.log(b);
+}
+
+// testFunctionNamesAndPropertyNames()
+
+//------------------------------------------------------------------------------------------------------
+function testDotOperator() {
+	let a = {};
+	a.x = 5;
+	console.log(a);
+	console.log(a.x);
+
+	let b = 3;
+	b.y;
+	console.log(b);
+}
+
+// testDotOperator();
+
+//------------------------------------------------------------------------------------------------------
+function testContinualEqualOperator() {
+	let a = { x: 3 };
+	let b = 8;
+	let c = 123;
+
+	a.y = b = c;
+
+	console.log('a', a);
+	console.log('b', b);
+	console.log('c', c);
+}
+
+// testContinualEqualOperator()
+
+//------------------------------------------------------------------------------------------------------
+function testRefsPosition() {
+	let a = { a: 3 };
+	let b = (a.x = { b: 4 });
+	let c = a;
+
+	a = { x: 7 };
+
+	console.log(a.x);
+	console.log(b);
+	console.log(c);
+}
+
+// testRefsPosition()
+
+//------------------------------------------------------------------------------------------------------
+function testArrayConsFunc() {
+	const ary = [1, 2, 3];
+
+	const ary2 = new Array(ary);
+
+	console.log('ary2', ary2);
+	console.log('ary2 === ary', ary2 === ary);
+}
+
+// testArrayConsFunc()
+
+//------------------------------------------------------------------------------------------------------
+function testThrowErrorInResolvedPromise() {
+	const p = Promise.resolve(3);
+
+	const p1 = p.then((value) =>
+		// null
+		{
+			throw value;
+		}
+	);
+
+	p1.then(
+		(value) => console.log('resolved', value),
+		(reason) => console.log('rejected', reason)
+	);
+}
+
+// testThrowErrorInResolvedPromise()
+
+//------------------------------------------------------------------------------------------------------
+function testObjAsKey() {
+	const a = {};
+
+	const b = { key: '123' };
+
+	a[b] = 3;
+
+	// console.log(a);
+	// console.log(a[b]);
+	// console.log(b.toString());
+	console.log(Object.keys(a)[0]);
+	console.log(typeof Object.keys(a)[0]);
+}
+
+// testObjAsKey()
+
+//------------------------------------------------------------------------------------------------------
+function testIterateObj() {
+	const obj = {};
+	const ary = [1, 2, 3];
+	// console.log(ary.hasOwnProperty([Symbol.iterator]));
+	console.log(Symbol.iterator in ary);
+	console.log(Object.keys(ary));
+	console.log(ary);
+
+	// for(const item of obj){}
+}
+
+// testIterateObj()
+
+//------------------------------------------------------------------------------------------------------
+// function promiseAllll() {
+//思路：
+//1，创建一个新的promise（new Promise()）
+//2，在它的executor里创建一个计数值和一个结果数组，遍历参数promises，将每个promise的then函数设置为：
+//onFulfilled:计数加1，值置入结果数组，判断：如果计数值等于参数promises数组长度，即所有promise均为resolved，以结果数组为值resolve新promise
+//onRejected:以reason为值reject新promise
+function promiseAll(promises) {
+	return new Promise(function (resolve, reject) {
+		if (!Array.isArray(promises)) {
+			return reject(new TypeError('argument must be an array'));
+		}
+
+		let countNum = 0;
+		const promiseNum = promises.length;
+		let resolvedValues = new Array(promiseNum);
+
+		for (let i = 0; i < promiseNum; i++) {
+			if (!(promise[i] instanceof Promise)) {
+				promise[i] = Promise.resolve(promise);
+			}
+
+			promises[i].then(
+				(value) => {
+					countNum++;
+					resolvedValues[i] = value;
+					if (countNum === promiseNum) {
+						return resolve(resolvedValues);
+					}
+				},
+				(reason) => reject(reason)
+			);
+		}
+	});
+}
+
+// const p1 = Promise.resolve(3);
+// const p2 = new Promise((resolve, reject) => setTimeout(() => resolve(5), 2000));
+// const p3 = fetch('http://localhost:3001/api/mockedApi/regularData1', { method: 'POST' });
+// const p4 = Promise.reject(7);
+// const p5 = new Promise((resolve, reject) => setTimeout(() => reject(9), 2000));
+
+// promiseAll([p4]).then(console.log);
+// promiseAll([p5]).then(console.log);
+// promiseAll([p1, p2, p3]).then(console.log);
+// promiseAll([p1, p4]).then(console.log);
+// promiseAll([p1, p2]).then(console.log);
+// promiseAll([p1, p2, p3, p4]).then(console.log,console.log);
+// console.log(promiseAll([p1, p2, p3, p4]));
+// console.log(promiseAll([p4]));
+// console.log(promiseAll([p2,p5]));
+// promiseAll([p1, p2, p3, p4, p5]).then(console.log);
+// }
+
+// promiseAllll();
+
+//------------------------------------------------------------------------------------------------------
+function testStringAndNewString() {
+	console.log(typeof String(3));
+	console.log(typeof new String(3));
+	console.log((5678).toString().length);
+
+	console.log(Math.floor(5 / 2));
+}
+
+//String()和toString()都返回一个被转化后的字符串
+//区别：
+//1：定义的位置不同
+//2：String()可以处理null和undefined
+//3：Number.prototype.toString()支持不同进制数字的转换
+//其他：
+//.作为浮点符号和属性访问符
+//纯小数的小数点后面存在6个及以上的0时，小数将被表示为科学计数法
+//浮点数的整数部分的位数大于21时，浮点数将被表示为科学计数法
+// testStringAndNewString()
+
+//------------------------------------------------------------------------------------------------------
+function testArgumentsInFunc() {
+	function func(a) {
+		'use strict';
+
+		// const a = 7;
+
+		console.log(Object.getOwnPropertyDescriptor(func, 'arguments'));
+
+		console.log(a);
+		console.log(arguments);
+		a = 3;
+		console.log(a);
+		// console.log(arguments,arguments.callee,func.caller);
+		console.log(arguments);
+	}
+
+	func(1);
+}
+
+//无论函数是否在严格模式下，参数的值都能被重写，但arguments对象无法被重写
+//不在严格模式下时，能用Object.getOwnPropertyDescriptor()访问到arguments
+//、arguments.callee、function.caller
+//在严格模式下时，可以访问到arguments对象，但无法使用Object.getOwnPropertyDescriptor()
+//方法访问，访问arguments.callee、function.caller等属性会抛出错误
+// testArgumentsInFunc()
+
+//------------------------------------------------------------------------------------------------------
+function testIfTwoTypesOfValueCanCoExistInAObj() {
+	const source = {};
+
+	source.a = 3;
+	source.b = 5;
+
+	const proxy = {};
+
+	function interceptor(key, value) {
+		Object.defineProperty(proxy, key, {
+			get: () => source[key],
+			set: () => (source[key] = value),
+		});
+	}
+
+	// console.log(obj.a);
+	obj.a = 9;
+	console.log(Object.values(obj));
+}
+
+// testIfTwoTypesOfValueCanCoExistInAObj()
+
+//------------------------------------------------------------------------------------------------------
+function testDifferentLogs() {
+	console.log(' '.length);
+
+	console.log(Number(undefined) / 100 || '');
+	console.log(undefined / 100);
+
+	console.log(new Function() instanceof Object);
+	console.log(new Array() instanceof Object);
+	console.log(new Object() instanceof Object);
+
+	console.log('new Object()' instanceof Object);
+	console.log(123 instanceof Object);
+	console.log(null instanceof Object);
+	console.log((undefined && [undefined]) || 1);
+
+	console.log(JSON.stringify({ key1: 'value1', key2: undefined }));
+}
+
+// testDifferentLogs()
+
+//------------------------------------------------------------------------------------------------------
+function testValuesPassedToAFunc() {
+	function add(a, b) {
+		// return a + b;
+	}
+
+	//表达式的结果是一个立刻计算出的值
+	//将表达式（即其值）置入函数，作为函数的返回值
+	//即可实现通过执行函数手动获取这个表达式的值
+	//亦即是可指定在何时何处获取一个特定的值
+	//这里的函数被称为Thunk函数
+	add.log((() => console.log(3))(), 8);
+
+	//在JavaScript中，Thunk函数替换一个单参数函数，这个单参数函数替换多参数函数的返回值
+	//用第一个参数调用Thunk，得到预置了这个参数的单参数函数
+	//再用第二个参数调用这个单参数函数，得到多参数函数的值
+	//从形式上可以表现为Thunk函数的连续调用
+	function multipleArgsFunc(argA, argB) {
+		return argA * argB;
+	}
+
+	function singleArgsFunc(argA) {
+		return multipleArgsFunc(argA, argB);
+	}
+
+	const thunk = function (argB) {
+		return function singleArgsFunc(argA) {
+			return multipleArgsFunc(argA, argB);
+		};
+	};
+
+	console.log(thunk(4)(8));
+	// thunk(4)(8).log();
+
+	// function returnItSelf() {
+	// 	return returnItSelf();
+	// }
+
+	// returnItSelf();
+}
+
+// testValuesPassedToAFunc();
+
+Boolean.prototype.log = function () {
+	console.log(this.toString());
+};
+
+function testPropertiesInAObjectInstance() {
+	new Object().hasOwnProperty('toString').log();
+	new Object().hasOwnProperty('constructor').log();
+	new Object().hasOwnProperty('valueOf').log();
+	new Object().hasOwnProperty('hasOwnProperty').log();
+}
+
+// testPropertiesInAObjectInstance()
+
+function testDivAppendAnotherAiv() {
+	const div1 = document.createElement('div');
+	const div2 = document.createElement('div');
+
+	document.body.appendChild(div1);
+
+	div1.appendChild(div2);
+}
+
+// testDivAppendAnotherAiv();
+
+Function.prototype.log = function () {
+	console.log(this);
+};
+
+function prototypePropertyInFunctionInstance() {
+	(() => {}).prototype?.log();
+	(() => {}).hasOwnProperty('prototype').log();
+
+	(async () => {}).prototype?.log();
+	(async () => {}).hasOwnProperty('prototype').log();
+
+	new Object({ method() {} }).method.prototype?.log();
+	new Object({ method() {} }).hasOwnProperty('prototype').log();
+
+	(async function () {}.prototype?.log());
+	(async function () {}.hasOwnProperty('prototype').log());
+
+	console.log(function* () {}.prototype);
+	(function* () {}.hasOwnProperty('prototype').log());
+
+	console.log(async function* () {}.prototype);
+	(async function* () {}.hasOwnProperty('prototype').log());
+}
+
+// prototypePropertyInFunctionInstance();
+
+function testFunctionInClassForm() {
+	class ClassWhoseInstanceIsFunction extends Function {}
+
+  // var k;
+
+	const aFunc = new ClassWhoseInstanceIsFunction(
+		'x',
+		'y',
+		`
+    var k = x + y;
+    console.log('calculated: ',k );
+    return {k};
+  `
+	);
+
+	aFunc(1,2);
+}
+
+testFunctionInClassForm();
