@@ -3,6 +3,7 @@
 //6.1.2 动态执行系统
 //6.1.3 脚本系统的起源
 //6.1.4 脚本只是表现形式
+
 //···JavaScript是嵌入式的语言
 //···JavaScript用作页面包含语言
 //···是解释而非编译
@@ -1066,6 +1067,7 @@ function s11() {
 
 	//当然，我们也可以使新的构造器与原生构造器关联起来，
 	//这在多数情况下是可行且有价值的。
+  
 	//5，置新String()构造器的原型
 	Object.setPrototypeOf(String.prototype, Object.getPrototypeOf(' '));
 	// 'str'---->String()---->String.prototype---->StringOri()---->StringOri.prototype

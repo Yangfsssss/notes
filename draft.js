@@ -293,27 +293,27 @@
 //Generator函数是分段执行的，yield表达式是暂停执行的标记，而next方法可以恢复执行
 
 const getData = (cb) => {
-	let data;
+  let data;
 
-	const xhr = new XMLHttpRequest();
+  const xhr = new XMLHttpRequest();
 
-	xhr.open('GET', 'http://localhost:3001/api/basic');
+  xhr.open('GET', 'http://localhost:3001/api/basic');
 
-	xhr.setRequestHeader('Content-Type', 'application/json');
+  xhr.setRequestHeader('Content-Type', 'application/json');
 
-	xhr.responseType = 'json';
+  xhr.responseType = 'json';
 
-	xhr.withCredentials = false;
+  xhr.withCredentials = false;
 
-	// xhr.addEventListener('load', () => {
-	//   data = xhr.response;
-	// });
+  // xhr.addEventListener('load', () => {
+  //   data = xhr.response;
+  // });
 
-	xhr.addEventListener('load', () => cb(xhr.response));
+  xhr.addEventListener('load', () => cb(xhr.response));
 
-	xhr.send();
+  xhr.send();
 
-	return data;
+  return data;
 };
 
 // console.log(getData());
@@ -467,11 +467,11 @@ const getData = (cb) => {
 // }
 
 function* main() {
-	let result = yield (function () {
-		console.log(it);
-		getData((res) => it.next(res));
-	})();
-	console.log(result);
+  let result = yield (function () {
+    console.log(it);
+    getData((res) => it.next(res));
+  })();
+  console.log(result);
 }
 
 let it = main();
@@ -487,12 +487,12 @@ let it = main();
 //生成器依靠它首次调用返回的可迭代对象来依次遍历它其中的状态们，遍历操作一定在返回可迭代对象之后，
 //所以遍历操作中能够获取到可迭代对象
 function* generator() {
-	// yield console.log('value');
-	yield 1 + 1;
+  // yield console.log('value');
+  yield 1 + 1;
 
-	console.log('over');
+  console.log('over');
 
-	return 'end';
+  return 'end';
 }
 
 const gen = generator();
@@ -502,22 +502,22 @@ const gen = generator();
 // console.log(gen.next());
 
 const aFunc = (cb) => {
-	// console.log();
-	cb();
+  // console.log();
+  cb();
 };
 
 // aFunc()
 
 function anotherFunc() {
-	aFunc(() => aValue.next());
+  aFunc(() => aValue.next());
 }
 
 // anotherFunc()
 
 let aValue = {
-	next: () => {
-		console.log("I'm next");
-	},
+  next: () => {
+    console.log("I'm next");
+  },
 };
 
 //IIFE-----------------------------------------------------------------------------------------------
@@ -595,21 +595,21 @@ let aValue = {
 //为原生对象添加Iterator接口----------------------------------------------------------------------------
 
 const obj = {
-	key1: 'value1',
-	key2: 'value2',
-	key3: 'value3',
-	key4: 'value4',
-	key5: 'value5',
-	[Symbol('key6')]: 'value6',
+  key1: 'value1',
+  key2: 'value2',
+  key3: 'value3',
+  key4: 'value4',
+  key5: 'value5',
+  [Symbol('key6')]: 'value6',
 };
 
 //1，用生成器消费obj
 function* objectEntries1(obj) {
-	let propKeys = Reflect.ownKeys(obj);
+  let propKeys = Reflect.ownKeys(obj);
 
-	for (let propKey of propKeys) {
-		yield [propKey, obj[propKey]];
-	}
+  for (let propKey of propKeys) {
+    yield [propKey, obj[propKey]];
+  }
 }
 
 const objIteObj = objectEntries1(obj);
@@ -620,11 +620,11 @@ const objIteObj = objectEntries1(obj);
 
 //2，将生成器置为obj的[Symbol.iterator]属性
 function* objectEntries2() {
-	let propKeys = Reflect.ownKeys(this);
+  let propKeys = Reflect.ownKeys(this);
 
-	for (let propKey of propKeys) {
-		yield [propKey, this[propKey]];
-	}
+  for (let propKey of propKeys) {
+    yield [propKey, this[propKey]];
+  }
 }
 
 obj[Symbol.iterator] = objectEntries2;
@@ -637,10 +637,10 @@ obj[Symbol.iterator] = objectEntries2;
 
 //3,其他消费可迭代对象的方法
 function* numbers() {
-	yield 1;
-	yield 2;
-	return 3;
-	yield 4;
+  yield 1;
+  yield 2;
+  return 3;
+  yield 4;
 }
 
 const numbersIteObj = numbers();
@@ -705,12 +705,12 @@ let [x, y] = numbers();
 
 //throw方法被捕获之后，会附带执行下一条yield表达式，即会附带执行一次next方法
 const gen1 = function* () {
-	try {
-		yield console.log('a');
-	} catch (e) {}
+  try {
+    yield console.log('a');
+  } catch (e) {}
 
-	yield console.log('b');
-	yield console.log('c');
+  yield console.log('b');
+  yield console.log('c');
 };
 
 const g = gen1();
@@ -722,9 +722,9 @@ const g = gen1();
 //若抛出的错误没有被内部捕获，则认为这个Generator运行结束，调用next方法将返回{value:undefined,done:true}
 //若抛出的错误没有被内部捕获，但被外部捕获，也认为运行结束
 const gen2 = function* () {
-	yield console.log('1');
-	yield console.log('2');
-	yield console.log('3');
+  yield console.log('1');
+  yield console.log('2');
+  yield console.log('3');
 };
 
 const g2 = gen2();
@@ -744,9 +744,9 @@ const g2 = gen2();
 //Generator.prototype.return---------------------------------------------------------------------------
 //Generator函数返回的可迭代对象，还有一个return()方法，可以返回给定的值，并且终结遍历Generator函数
 function* gen3() {
-	yield 1;
-	yield 2;
-	yield 3;
+  yield 1;
+  yield 2;
+  yield 3;
 }
 
 const g3 = gen3();
@@ -758,17 +758,17 @@ const g3 = gen3();
 //如果Generator函数内部有try...finally代码块，且正在执行try代码块，那么return()方法会导致立刻进入
 //finall代码块，执行完以后，再返回return()方法指定的值，整个函数才会结束
 function* numbers() {
-	yield 1;
+  yield 1;
 
-	try {
-		yield 2;
-		yield 3;
-	} finally {
-		yield 4;
-		yield 5;
-	}
+  try {
+    yield 2;
+    yield 3;
+  } finally {
+    yield 4;
+    yield 5;
+  }
 
-	yield 6;
+  yield 6;
 }
 
 const g4 = numbers();
@@ -807,13 +807,13 @@ const g4 = numbers();
 // }
 
 function* inner() {
-	yield 'hello!';
+  yield 'hello!';
 }
 
 function* outer1() {
-	yield 'open';
-	yield inner();
-	yield 'close';
+  yield 'open';
+  yield inner();
+  yield 'close';
 }
 
 const outer1IteObj = outer1();
@@ -823,9 +823,9 @@ const outer1IteObj = outer1();
 // console.log(outer1IteObj.next().value);
 
 function* outer2() {
-	yield 'open';
-	yield* inner();
-	yield 'close';
+  yield 'open';
+  yield* inner();
+  yield 'close';
 }
 
 const outer2IteObj = outer2();
@@ -836,16 +836,16 @@ const outer2IteObj = outer2();
 
 //如果被代理的Generator函数有return语句，那么就可以向代理它的Generator函数返回数据
 function* foo() {
-	yield 2;
-	yield 3;
-	return 'foo';
+  yield 2;
+  yield 3;
+  return 'foo';
 }
 
 function* bar() {
-	yield 1;
-	let v = yield* foo();
-	console.log('v: ' + v);
-	yield 4;
+  yield 1;
+  let v = yield* foo();
+  console.log('v: ' + v);
+  yield 4;
 }
 
 const barIteObj = bar();
@@ -857,14 +857,14 @@ const barIteObj = bar();
 // console.log(barIteObj.next(8));
 
 function* genFuncWithReturn() {
-	yield 'a';
-	yield 'b';
-	return 'The result';
+  yield 'a';
+  yield 'b';
+  return 'The result';
 }
 
 function* logReturned(genObj) {
-	let result = yield* genObj;
-	console.log(result);
+  let result = yield* genObj;
+  console.log(result);
 }
 
 // [...logReturned(genFuncWithReturn())]
@@ -872,10 +872,10 @@ function* logReturned(genObj) {
 // console.log([...logReturned(genFuncWithReturn())]);
 
 function* a() {
-	yield 1;
-	yield 2;
-	yield 3;
-	return 'The result';
+  yield 1;
+  yield 2;
+  yield 3;
+  return 'The result';
 }
 
 // for(let i of a()){
@@ -892,13 +892,13 @@ const aIteObj = a();
 // console.log(aIteObj.next());
 
 function* iterTree(tree) {
-	if (Array.isArray(tree)) {
-		for (let i = 0; i < tree.length; i++) {
-			yield* iterTree(tree[i]);
-		}
-	} else {
-		yield tree;
-	}
+  if (Array.isArray(tree)) {
+    for (let i = 0; i < tree.length; i++) {
+      yield* iterTree(tree[i]);
+    }
+  } else {
+    yield tree;
+  }
 }
 
 const tree = ['a', ['b', 'c'], ['d', 'e']];
@@ -911,11 +911,11 @@ const tree = ['a', ['b', 'c'], ['d', 'e']];
 
 //作为对象属性的Generator函数-------------------------------------------------------------------------------
 let obj1 = {
-	*myGeneratorMethod() {},
+  *myGeneratorMethod() {},
 };
 
 let obj2 = {
-	myGeneratorMethod: function* () {},
+  myGeneratorMethod: function* () {},
 };
 
 //Generator函数的this--------------------------------------------------------------------------------------------
@@ -924,7 +924,7 @@ let obj2 = {
 function* gx() {}
 
 gx.prototype.hello = function () {
-	return 'hi!';
+  return 'hi!';
 };
 
 let objx = gx();
@@ -934,9 +934,9 @@ objx instanceof gx;
 
 //使Generator函数返回一个正常的实例，既可以使用next方法，又可以获得正常的this
 function* geny() {
-	this.a = 1;
-	yield (this.b = 2);
-	yield (this.c = 3);
+  this.a = 1;
+  yield (this.b = 2);
+  yield (this.c = 3);
 }
 
 let objy = {};
@@ -944,7 +944,7 @@ let objy = {};
 // let f = F.call(objy);
 
 function F() {
-	return geny.call(geny.prototype);
+  return geny.call(geny.prototype);
 }
 
 let f = new F();
@@ -963,12 +963,12 @@ let f = new F();
 
 //Generator与状态机-----------------------------------------------------------------------
 function* generator() {
-	while (true) {
-		console.log('tick');
-		yield;
-		console.log('tock');
-		yield;
-	}
+  while (true) {
+    console.log('tick');
+    yield;
+    console.log('tock');
+    yield;
+  }
 }
 
 const iteObj = generator();
@@ -984,10 +984,10 @@ const iteObj = generator();
 
 //Generator函数的异步应用--------------------------------------------------------------------
 function* getGen() {
-	const url = 'http://localhost:3001/api/dailyLearningStuff';
-	const result = yield fetch(url);
+  const url = 'http://localhost:3001/api/dailyLearningStuff';
+  const result = yield fetch(url);
 
-	console.log('result', result);
+  console.log('result', result);
 }
 
 // const gz = getGen();
@@ -1007,9 +1007,9 @@ function* getGen() {
 
 //针对某个参数的Thunk
 const aThunk = function (fileName) {
-	return function (cb) {
-		return fs.readFile(fileName, cb);
-	};
+  return function (cb) {
+    return fs.readFile(fileName, cb);
+  };
 };
 
 //运行，置入参数，得到Thunkify形式的待用函数
@@ -1022,22 +1022,22 @@ const aThunk = function (fileName) {
 
 //ES5
 const Thunk1 = function (fn) {
-	return function () {
-		const args = Array.prototype.slice.call(arguments);
-		return function (cb) {
-			args.push(cb);
-			return fn.apply(this, args);
-		};
-	};
+  return function () {
+    const args = Array.prototype.slice.call(arguments);
+    return function (cb) {
+      args.push(cb);
+      return fn.apply(this, args);
+    };
+  };
 };
 
 //ES6
 const Thunk2 = function (fn) {
-	return function (...args) {
-		return function (cb) {
-			return fn.call(this, ...args, cb);
-		};
-	};
+  return function (...args) {
+    return function (cb) {
+      return fn.call(this, ...args, cb);
+    };
+  };
 };
 
 // const readFileThunk2 = Thunk(fs.readFile);
@@ -1045,7 +1045,7 @@ const Thunk2 = function (fn) {
 // readFileThunk2(fileA)(cb)
 
 function ff(a, cb) {
-	cb(a);
+  cb(a);
 }
 
 const ft = Thunk2(ff);
@@ -1054,12 +1054,12 @@ const ft = Thunk2(ff);
 
 //Generator函数的流程管理---------------------------------------------------------------
 function* genz() {
-	yield 1;
-	yield 2;
-	yield 3;
-	yield 4;
-	yield 5;
-	yield 6;
+  yield 1;
+  yield 2;
+  yield 3;
+  yield 4;
+  yield 5;
+  yield 6;
 }
 
 // const genzIO = genz()
@@ -1125,33 +1125,33 @@ function* genz() {
 
 //Promise继发
 function logInOrder(urls) {
-	const textPromises = urls.map((url) => {
-		return fetch(url).then((response) => response.text());
-	});
+  const textPromises = urls.map((url) => {
+    return fetch(url).then((response) => response.text());
+  });
 
-	textPromises.reduce((chain, textPromises) => {
-		return chain.then(() => textPromises).then((text) => console.log(text));
-	}, Promise.resolve());
+  textPromises.reduce((chain, textPromises) => {
+    return chain.then(() => textPromises).then((text) => console.log(text));
+  }, Promise.resolve());
 }
 
 //async继发
 async function logInOrder2(urls) {
-	for (const url of urls) {
-		const response = await fetch(url);
-		console.log(await response.text());
-	}
+  for (const url of urls) {
+    const response = await fetch(url);
+    console.log(await response.text());
+  }
 }
 
 //async并发
 async function logInOrder3(urls) {
-	const textPromises = urls.map(async (url) => {
-		const response = await fetch(url);
-		return response.text();
-	});
+  const textPromises = urls.map(async (url) => {
+    const response = await fetch(url);
+    return response.text();
+  });
 
-	for (const textPromise of textPromises) {
-		console.log(await textPromise);
-	}
+  for (const textPromise of textPromises) {
+    console.log(await textPromise);
+  }
 }
 
 //-----------------------------------------------------------------------
@@ -1160,11 +1160,11 @@ const list = [1, 2, 3];
 
 //返回一个1s后resolve的promise，值为参数的平方
 const square = (num) => {
-	return new Promise((resolve, reject) => {
-		setTimeout(() => {
-			resolve(num * num);
-		}, 1000);
-	});
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      resolve(num * num);
+    }, 1000);
+  });
 };
 
 // function test() {
@@ -1194,13 +1194,13 @@ const square = (num) => {
 let promise = Promise.resolve();
 
 function test(i = 0) {
-	if (i === list.length) {
-		return;
-	}
+  if (i === list.length) {
+    return;
+  }
 
-	promise = promise.then(() => square(list[i]).then((i) => console.log(i)));
+  promise = promise.then(() => square(list[i]).then((i) => console.log(i)));
 
-	test(i + 1);
+  test(i + 1);
 }
 
 // test();
@@ -1209,23 +1209,23 @@ function test(i = 0) {
 //-------------------------------------------------------------------------------------------
 //No.159 实现 Promise.retry，成功后 resolve 结果，失败后重试，尝试超过一定次数才真正的 reject
 Promise.retry = function (fn, times, i = 0, ...args) {
-	let p = Promise.resolve(fn(...args));
+  let p = Promise.resolve(fn(...args));
 
-	if (i >= times) {
-		return p.catch((reason) => console.log(reason));
-	}
+  if (i >= times) {
+    return p.catch((reason) => console.log(reason));
+  }
 
-	p.then(
-		(value) => console.log(value),
-		(reason) => {
-			i++;
-			Promise.retry(fn, times, i, ...args);
-		}
-	);
+  p.then(
+    (value) => console.log(value),
+    (reason) => {
+      i++;
+      Promise.retry(fn, times, i, ...args);
+    }
+  );
 };
 
 function test1(x) {
-	return Promise.reject(x);
+  return Promise.reject(x);
 }
 
 // Promise.retry(test1, 3,0, 555);
@@ -1237,12 +1237,12 @@ function test1(x) {
 // Promise.resolve(asyncFunc)
 
 Promise.retry2 = function (fn, times, ...args) {
-	const fnArray = Array(times).fill(fn(...args));
+  const fnArray = Array(times).fill(fn(...args));
 
-	Promise.any(fnArray).then(
-		(value) => console.log(value),
-		(reasons) => console.log(reasons)
-	);
+  Promise.any(fnArray).then(
+    (value) => console.log(value),
+    (reasons) => console.log(reasons)
+  );
 };
 
 // Promise.retry2(test1,10,'error')
@@ -1283,24 +1283,24 @@ const baseUrl = 'http://localhost:3001/api';
 // };
 
 function* getRecords(cb) {
-	const res = yield fetch(`${baseUrl}/basic`);
+  const res = yield fetch(`${baseUrl}/basic`);
 
-	// let result
+  // let result
 
-	// res.then(value=>result = value)
+  // res.then(value=>result = value)
 
-	// cb(result);
+  // cb(result);
 
-	// return result;
+  // return result;
 }
 
 function* handleFetchRecords() {
-	try {
-		console.log('start');
-		const data = yield getRecords((response) => hanIO.next(response));
-		console.log('recordsData', data);
-		return data;
-	} catch (e) {}
+  try {
+    console.log('start');
+    const data = yield getRecords((response) => hanIO.next(response));
+    console.log('recordsData', data);
+    return data;
+  } catch (e) {}
 }
 
 // const hanIO = handleFetchRecords();//①
@@ -1576,23 +1576,23 @@ function* handleFetchRecords() {
 //----------------------------------------------------------------------------------
 
 function delay() {
-	var time1 = 5000,
-		time2 = 1000;
+  var time1 = 5000,
+    time2 = 1000;
 
-	let p = new Promise((resolve, reject) => {
-		setTimeout(() => {
-			reject('a reason');
-			console.log('p2 after rejected', p2);
-		}, time1);
-	});
+  let p = new Promise((resolve, reject) => {
+    setTimeout(() => {
+      reject('a reason');
+      console.log('p2 after rejected', p2);
+    }, time1);
+  });
 
-	setTimeout(() => {
-		const p2 = p.then(
-			(x) => x,
-			(reason) => reason
-		);
-		console.log('p2 before rejected', p2);
-	}, time2);
+  setTimeout(() => {
+    const p2 = p.then(
+      (x) => x,
+      (reason) => reason
+    );
+    console.log('p2 before rejected', p2);
+  }, time2);
 }
 
 // delay()
@@ -1692,38 +1692,38 @@ function delay() {
 
 //x为thenable对象
 function sttt() {
-	p = Promise.resolve(x);
-	//等于
-	p = new Promise((...args) => x.then(...args));
+  p = Promise.resolve(x);
+  //等于
+  p = new Promise((...args) => x.then(...args));
 
-	p.then(() => x);
-	//等于
-	p.then(() => {
-		var MyPromiseClass = p.constructor[Symbol.species];
-		return new MyPromiseClass((...args) => x.then(...args));
-	});
+  p.then(() => x);
+  //等于
+  p.then(() => {
+    var MyPromiseClass = p.constructor[Symbol.species];
+    return new MyPromiseClass((...args) => x.then(...args));
+  });
 }
 
 function sttt2() {
-	const x = {
-		then: function () {
-			console.log("I'm then() in x");
-		},
-	};
+  const x = {
+    then: function () {
+      console.log("I'm then() in x");
+    },
+  };
 
-	const p = Promise.resolve(x);
+  const p = Promise.resolve(x);
 
-	const p2 = p.then(() => x);
+  const p2 = p.then(() => x);
 }
 
 // sttt2()
 
 function sttt3() {
-	p.then = function (f) {
-		var MyPromiseClass = this.constructor[Symbol.species];
-		var thenableObj = f();
-		return new MyPromiseClass((resolve) => resolve(thenableObj));
-	};
+  p.then = function (f) {
+    var MyPromiseClass = this.constructor[Symbol.species];
+    var thenableObj = f();
+    return new MyPromiseClass((resolve) => resolve(thenableObj));
+  };
 }
 
 //7.2.4 执行逻辑----------------------------------------------------------------------
@@ -1739,46 +1739,46 @@ function sttt3() {
 //7.3.1 异步的函数----------------------------------------------------------------
 //7.3.1.1 异步函数的引入
 function stoo() {
-	Promise.all([1, 2, 3]).then(([v1, v2, v3]) => {
-		//...
-	});
+  Promise.all([1, 2, 3]).then(([v1, v2, v3]) => {
+    //...
+  });
 
-	var pendings = [1, 2, 3].map((x) => Promise.resolve(x));
-	Promise.all(pendings).then((values) => {
-		let [v1, v2, v3] = values;
-		//...
-	});
+  var pendings = [1, 2, 3].map((x) => Promise.resolve(x));
+  Promise.all(pendings).then((values) => {
+    let [v1, v2, v3] = values;
+    //...
+  });
 }
 
 function stoo2() {
-	var p1 = Promise.resolve(1);
+  var p1 = Promise.resolve(1);
 
-	var expand_v2 = (x) => {
-		return x < 9 ? '0' + x : x.toString();
-	};
+  var expand_v2 = (x) => {
+    return x < 9 ? '0' + x : x.toString();
+  };
 
-	p1.then(expand_v2)
-		.then((v2) => {
-			return 'v3: ' + v2;
-		})
-		.then((v4) => console.log(v4));
+  p1.then(expand_v2)
+    .then((v2) => {
+      return 'v3: ' + v2;
+    })
+    .then((v4) => console.log(v4));
 }
 
 // stoo2();
 
 async function st003() {
-	var p1 = Promise.resolve(1);
+  var p1 = Promise.resolve(1);
 
-	var x = await p1;
-	return x < 9 ? '0' + x : x.toString();
+  var x = await p1;
+  return x < 9 ? '0' + x : x.toString();
 }
 
 function stoo4() {
-	var p3 = st003()
-		.then((v2) => {
-			return 'v3: ' + v2;
-		})
-		.then((v4) => console.log(v4));
+  var p3 = st003()
+    .then((v2) => {
+      return 'v3: ' + v2;
+    })
+    .then((v4) => console.log(v4));
 }
 
 // stoo4()
@@ -1786,26 +1786,26 @@ function stoo4() {
 //7.3.1.2 异步函数的值
 
 function stot({ x }) {
-	console.log(x);
+  console.log(x);
 }
 
 function stot1() {
-	try {
-		stot();
-	} catch (e) {
-		console.log(e.message);
-	}
+  try {
+    stot();
+  } catch (e) {
+    console.log(e.message);
+  }
 }
 
 // stot1();
 
 async function stot2({ x }) {
-	console.log(x);
+  console.log(x);
 }
 
 function stot3() {
-	const p = stot2();
-	void p.catch(console.log);
+  const p = stot2();
+  void p.catch(console.log);
 }
 
 // stot3()
@@ -1815,15 +1815,15 @@ function stot3() {
 //如果promise是rejected状态，那么await会将reject的原因（reason）作为错误抛出。
 //而await抛出错误意味着它将潜在地执行一个类似throw e的操作，其中e是任意值，并且可以被try...catch捕获
 async function stot4() {
-	var x = Promise.reject('error of promise');
+  var x = Promise.reject('error of promise');
 
-	try {
-		var v = await x;
-	} catch (e) {
-		console.log(typeof e, e);
-	}
+  try {
+    var v = await x;
+  } catch (e) {
+    console.log(typeof e, e);
+  }
 
-	return 'Done';
+  return 'Done';
 }
 
 // stot4().then(console.log)
@@ -1832,62 +1832,62 @@ async function stot4() {
 
 //一般的生成器函数
 function stof() {
-	function* myGenerator() {
-		yield 10;
-		yield 20;
-	}
+  function* myGenerator() {
+    yield 10;
+    yield 20;
+  }
 
-	const tor = myGenerator();
+  const tor = myGenerator();
 
-	return tor;
+  return tor;
 }
 
 //异步生成器函数
 function stof2() {
-	async function* myAsyncGenerator() {
-		yield 10;
-		yield 20;
-	}
+  async function* myAsyncGenerator() {
+    yield 10;
+    yield 20;
+  }
 
-	const tor2 = myAsyncGenerator();
+  const tor2 = myAsyncGenerator();
 
-	return tor2;
+  return tor2;
 }
 
 function stof3() {
-	const tor2 = stof2();
+  const tor2 = stof2();
 
-	const p = tor2.next();
+  const p = tor2.next();
 
-	p.then((result) => {
-		console.log(result.value);
-	});
+  p.then((result) => {
+    console.log(result.value);
+  });
 
-	const p2 = tor2.next();
+  const p2 = tor2.next();
 
-	p2.then((result) => {
-		console.log(result.value);
-	});
+  p2.then((result) => {
+    console.log(result.value);
+  });
 }
 
 // stof3()
 
 function stof4() {
-	var all = [];
-	var output = () => console.log(all);
-	var tor2 = stof2();
+  var all = [];
+  var output = () => console.log(all);
+  var tor2 = stof2();
 
-	function picker(result) {
-		if (result.done) {
-			return output();
-		}
+  function picker(result) {
+    if (result.done) {
+      return output();
+    }
 
-		all.push(result.value);
+    all.push(result.value);
 
-		return tor2.next().then(picker);
-	}
+    return tor2.next().then(picker);
+  }
 
-	tor2.next().then(picker);
+  tor2.next().then(picker);
 }
 
 // stof4()
@@ -1896,17 +1896,17 @@ function stof4() {
 //20;
 
 function stof5() {
-	const output = (all) => console.log(all);
-	const tor2 = stof2(); //IteObj
+  const output = (all) => console.log(all);
+  const tor2 = stof2(); //IteObj
 
-	async function picker2(tor) {
-		const all = [];
-		const extract = ({ value, done }) => !done && all.push(value);
-		while (extract(await tor.next())); //while(...) = while(...){}
-		return all;
-	}
+  async function picker2(tor) {
+    const all = [];
+    const extract = ({ value, done }) => !done && all.push(value);
+    while (extract(await tor.next())); //while(...) = while(...){}
+    return all;
+  }
 
-	picker2(tor2).then(output);
+  picker2(tor2).then(output);
 }
 
 // stof5();
@@ -1916,29 +1916,29 @@ function stof5() {
 
 //7.3.1.5 异步生成器函数中的await
 function stof6() {
-	function sleep(tag, n, value) {
-		console.log(tag);
-		return new Promise((resolve) => setTimeout(() => resolve(value), n));
-	}
+  function sleep(tag, n, value) {
+    console.log(tag);
+    return new Promise((resolve) => setTimeout(() => resolve(value), n));
+  }
 
-	async function* myAsyncGenerator() {
-		yield sleep('yield 1st', 10000, 'value 1 delay 10s');
-		//为了避免多个生成值出现不一致的序列，异步生成器函数使每一个yield附带了一个await运算。
-		yield sleep('yield 2nd', 1000, 'value 2 now');
-	}
+  async function* myAsyncGenerator() {
+    yield sleep('yield 1st', 10000, 'value 1 delay 10s');
+    //为了避免多个生成值出现不一致的序列，异步生成器函数使每一个yield附带了一个await运算。
+    yield sleep('yield 2nd', 1000, 'value 2 now');
+  }
 
-	return myAsyncGenerator();
+  return myAsyncGenerator();
 }
 
 function stof7() {
-	const tor = stof6();
-	const output = ({ value, done }) => console.log(value);
+  const tor = stof6();
+  const output = ({ value, done }) => console.log(value);
 
-	let values = [tor.next(), tor.next()];
-	// console.log('1st values',values);
+  let values = [tor.next(), tor.next()];
+  // console.log('1st values',values);
 
-	values.forEach((p) => p.then(output));
-	// console.log('2nd values',values);
+  values.forEach((p) => p.then(output));
+  // console.log('2nd values',values);
 }
 
 // stof7()
@@ -1947,50 +1947,50 @@ function stof7() {
 //异步生成器函数调用生成的异步生成器对象与普通生成器对象不同，
 //没有[Symbol.iterator]属性，而是[Symbol.asyncIterator]属性，可以支持for await of语句
 function stos() {
-	function* myGenerator() {
-		yield 10;
-		yield 20;
-	}
+  function* myGenerator() {
+    yield 10;
+    yield 20;
+  }
 
-	const tor = myGenerator();
+  const tor = myGenerator();
 
-	console.log(Symbol.iterator in myGenerator());
+  console.log(Symbol.iterator in myGenerator());
 
-	for (const x of tor) {
-		console.log(x);
-	}
+  for (const x of tor) {
+    console.log(x);
+  }
 
-	async function* myAsyncGenerator() {
-		yield 11;
-		yield 21;
-	}
+  async function* myAsyncGenerator() {
+    yield 11;
+    yield 21;
+  }
 
-	const tor2 = myAsyncGenerator();
+  const tor2 = myAsyncGenerator();
 
-	console.log(Symbol.iterator in tor2);
-	console.log(Symbol.asyncIterator in tor2);
+  console.log(Symbol.iterator in tor2);
+  console.log(Symbol.asyncIterator in tor2);
 
-	void (async function () {
-		for await (const x of tor2) {
-			console.log(x);
-		}
-	})();
+  void (async function () {
+    for await (const x of tor2) {
+      console.log(x);
+    }
+  })();
 }
 
 // stos();
 
 async function stos2() {
-	const promises1 = [Promise.resolve(10), Promise.resolve(20)];
+  const promises1 = [Promise.resolve(10), Promise.resolve(20)];
 
-	for await (const x of promises1) {
-		console.log(x);
-	}
+  for await (const x of promises1) {
+    console.log(x);
+  }
 
-	const values = [11, 21];
+  const values = [11, 21];
 
-	for await (const x of values) {
-		console.log(x);
-	}
+  for await (const x of values) {
+    console.log(x);
+  }
 }
 
 // stos2();
@@ -1998,100 +1998,100 @@ async function stos2() {
 //7.3.2 与动态特性的交集---------------------------------------------------------
 //7.3.2.1 await在语义上的特点
 function stto() {
-	const p = Promise.resolve(10);
+  const p = Promise.resolve(10);
 
-	p.then((value) => {
-		console.log(value * 10);
-	});
+  p.then((value) => {
+    console.log(value * 10);
+  });
 
-	async function foo() {
-		console.log((await p) * 10);
-	}
+  async function foo() {
+    console.log((await p) * 10);
+  }
 
-	const resolveObj = Promise.resolve(new Object());
+  const resolveObj = Promise.resolve(new Object());
 
-	async function foo2() {
-		console.log((await resolveObj).toString());
-	}
+  async function foo2() {
+    console.log((await resolveObj).toString());
+  }
 
-	console.log([foo(), foo2()]);
+  console.log([foo(), foo2()]);
 }
 
 // stto();
 
 //7.3.2.2 resolve行为与类型模糊
 function sttt() {
-	const x = new Promise((resolve, reject) => {});
+  const x = new Promise((resolve, reject) => {});
 
-	const p1 = Promise.resolve(x);
+  const p1 = Promise.resolve(x);
 
-	const p2 = new Promise((resolve, reject) => {
-		x.then(resolve, reject);
-	});
+  const p2 = new Promise((resolve, reject) => {
+    x.then(resolve, reject);
+  });
 
-	const p3 = (async function () {
-		return await x;
-	})();
+  const p3 = (async function () {
+    return await x;
+  })();
 }
 
 function sttt2() {
-	function sleep(tag, n, value) {
-		console.log(tag);
-		return new Promise((resolve) => setTimeout(() => resolve(value), n));
-	}
+  function sleep(tag, n, value) {
+    console.log(tag);
+    return new Promise((resolve) => setTimeout(() => resolve(value), n));
+  }
 
-	const data = new Object();
-	const x = sleep('10s', 10 * 1000, data);
-	const p = Promise.resolve(x);
+  const data = new Object();
+  const x = sleep('10s', 10 * 1000, data);
+  const p = Promise.resolve(x);
 
-	(async function () {
-		console.log((await p) === data);
-	})();
+  (async function () {
+    console.log((await p) === data);
+  })();
 }
 
 // sttt2()
 
 function sttt3() {
-	class MyPromise extends Promise {}
+  class MyPromise extends Promise {}
 
-	const p = Promise.resolve('native promise');
-	// const x = MyPromise.resolve(p)
+  const p = Promise.resolve('native promise');
+  // const x = MyPromise.resolve(p)
 
-	//等于
-	const x2 = new MyPromise((resolve, reject) => p.then(resolve));
+  //等于
+  const x2 = new MyPromise((resolve, reject) => p.then(resolve));
 
-	// const x = new Promise((resolve, reject) =>{})
-	//或者
-	const x3 = new MyPromise((resolve, reject) => {
-		p.then(resolve, reject);
-	});
+  // const x = new Promise((resolve, reject) =>{})
+  //或者
+  const x3 = new MyPromise((resolve, reject) => {
+    p.then(resolve, reject);
+  });
 
-	return [x2, x3];
+  return [x2, x3];
 }
 
 // console.log(sttt3());
 
 //7.3.2.3 then方法的动态绑定
 function sttt4() {
-	let Thenabled = Promise.prototype.then;
+  let Thenabled = Promise.prototype.then;
 
-	const x = Promise.resolve(100);
-	const p = new Promise(Thenabled.bind(x));
+  const x = Promise.resolve(100);
+  const p = new Promise(Thenabled.bind(x));
 
-	class MyPromise extends Promise {}
+  class MyPromise extends Promise {}
 
-	const x2 = MyPromise.resolve(200);
-	const p2 = new Promise(Thenabled.bind(x2));
+  const x2 = MyPromise.resolve(200);
+  const p2 = new Promise(Thenabled.bind(x2));
 
-	var internal_handles;
+  var internal_handles;
 
-	const p3 = new Promise((...args) => (internal_handles = args));
+  const p3 = new Promise((...args) => (internal_handles = args));
 
-	const x3 = Promise.resolve(100);
+  const x3 = Promise.resolve(100);
 
-	setTimeout(Thenabled.bind(x3, ...internal_handles), 1000);
+  setTimeout(Thenabled.bind(x3, ...internal_handles), 1000);
 
-	p3.then(console.log);
+  p3.then(console.log);
 }
 
 // function sttt5(){
@@ -2108,40 +2108,40 @@ function sttt4() {
 
 //7.3.3.3 new Function()风格的异步函数创建
 function sttta() {
-	const AsyncFunction = (async (x) => x).constructor;
+  const AsyncFunction = (async (x) => x).constructor;
 
-	console.log(AsyncFunction);
+  console.log(AsyncFunction);
 
-	const foo = new AsyncFunction('x,y,p', 'return x + y + await p');
+  const foo = new AsyncFunction('x,y,p', 'return x + y + await p');
 
-	foo(1, 2, Promise.resolve(3)).then(console.log);
+  foo(1, 2, Promise.resolve(3)).then(console.log);
 }
 
 // sttta()
 
 //7.3.3.4 异步方法与存取器
 function sttf() {
-	class ObjectEx {
-		async foo() {
-			return 1;
-		}
+  class ObjectEx {
+    async foo() {
+      return 1;
+    }
 
-		static async foo() {
-			return 2;
-		}
-	}
+    static async foo() {
+      return 2;
+    }
+  }
 
-	const obj = new ObjectEx();
+  const obj = new ObjectEx();
 
-	const obj2 = {
-		async foo() {
-			return 3;
-		},
-	};
+  const obj2 = {
+    async foo() {
+      return 3;
+    },
+  };
 
-	obj.foo().then(console.log);
-	obj2.foo().then(console.log);
-	ObjectEx.foo().then(console.log);
+  obj.foo().then(console.log);
+  obj2.foo().then(console.log);
+  ObjectEx.foo().then(console.log);
 }
 
 // sttf()
@@ -2166,33 +2166,33 @@ function sttf() {
 //"[]"是引用类型，参与"=="运算时会调用toString()方法转换为值类型，其值为''（空字符串）
 
 function returnInThenFunc() {
-	const p = Promise.resolve('ok');
+  const p = Promise.resolve('ok');
 
-	p.then((value) => {
-		console.log('resolved value is ' + value);
-		return 'okkk';
-	}).then((value2) => {
-		console.log('my value is ' + value2);
-	});
+  p.then((value) => {
+    console.log('resolved value is ' + value);
+    return 'okkk';
+  }).then((value2) => {
+    console.log('my value is ' + value2);
+  });
 }
 
 // returnInThenFunc()
 
 function AsPrototype() {
-	const A = {};
+  const A = {};
 
-	console.log(A instanceof Object);
+  console.log(A instanceof Object);
 }
 
 // AsPrototype()
 
 function sliceCallTypedArray() {
-	const result = [].slice.call(arguments);
+  const result = [].slice.call(arguments);
 
-	console.log(arguments);
-	console.log(Array.isArray(arguments));
-	console.log(result);
-	console.log(Array.isArray(result));
+  console.log(arguments);
+  console.log(Array.isArray(arguments));
+  console.log(result);
+  console.log(Array.isArray(result));
 }
 
 // sliceCallTypedArray(1,2,3,4,5,6,7)
@@ -2200,45 +2200,45 @@ function sliceCallTypedArray() {
 // console.log(Number('-300'));
 
 function functionDeclareOrder() {
-	function a() {
-		console.log("I'm firstly declared");
-	}
+  function a() {
+    console.log("I'm firstly declared");
+  }
 
-	function a() {
-		console.log("I'm secondly declared");
-	}
+  function a() {
+    console.log("I'm secondly declared");
+  }
 
-	a();
+  a();
 }
 
 // functionDeclareOrder()
 
 function b() {
-	console.log("I'm firstly declared");
+  console.log("I'm firstly declared");
 }
 
 function b() {
-	console.log("I'm secondly declared");
+  console.log("I'm secondly declared");
 }
 
 // b()
 function aPromise() {
-	new Promise((resolve, reject) => {
-		setTimeout(() => {
-			resolve('outer reject');
-		}, 2000);
-	})
-		.then((res) => {
-			if (res) {
-				return new Promise((resolve, reject) => {
-					setTimeout(() => {
-						reject('inner reject');
-					}, 2000);
-				}).then((res) => console.log(res));
-				// .catch((err) => console.log(err));
-			}
-		})
-		.catch((err) => console.log(err));
+  new Promise((resolve, reject) => {
+    setTimeout(() => {
+      resolve('outer reject');
+    }, 2000);
+  })
+    .then((res) => {
+      if (res) {
+        return new Promise((resolve, reject) => {
+          setTimeout(() => {
+            reject('inner reject');
+          }, 2000);
+        }).then((res) => console.log(res));
+        // .catch((err) => console.log(err));
+      }
+    })
+    .catch((err) => console.log(err));
 }
 
 //什么是回调函数（callback）？-----------------------------------------------------
@@ -2248,101 +2248,101 @@ function aPromise() {
 
 //Understanding the function equality check
 function understandTheFunctionEqualityCheck() {
-	function factory() {
-		return (a, b) => a + b;
-	}
+  function factory() {
+    return (a, b) => a + b;
+  }
 
-	const sum1 = factory();
-	const sum2 = factory();
+  const sum1 = factory();
+  const sum2 = factory();
 
-	sum1(1, 2);
-	sum2(1, 2);
+  sum1(1, 2);
+  sum2(1, 2);
 
-	//factory运行一次返回一个引用类型的值，储存在某一位置
-	//factory再运行一次返回另一个引用类型的值，储存在另一位置
-	//这两个值显然不相等，实质是储存值的内存地址不同
-	//在JavaScript中，一个对象只会与它自己相等
-	console.log(sum1 === sum2);
-	console.log(sum1 === sum1);
+  //factory运行一次返回一个引用类型的值，储存在某一位置
+  //factory再运行一次返回另一个引用类型的值，储存在另一位置
+  //这两个值显然不相等，实质是储存值的内存地址不同
+  //在JavaScript中，一个对象只会与它自己相等
+  console.log(sum1 === sum2);
+  console.log(sum1 === sum1);
 }
 
 // understandTheFunctionEqualityCheck();
 
 function thePurposeOfUseCallback() {
-	//需要持久化的函数实例的场景
-	//1，一个被useMemo包裹的函数组件，需要一个函数入参
-	//2，其他hooks需要一个函数形式的依赖
-	//3，函数拥有自己的内部状态，比如闭包
+  //需要持久化的函数实例的场景
+  //1，一个被useMemo包裹的函数组件，需要一个函数入参
+  //2，其他hooks需要一个函数形式的依赖
+  //3，函数拥有自己的内部状态，比如闭包
 }
 
 function aGoodUseCase() {
-	//将函数、组件依赖的变量分离，设为useCallback的依赖项
-	//将不变的DOM和处理逻辑用Memo包裹
-	//
+  //将函数、组件依赖的变量分离，设为useCallback的依赖项
+  //将不变的DOM和处理逻辑用Memo包裹
+  //
 }
 
 function aBadUseCase() {
-	//useCallback在每次re-render时都会执行
-	//即每次re-render，useCallback都会花费一定的开销去创建持久化的函数实例
-	//当每次useCallback创建一个持久化的函数实例的开销大于
-	//每次re-render直接创建新函数实例时，使用useCallback没有意义
+  //useCallback在每次re-render时都会执行
+  //即每次re-render，useCallback都会花费一定的开销去创建持久化的函数实例
+  //当每次useCallback创建一个持久化的函数实例的开销大于
+  //每次re-render直接创建新函数实例时，使用useCallback没有意义
 }
 
 function summary() {
-	//优化操作会增加复杂度
-	//优化过的代码可能会更改多次，任何过早的优化都有风险
-	//useCallback适用于缓存很重的子组件
-	//权衡优化的效果与增加的复杂度
+  //优化操作会增加复杂度
+  //优化过的代码可能会更改多次，任何过早的优化都有风险
+  //useCallback适用于缓存很重的子组件
+  //权衡优化的效果与增加的复杂度
 }
 
 //How to Memoize with React.useMemo()------------------------------------------
 function useMemoHook() {
-	//useMemo(compute,dependencies)
-	//在第一次render时，useMemo会执行compute函数，返回并缓存执行结果
-	//①在之后的re-render中，如果dependencies没有变化，useMemo不会执行
-	//compute函数，并返回之前缓存的结果
-	//②在之后的re-render中，如果dependencies有变化，useMemo会重新执行
-	//compute函数，返回并重新缓存执行结果
+  //useMemo(compute,dependencies)
+  //在第一次render时，useMemo会执行compute函数，返回并缓存执行结果
+  //①在之后的re-render中，如果dependencies没有变化，useMemo不会执行
+  //compute函数，并返回之前缓存的结果
+  //②在之后的re-render中，如果dependencies有变化，useMemo会重新执行
+  //compute函数，返回并重新缓存执行结果
 }
 
 function anUseMemoExample() {
-	//结果同上
+  //结果同上
 }
 
 function useMemoVsUseCallback() {
-	//useCallback在每次re-render时会根据deps的变化与否来判断
-	//是否创建一个持久化的函数实例以供使用
-	//useMemo在每次re-render时会根据deps的变化与否来判断
-	//是否执行被其包裹的函数以获得并缓存新的计算结果以供使用
-	//事实上一个持久化的函数实例也是一个计算结果，所以有
-	//useCallback(fn,deps) === useMemo(()=>fn,deps)
-	//亦即useCallback是useMemo的一个特殊形式
+  //useCallback在每次re-render时会根据deps的变化与否来判断
+  //是否创建一个持久化的函数实例以供使用
+  //useMemo在每次re-render时会根据deps的变化与否来判断
+  //是否执行被其包裹的函数以获得并缓存新的计算结果以供使用
+  //事实上一个持久化的函数实例也是一个计算结果，所以有
+  //useCallback(fn,deps) === useMemo(()=>fn,deps)
+  //亦即useCallback是useMemo的一个特殊形式
 }
 
 function useMemoizationWithCare() {
-	//权衡优化的效果与开销
+  //权衡优化的效果与开销
 }
 
 function conclusion() {
-	//useMemo用来缓存昂贵的计算结果
+  //useMemo用来缓存昂贵的计算结果
 }
 
 function test() {
-	const a = void 0;
+  const a = void 0;
 
-	const b = a && '';
-	const c = a || '';
+  const b = a && '';
+  const c = a || '';
 
-	console.log(b);
-	console.log(c);
+  console.log(b);
+  console.log(c);
 
-	const d = true;
+  const d = true;
 
-	const e = d && '';
-	const f = d || '';
+  const e = d && '';
+  const f = d || '';
 
-	console.log(e);
-	console.log(f);
+  console.log(e);
+  console.log(f);
 }
 
 // test();
@@ -2352,24 +2352,24 @@ function test() {
 // console.log(result);
 
 function methods() {
-	let ary = ['1', '2', '3', '4', '5'];
+  let ary = ['1', '2', '3', '4', '5'];
 
-	// const splice = Array.prototype.splice;
+  // const splice = Array.prototype.splice;
 
-	//从第arguments[0]位开始删除（包括arguments[0]位），删除arguments[1]个元素
-	ary.splice(2, 1);
+  //从第arguments[0]位开始删除（包括arguments[0]位），删除arguments[1]个元素
+  ary.splice(2, 1);
 
-	console.log(ary);
+  console.log(ary);
 
-	const split = String.prototype.split;
+  const split = String.prototype.split;
 
-	const shift = Array.prototype.shift;
+  const shift = Array.prototype.shift;
 
-	const unshift = Array.prototype.unshift;
+  const unshift = Array.prototype.unshift;
 
-	const join = Array.prototype.join;
+  const join = Array.prototype.join;
 
-	const slice = Array.prototype.slice;
+  const slice = Array.prototype.slice;
 }
 
 // methods();
@@ -2382,61 +2382,61 @@ function methods() {
 
 /** 测试hook的返回格式 */
 function test0902() {
-	const returnedArrayAndObjectTest = () => {
-		const value1 = 1;
-		const value2 = 3;
+  const returnedArrayAndObjectTest = () => {
+    const value1 = 1;
+    const value2 = 3;
 
-		const funcInArray = () => {
-			value1 += 1;
-		};
+    const funcInArray = () => {
+      value1 += 1;
+    };
 
-		// return [value1, value2, funcInArray];
-		// 等于
-		// return { 0: value1, 1: value2, 2: funcInArray };
-		// 等于
-		return { value1: value1, value2: value2, funcInArray: funcInArray };
-	};
+    // return [value1, value2, funcInArray];
+    // 等于
+    // return { 0: value1, 1: value2, 2: funcInArray };
+    // 等于
+    return { value1: value1, value2: value2, funcInArray: funcInArray };
+  };
 
-	// const [v1, v2, func] = returnedArrayAndObjectTest();
-	// 等于
-	// const { 0: v1, 1: v2, 2: func } = returnedArrayAndObjectTest();
-	//等于
-	const { v1, v2, func } = returnedArrayAndObjectTest();
+  // const [v1, v2, func] = returnedArrayAndObjectTest();
+  // 等于
+  // const { 0: v1, 1: v2, 2: func } = returnedArrayAndObjectTest();
+  //等于
+  const { v1, v2, func } = returnedArrayAndObjectTest();
 
-	console.log(v1, v2, func);
+  console.log(v1, v2, func);
 }
 
 /** 测试while循环中return的效果 */
 //执行return语句后会退出while循环
 function whileTest() {
-	let i = 0;
+  let i = 0;
 
-	while (i < 10) {
-		i++;
+  while (i < 10) {
+    i++;
 
-		if (i === 8) {
-			return 'return';
-		}
+    if (i === 8) {
+      return 'return';
+    }
 
-		console.log(i);
-	}
+    console.log(i);
+  }
 }
 
 // whileTest();
 
 /** 测试if语句中表达式的执行效果 */
 function expressionInIf() {
-	let obj = {
-		aProperty: '888',
-	};
+  let obj = {
+    aProperty: '888',
+  };
 
-	Object.defineProperty(obj, 'aProperty', { configurable: false });
+  Object.defineProperty(obj, 'aProperty', { configurable: false });
 
-	if (!Reflect.deleteProperty(obj, 'aProperty')) {
-		console.log('cannot be deleted');
-	}
+  if (!Reflect.deleteProperty(obj, 'aProperty')) {
+    console.log('cannot be deleted');
+  }
 
-	console.log(obj);
+  console.log(obj);
 }
 
 // expressionInIf();
@@ -2445,47 +2445,47 @@ function expressionInIf() {
  * configurable-false属性阻断
  */
 function deleteProperty() {
-	var getPropertyOwner = function f(obj, key) {
-		return !obj ? null : obj.hasOwnProperty(key) ? obj : f(Object.getPrototypeOf(obj), key);
-	};
+  var getPropertyOwner = function f(obj, key) {
+    return !obj ? null : obj.hasOwnProperty(key) ? obj : f(Object.getPrototypeOf(obj), key);
+  };
 
-	//原型链：instanceL1---classL1---protoL1---classL2---protoL2---classL3---protoL3---classL4--protoL4
-	const protoL4 = {};
-	const protoL3 = Object.create(protoL4);
-	const protoL2 = Object.create(protoL3);
-	const protoL1 = Object.create(protoL2);
+  //原型链：instanceL1---classL1---protoL1---classL2---protoL2---classL3---protoL3---classL4--protoL4
+  const protoL4 = {};
+  const protoL3 = Object.create(protoL4);
+  const protoL2 = Object.create(protoL3);
+  const protoL1 = Object.create(protoL2);
 
-	protoL4.aProperty = '888';
-	protoL3.aProperty = '777';
-	protoL2.aProperty = '666';
-	protoL1.aProperty = '555';
+  protoL4.aProperty = '888';
+  protoL3.aProperty = '777';
+  protoL2.aProperty = '666';
+  protoL1.aProperty = '555';
 
-	function deleteP(obj, key) {
-		if (!(key in obj)) {
-			console.log('key not in obj');
-			return false;
-		}
+  function deleteP(obj, key) {
+    if (!(key in obj)) {
+      console.log('key not in obj');
+      return false;
+    }
 
-		while ((obj = getPropertyOwner(obj, key))) {
-			if (!Reflect.deleteProperty(obj, key)) {
-				console.log('interrupted');
-				return false;
-			}
-		}
+    while ((obj = getPropertyOwner(obj, key))) {
+      if (!Reflect.deleteProperty(obj, key)) {
+        console.log('interrupted');
+        return false;
+      }
+    }
 
-		return true;
-	}
+    return true;
+  }
 
-	console.log(protoL1.aProperty);
+  console.log(protoL1.aProperty);
 
-	Object.defineProperty(protoL3, 'aProperty', { configurable: false });
+  Object.defineProperty(protoL3, 'aProperty', { configurable: false });
 
-	deleteP(protoL1, 'aProperty');
+  deleteP(protoL1, 'aProperty');
 
-	console.log(protoL1.aProperty);
-	console.log(protoL2.aProperty);
-	console.log(protoL3.aProperty);
-	console.log(protoL4.aProperty);
+  console.log(protoL1.aProperty);
+  console.log(protoL2.aProperty);
+  console.log(protoL3.aProperty);
+  console.log(protoL4.aProperty);
 }
 
 // deleteProperty();
@@ -2493,18 +2493,18 @@ function deleteProperty() {
 /** 测试toFixed()四舍五入问题 */
 //fixed()方法先将
 function toFixed() {
-	let n1 = 20.222;
-	let n2 = 20.333;
+  let n1 = 20.222;
+  let n2 = 20.333;
 
-	let n3 = 20.444;
-	let n4 = 20.888;
+  let n3 = 20.444;
+  let n4 = 20.888;
 
-	const add = (n1, n2) => {
-		return n1 + n2;
-	};
+  const add = (n1, n2) => {
+    return n1 + n2;
+  };
 
-	console.log(add(n1, n2).toFixed(2));
-	console.log(add(n3, n4).toFixed(2));
+  console.log(add(n1, n2).toFixed(2));
+  console.log(add(n3, n4).toFixed(2));
 }
 
 // toFixed();
@@ -2513,46 +2513,46 @@ function toFixed() {
 
 //前端核心原则
 function keyPrinciple() {
-	const UI1 = f(data1);
-	const UI2 = f(data2);
-	const UI3 = f(data3);
-	const UI4 = f(data4);
-	const UI5 = f(data5);
-	const UI6 = f(data6);
-	//...
-	const UIn = f(datan);
+  const UI1 = f(data1);
+  const UI2 = f(data2);
+  const UI3 = f(data3);
+  const UI4 = f(data4);
+  const UI5 = f(data5);
+  const UI6 = f(data6);
+  //...
+  const UIn = f(datan);
 }
 
 /** 引用的动态取值 */
 function dynamicProperty() {
-	const objFunc = () => {
-		const obj = {
-			aKey: 'value1',
-		};
+  const objFunc = () => {
+    const obj = {
+      aKey: 'value1',
+    };
 
-		const changeObj = () => {
-			obj.aKey = 'value2';
-		};
+    const changeObj = () => {
+      obj.aKey = 'value2';
+    };
 
-		return {
-			changeObj,
-			check: obj.aKey === 'value1',
-			obj,
-		};
-	};
+    return {
+      changeObj,
+      check: obj.aKey === 'value1',
+      obj,
+    };
+  };
 
-	const { check, changeObj, obj } = objFunc();
-	const returnedObj = objFunc();
+  const { check, changeObj, obj } = objFunc();
+  const returnedObj = objFunc();
 
-	// console.log(check, obj);
-	// console.log(returnedObj.check, obj);
-	console.log(returnedObj);
+  // console.log(check, obj);
+  // console.log(returnedObj.check, obj);
+  console.log(returnedObj);
 
-	returnedObj.changeObj();
+  returnedObj.changeObj();
 
-	// console.log(check, obj);
-	// console.log(returnedObj.check, obj);
-	console.log(returnedObj);
+  // console.log(check, obj);
+  // console.log(returnedObj.check, obj);
+  console.log(returnedObj);
 }
 
 // dynamicProperty();
@@ -2564,17 +2564,17 @@ const num = Number((Number('2,246') + Number('1,045')).toFixed(2));
 // console.log(num);
 
 const changeObjKey = (ary) => {
-	ary.forEach((item) => {
-		item.value = item.areaCode;
-		item.label = item.areaName;
+  ary.forEach((item) => {
+    item.value = item.areaCode;
+    item.label = item.areaName;
 
-		if (item.childList) {
-			item.children = item.childList;
-			changeObjKey(item.childList);
-		}
-	});
+    if (item.childList) {
+      item.children = item.childList;
+      changeObjKey(item.childList);
+    }
+  });
 
-	return ary;
+  return ary;
 };
 
 /** 测试Promise和async函数中的错误处理 */
@@ -2583,83 +2583,83 @@ const changeObjKey = (ary) => {
 //3，try...catch不能捕获rejected的promise
 //4，但是在async函数中可以在await后使用.catch捕获错误
 async function testThrowErrorByPromiseInTryCatch() {
-	// Promise.reject('1st error').catch(console.log);
-	// Promise.reject('1st error').then(null, console.log);
+  // Promise.reject('1st error').catch(console.log);
+  // Promise.reject('1st error').then(null, console.log);
 
-	// try {
-	const res = await Promise.reject('2nd error').catch(console.log);
-	console.log('res', res);
-	// const res = await new Error('2nd error');
-	// throw new Error('2nd error');
-	// 	Promise.reject('2st error');
-	// } catch (e) {
-	// 	console.log('errorLog', e);
-	// }
+  // try {
+  const res = await Promise.reject('2nd error').catch(console.log);
+  console.log('res', res);
+  // const res = await new Error('2nd error');
+  // throw new Error('2nd error');
+  // 	Promise.reject('2st error');
+  // } catch (e) {
+  // 	console.log('errorLog', e);
+  // }
 }
 
 // testThrowErrorByPromiseInTryCatch();
 
 // console.log(Date.str(1631011960000));
 function downloadFile(content, fileName) {
-	//下载base64图片
-	var base64ToBlob = function (code) {
-		let parts = code.split(';base64,');
-		console.log('parts', parts);
+  //下载base64图片
+  var base64ToBlob = function (code) {
+    let parts = code.split(';base64,');
+    console.log('parts', parts);
 
-		let contentType = parts[0].split(':')[1];
-		console.log('contentType', contentType);
+    let contentType = parts[0].split(':')[1];
+    console.log('contentType', contentType);
 
-		let raw = window.atob(parts[1]);
-		console.log('raw', raw);
+    let raw = window.atob(parts[1]);
+    console.log('raw', raw);
 
-		let rawLength = raw.length;
-		let uInt8Array = new Uint8Array(rawLength);
-		console.log('uInt8Array', uInt8Array);
-		for (let i = 0; i < rawLength; ++i) {
-			uInt8Array[i] = raw.charCodeAt(i);
-		}
-		return new Blob([uInt8Array], {
-			type: contentType,
-		});
-	};
+    let rawLength = raw.length;
+    let uInt8Array = new Uint8Array(rawLength);
+    console.log('uInt8Array', uInt8Array);
+    for (let i = 0; i < rawLength; ++i) {
+      uInt8Array[i] = raw.charCodeAt(i);
+    }
+    return new Blob([uInt8Array], {
+      type: contentType,
+    });
+  };
 
-	let aLink = document.createElement('a');
-	let blob = base64ToBlob(content); //new Blob([content]);
-	let evt = document.createEvent('HTMLEvents');
-	evt.initEvent('click', true, true); //initEvent 不加后两个参数在FF下会报错  事件类型，是否冒泡，是否阻止浏览器的默认行为
-	aLink.download = fileName;
-	aLink.href = URL.createObjectURL(blob);
-	aLink.click();
+  let aLink = document.createElement('a');
+  let blob = base64ToBlob(content); //new Blob([content]);
+  let evt = document.createEvent('HTMLEvents');
+  evt.initEvent('click', true, true); //initEvent 不加后两个参数在FF下会报错  事件类型，是否冒泡，是否阻止浏览器的默认行为
+  aLink.download = fileName;
+  aLink.href = URL.createObjectURL(blob);
+  aLink.click();
 }
 
 // downloadFile(base64Img);
 
 function useState(initial) {
-	const hook = {
-		state: initial,
-		queue: [],
-	};
+  const hook = {
+    state: initial,
+    queue: [],
+  };
 
-	const actions = [];
+  const actions = [];
 
-	const setState = (action) => {
-		hook.queue.push(action);
+  const setState = (action) => {
+    hook.queue.push(action);
 
-		wipRoot = {
-			dom: currentRoot.dom,
-			props: currentRoot.props,
-			alternate: currentRoot,
-		};
+    wipRoot = {
+      dom: currentRoot.dom,
+      props: currentRoot.props,
+      alternate: currentRoot,
+    };
 
-		nextUnitOfWork = wipRoot;
-		deletions = [];
-	};
+    nextUnitOfWork = wipRoot;
+    deletions = [];
+  };
 
-	wipFiber.hooks.push(hook);
+  wipFiber.hooks.push(hook);
 
-	hookIndex++;
+  hookIndex++;
 
-	return [hook.state, setState];
+  return [hook.state, setState];
 }
 
 // Promise.resolve(1).then(()=>{}).catch()
@@ -2667,82 +2667,82 @@ function useState(initial) {
 
 // 即使是同一函数，其引用形式不同导致的调用方式不同也会影响传入其中的this
 function testThisInDifferentRefsWithTheSameFunction() {
-	this.myValue = '6';
+  this.myValue = '6';
 
-	const obj = {
-		myValue: '3',
-		myFunc() {
-			console.log('this in myFunc', this);
-			console.log(this.myValue);
-		},
-	};
+  const obj = {
+    myValue: '3',
+    myFunc() {
+      console.log('this in myFunc', this);
+      console.log(this.myValue);
+    },
+  };
 
-	obj.myFunc(); // this指向obj
+  obj.myFunc(); // this指向obj
 
-	const f = obj.myFunc;
+  const f = obj.myFunc;
 
-	f(); // this指向window
-	// console.log(window.myValue);
+  f(); // this指向window
+  // console.log(window.myValue);
 }
 
 // testThisInDifferentRefsWithTheSameFunction();
 
 function thisInConstructorClass() {
-	this.id = 'id in window';
+  this.id = 'id in window';
 
-	class C {
-		constructor(id) {
-			this.id = id;
-		}
+  class C {
+    constructor(id) {
+      this.id = id;
+    }
 
-		get foo() {
-			return function () {
-				console.log(this.id);
-			};
-		}
-	}
+    get foo() {
+      return function () {
+        console.log(this.id);
+      };
+    }
+  }
 
-	C.id = 'id in C';
+  C.id = 'id in C';
 
-	Object.defineProperty(D, 'foo', {
-		get() {
-			return function () {
-				console.log(this.id);
-			};
-		},
-	});
+  Object.defineProperty(D, 'foo', {
+    get() {
+      return function () {
+        console.log(this.id);
+      };
+    },
+  });
 
-	console.log(C);
+  console.log(C);
 
-	new C().foo();
-	const f = new C().foo;
-	f();
+  new C().foo();
+  const f = new C().foo;
+  f();
 }
 
 // thisInConstructorClass();
 
 function thisInConstructorFunc() {
-	this.id = 'id in window';
+  this.id = 'id in window';
 
-	function D() {
-		this.id = id;
-	}
+  function D() {
+    this.id = id;
+  }
 
-	D.id = 'id in D';
+  D.id = 'id in D';
 
-	Object.defineProperty(D.prototype, 'foo', {
-		get() {
-			return function () {
-				console.log(this.id);
-			};
-		},
-	});
+  Object.defineProperty(D.prototype, 'foo', {
+    get() {
+      return function () {
+        console.log(this.id);
+      };
+    },
+  });
 
-	console.log(D);
+  console.log(D);
 
-	new D().foo();
-	const g = new D().foo;
-	g();
+  new D().foo();
+  const g = new D().foo;
+  g();
 }
 
 // thisInConstructorFunc();
@@ -2752,154 +2752,154 @@ function thisInConstructorFunc() {
 // console.log(aaa);
 
 async function testAsyncSequenceTasks() {
-	const taskSequence = (function () {
-		return [
-			() => setTimeout(() => console.log(1), 4000),
-			() => setTimeout(() => console.log(2), 3000),
-			() => setTimeout(() => console.log(3), 2000),
-			() => setTimeout(() => console.log(4), 1000),
-		];
-	})();
+  const taskSequence = (function () {
+    return [
+      () => setTimeout(() => console.log(1), 4000),
+      () => setTimeout(() => console.log(2), 3000),
+      () => setTimeout(() => console.log(3), 2000),
+      () => setTimeout(() => console.log(4), 1000),
+    ];
+  })();
 
-	for await (const task of taskSequence) {
-		task();
-	}
+  for await (const task of taskSequence) {
+    task();
+  }
 }
 
 // testAsyncSequenceTasks();
 
 function testAsyncSequenceTasks1() {
-	const taskSequence = (async function* () {
-		yield new Promise((resolve) => {
-			setTimeout(resolve, 4000);
-		}).then(() => console.log(1));
+  const taskSequence = (async function* () {
+    yield new Promise((resolve) => {
+      setTimeout(resolve, 4000);
+    }).then(() => console.log(1));
 
-		yield new Promise((resolve) => {
-			setTimeout(resolve, 3000);
-		}).then(() => console.log(2));
+    yield new Promise((resolve) => {
+      setTimeout(resolve, 3000);
+    }).then(() => console.log(2));
 
-		yield new Promise((resolve) => {
-			setTimeout(resolve, 2000);
-		}).then(() => console.log(3));
+    yield new Promise((resolve) => {
+      setTimeout(resolve, 2000);
+    }).then(() => console.log(3));
 
-		yield new Promise((resolve) => {
-			setTimeout(resolve, 1000);
-		}).then(() => console.log(4));
-		// yield () => setTimeout(() => console.log(1), 1000);
-		// yield () => setTimeout(() => console.log(2), 1000);
-		// yield () => setTimeout(() => console.log(3), 1000);
-		// yield () => setTimeout(() => console.log(4), 1000);
-	})();
+    yield new Promise((resolve) => {
+      setTimeout(resolve, 1000);
+    }).then(() => console.log(4));
+    // yield () => setTimeout(() => console.log(1), 1000);
+    // yield () => setTimeout(() => console.log(2), 1000);
+    // yield () => setTimeout(() => console.log(3), 1000);
+    // yield () => setTimeout(() => console.log(4), 1000);
+  })();
 
-	(async function () {
-		for await (const task of taskSequence) {
-			// task();
-		}
-	})();
+  (async function () {
+    for await (const task of taskSequence) {
+      // task();
+    }
+  })();
 }
 
 // testAsyncSequenceTasks1();
 
 //----------------------------------------------------------------------------------------
 function testErrorInOnfulfilled() {
-	const p = Promise.resolve(3);
+  const p = Promise.resolve(3);
 
-	const onFulfilled = () => {
-		throw new Error('error in onFulfilled');
-	};
+  const onFulfilled = () => {
+    throw new Error('error in onFulfilled');
+  };
 
-	const onRejected = (error) => {
-		console.log('error caught', error);
-	};
+  const onRejected = (error) => {
+    console.log('error caught', error);
+  };
 
-	p.then(onFulfilled, onRejected).catch((error) => console.log('error caught again', error));
+  p.then(onFulfilled, onRejected).catch((error) => console.log('error caught again', error));
 }
 
 // testErrorInOnfulfilled();
 
 //----------------------------------------------------------------------------------------
 function testDeleteRefsAndValuesInObj() {
-	const obj = {
-		key1: 'value1',
-		key2: 'value2',
-	};
+  const obj = {
+    key1: 'value1',
+    key2: 'value2',
+  };
 
-	delete obj.key1;
-	console.log('obj1', obj);
+  delete obj.key1;
+  console.log('obj1', obj);
 
-	delete obj['key2'];
-	console.log('obj2', obj);
+  delete obj['key2'];
+  console.log('obj2', obj);
 
-	const ary = ['x', 'y'];
+  const ary = ['x', 'y'];
 
-	delete ary[0];
-	console.log('ary1', ary);
+  delete ary[0];
+  console.log('ary1', ary);
 
-	const y = ary.pop();
-	ary.push('y');
-	console.log('ary2', ary);
-	// delete y;
-	console.log('ary3', ary);
+  const y = ary.pop();
+  ary.push('y');
+  console.log('ary2', ary);
+  // delete y;
+  console.log('ary3', ary);
 }
 
 // testDeleteRefsAndValuesInObj();
 
 //----------------------------------------------------------------------------------------
 Function.prototype.log = function (...args) {
-	console.log(this(...args));
+  console.log(this(...args));
 };
 
 Array.prototype.log = function () {
-	console.log(this);
+  console.log(this);
 };
 
 /** 实现一个map */
 function implementAMap() {
-	const array = [1, 2, 3];
+  const array = [1, 2, 3];
 
-	const mappedArray = array.map((item, index, array) => {
-		return [item + 1, index, array];
-	});
+  const mappedArray = array.map((item, index, array) => {
+    return [item + 1, index, array];
+  });
 
-	mappedArray.log();
-	array.log();
+  mappedArray.log();
+  array.log();
 
-	Array.prototype.map1 = function (cb, thisArg) {
-		let result = [];
+  Array.prototype.map1 = function (cb, thisArg) {
+    let result = [];
 
-		for (const currentValue of this) {
-			result.push(cb.call(thisArg, currentValue, this.indexOf(currentValue), this));
-		}
+    for (const currentValue of this) {
+      result.push(cb.call(thisArg, currentValue, this.indexOf(currentValue), this));
+    }
 
-		return result;
-	};
+    return result;
+  };
 
-	const mappedArray1 = array.map1((item, index, array) => {
-		item++;
-		array = [2, 3, 4];
-		return [item + 1, index, array];
-	});
+  const mappedArray1 = array.map1((item, index, array) => {
+    item++;
+    array = [2, 3, 4];
+    return [item + 1, index, array];
+  });
 
-	mappedArray1.log();
-	array.log();
+  mappedArray1.log();
+  array.log();
 }
 
 // implementAMap()
 
 //----------------------------------------------------------------------------------------
 function square1(n) {
-	let k = 0;
+  let k = 0;
 
-	while (true) {
-		// console.log(k);
-		// console.log(n*n);
+  while (true) {
+    // console.log(k);
+    // console.log(n*n);
 
-		if (k === n * n) {
-			return k;
-		}
+    if (k === n * n) {
+      return k;
+    }
 
-		k++;
-	}
+    k++;
+  }
 }
 
 // square1.log(9)
@@ -2907,16 +2907,16 @@ function square1(n) {
 //----------------------------------------------------------------------------------------
 /** 处理金额携带2位小数时的精度问题 */
 function testAccuracy() {
-	// console.log(1029.6 * 100);
+  // console.log(1029.6 * 100);
 
-	console.log(Number.parseInt(1029.61 * 100, 10));
-	// console.log(parseFloat(1029.62 * 100));
-	// console.log(parseFloat(1029.63 * 100));
-	// console.log(parseFloat(1029.64 * 100));
-	console.log(parseFloat(1029.61 * 100).toFixed(10));
-	// console.log(parseFloat(1029.62 * 100).toFixed(10));
-	// console.log(parseFloat(1029.63 * 100).toFixed(2));
-	// console.log(parseFloat(1029.64 * 100).toFixed(2));
+  console.log(Number.parseInt(1029.61 * 100, 10));
+  // console.log(parseFloat(1029.62 * 100));
+  // console.log(parseFloat(1029.63 * 100));
+  // console.log(parseFloat(1029.64 * 100));
+  console.log(parseFloat(1029.61 * 100).toFixed(10));
+  // console.log(parseFloat(1029.62 * 100).toFixed(10));
+  // console.log(parseFloat(1029.63 * 100).toFixed(2));
+  // console.log(parseFloat(1029.64 * 100).toFixed(2));
 }
 
 // testAccuracy.log()
@@ -2994,89 +2994,89 @@ function testAccuracy() {
 
 // }
 function testSimpleCopy() {
-	function simpleCopy(target) {
-		let obj = {};
+  function simpleCopy(target) {
+    let obj = {};
 
-		for (const key of Object.keys(target)) {
-			obj[key] = target[key];
-		}
+    for (const key of Object.keys(target)) {
+      obj[key] = target[key];
+    }
 
-		// obj.complexValue = target.complexValue
+    // obj.complexValue = target.complexValue
 
-		// console.log(obj.complexValue === target.complexValue);
+    // console.log(obj.complexValue === target.complexValue);
 
-		return obj;
-	}
+    return obj;
+  }
 
-	const obj = {
-		simpleValue: 3,
-		complexValue: {
-			key: 'value',
-		},
-	};
+  const obj = {
+    simpleValue: 3,
+    complexValue: {
+      key: 'value',
+    },
+  };
 
-	const resultObj = simpleCopy(obj);
+  const resultObj = simpleCopy(obj);
 
-	// return [resultObj, obj];
-	return resultObj;
+  // return [resultObj, obj];
+  return resultObj;
 }
 
 // testSimpleCopy.log()
 
 function testObjValue() {
-	const obj = {
-		simpleValue: 3,
-		complexValue: {
-			key: 'value',
-		},
-	};
+  const obj = {
+    simpleValue: 3,
+    complexValue: {
+      key: 'value',
+    },
+  };
 
-	const obj1 = {
-		simpleValue: 4,
-		complexValue: obj.complexValue,
-	};
+  const obj1 = {
+    simpleValue: 4,
+    complexValue: obj.complexValue,
+  };
 
-	const obj2 = {
-		simpleValue: 5,
-		complexValue: obj.complexValue,
-	};
+  const obj2 = {
+    simpleValue: 5,
+    complexValue: obj.complexValue,
+  };
 
-	obj1.complexValue.key = 'newValue';
+  obj1.complexValue.key = 'newValue';
 
-	console.log(obj1);
-	console.log(obj2);
+  console.log(obj1);
+  console.log(obj2);
 
-	console.log(obj1.complexValue === obj2.complexValue);
+  console.log(obj1.complexValue === obj2.complexValue);
 }
 
 // testObjValue();
 
 function testRefsValueInSwitch() {
-	const obj1 = {
-		key1: 'value1',
-		key11: 'value11',
-	};
+  const obj1 = {
+    key1: 'value1',
+    key11: 'value11',
+  };
 
-	const obj2 = {
-		key2: 'value2',
-		key22: 'value22',
-	};
+  const obj2 = {
+    key2: 'value2',
+    key22: 'value22',
+  };
 
-	function switchObj(obj) {
-		switch (obj) {
-			case { key1: 'value1', key11: 'value11' }: {
-				return 1;
-			}
-			case { key2: 'value2', key22: 'value22' }: {
-				return 2;
-			}
-			default:
-				break;
-		}
-	}
+  function switchObj(obj) {
+    switch (obj) {
+      case { key1: 'value1', key11: 'value11' }: {
+        return 1;
+      }
+      case { key2: 'value2', key22: 'value22' }: {
+        return 2;
+      }
+      default:
+        break;
+    }
+  }
 
-	console.log(switchObj(obj1));
-	switchObj.log(obj2);
+  console.log(switchObj(obj1));
+  switchObj.log(obj2);
 }
 
 // testRefsValueInSwitch()
@@ -3085,11 +3085,11 @@ function testRefsValueInSwitch() {
 //在then链中，then函数总是返回新的promise对象，其维护的值x只与链上每个then函数的
 //onFulfilled/onRejected处理函数有关，两者是独立的
 function testRegularValueReturnedInThenFunc() {
-	const p = Promise.resolve(3);
+  const p = Promise.resolve(3);
 
-	const p2 = p.then((res) => res);
+  const p2 = p.then((res) => res);
 
-	p2.then((res) => console.log(res instanceof Promise, typeof res));
+  p2.then((res) => console.log(res instanceof Promise, typeof res));
 }
 
 // testRegularValueReturnedInThenFunc()
@@ -3102,19 +3102,19 @@ function testRegularValueReturnedInThenFunc() {
 //那么返回 204 No Content。如果创建了资源，则返回 201 Created 。
 //如果应将页面更改为新更新的页面，则应改用 200 。
 function testReadableStreamInFetch() {
-	// fetch('https://lf3-static.bytednsdoc.com/obj/eden-cn/beeh7uvzhq/users.json')
-	fetch('http://localhost:3001/api/mockedApi/testReadableStreamInFetch', { method: 'POST' }).then((res) => {
-		const { status } = res;
+  // fetch('https://lf3-static.bytednsdoc.com/obj/eden-cn/beeh7uvzhq/users.json')
+  fetch('http://localhost:3001/api/mockedApi/testReadableStreamInFetch', { method: 'POST' }).then((res) => {
+    const { status } = res;
 
-		if (status === 204) {
-			// console.log(res);
-			console.log(res.json());
-		}
+    if (status === 204) {
+      // console.log(res);
+      console.log(res.json());
+    }
 
-		if (status === 200) {
-			console.log(res.json());
-		}
-	});
+    if (status === 200) {
+      console.log(res.json());
+    }
+  });
 }
 
 // testReadableStreamInFetch()
@@ -3125,9 +3125,9 @@ function testReadableStreamInFetch() {
 //2，返回值不为promise，异步函数返回状态为resolved,值为指定的返回值的promise
 //3，返回值为promise，异步函数不做处理，原样返回promise
 async function testPromiseReturnedInAsyncFunc() {
-	const result = await fetch('http://localhost:3001/api/mockedApi/regularData1', { method: 'POST' });
-	console.log(await result.json());
-	// return Promise.resolve(1)
+  const result = await fetch('http://localhost:3001/api/mockedApi/regularData1', { method: 'POST' });
+  console.log(await result.json());
+  // return Promise.resolve(1)
 }
 
 // testPromiseReturnedInAsyncFunc.log()
@@ -3137,172 +3137,172 @@ async function testPromiseReturnedInAsyncFunc() {
 //若指定返回值，当返回值为原始值时，仍然返回其实例
 //当返回值为引用类型值时，用该值代替其实例返回
 function testValuesReturnedInConsFn() {
-	function AConsFn(props) {
-		this.a = props.a;
+  function AConsFn(props) {
+    this.a = props.a;
 
-		return () => {};
-	}
+    return () => {};
+  }
 
-	const value = new AConsFn({ a: 7 });
+  const value = new AConsFn({ a: 7 });
 
-	return value;
+  return value;
 }
 
 // testValuesReturnedInConsFn.log()
 
 //------------------------------------------------------------------------------------------------------
 function testSwitchARejectedPromiseToResolved() {
-	const p1 = Promise.reject(3).catch((x) => Promise.resolve(x));
+  const p1 = Promise.reject(3).catch((x) => Promise.resolve(x));
 
-	return p1;
+  return p1;
 }
 
 // testSwitchARejectedPromiseToResolved()
 
 function awaitWrapper(promise) {
-	if (!(promise instanceof Promise)) {
-		return promise;
-	}
+  if (!(promise instanceof Promise)) {
+    return promise;
+  }
 
-	//onRejected响应函数执行完毕后会隐式执行待返回的promise的resolve()方法
-	//即rejected状态的promise被then中的onRejected响应后，then返回的下一个promise
-	//状态是resolved
+  //onRejected响应函数执行完毕后会隐式执行待返回的promise的resolve()方法
+  //即rejected状态的promise被then中的onRejected响应后，then返回的下一个promise
+  //状态是resolved
 
-	//但finally()方法不会执行该步骤，它返回的新promise会继承其链中上一个promise
-	//的状态和值
+  //但finally()方法不会执行该步骤，它返回的新promise会继承其链中上一个promise
+  //的状态和值
 
-	// return promise.finally(x=>Promise.resolve(x))
-	return promise.catch((x) => Promise.resolve(x));
+  // return promise.finally(x=>Promise.resolve(x))
+  return promise.catch((x) => Promise.resolve(x));
 }
 
 async function testAwaitWrapper() {
-	const p = Promise.reject(3);
+  const p = Promise.reject(3);
 
-	console.log('before p');
-	// const result = await p;
-	const result = await awaitWrapper(p);
-	console.log('after p');
+  console.log('before p');
+  // const result = await p;
+  const result = await awaitWrapper(p);
+  console.log('after p');
 
-	console.log(result);
+  console.log(result);
 
-	return result;
+  return result;
 }
 
 // testAwaitWrapper()
 
 //------------------------------------------------------------------------------------------------------
 function testFunctionNamesAndPropertyNames() {
-	var b = 30;
-	// let b = 30;
-	function b() {}
+  var b = 30;
+  // let b = 30;
+  function b() {}
 
-	console.log(b);
+  console.log(b);
 }
 
 // testFunctionNamesAndPropertyNames()
 
 //------------------------------------------------------------------------------------------------------
 function testDotOperator() {
-	let a = {};
-	a.x = 5;
-	console.log(a);
-	console.log(a.x);
+  let a = {};
+  a.x = 5;
+  console.log(a);
+  console.log(a.x);
 
-	let b = 3;
-	b.y;
-	console.log(b);
+  let b = 3;
+  b.y;
+  console.log(b);
 }
 
 // testDotOperator();
 
 //------------------------------------------------------------------------------------------------------
 function testContinualEqualOperator() {
-	let a = { x: 3 };
-	let b = 8;
-	let c = 123;
+  let a = { x: 3 };
+  let b = 8;
+  let c = 123;
 
-	a.y = b = c;
+  a.y = b = c;
 
-	console.log('a', a);
-	console.log('b', b);
-	console.log('c', c);
+  console.log('a', a);
+  console.log('b', b);
+  console.log('c', c);
 }
 
 // testContinualEqualOperator()
 
 //------------------------------------------------------------------------------------------------------
 function testRefsPosition() {
-	let a = { a: 3 };
-	let b = (a.x = { b: 4 });
-	let c = a;
+  let a = { a: 3 };
+  let b = (a.x = { b: 4 });
+  let c = a;
 
-	a = { x: 7 };
+  a = { x: 7 };
 
-	console.log(a.x);
-	console.log(b);
-	console.log(c);
+  console.log(a.x);
+  console.log(b);
+  console.log(c);
 }
 
 // testRefsPosition()
 
 //------------------------------------------------------------------------------------------------------
 function testArrayConsFunc() {
-	const ary = [1, 2, 3];
+  const ary = [1, 2, 3];
 
-	const ary2 = new Array(ary);
+  const ary2 = new Array(ary);
 
-	console.log('ary2', ary2);
-	console.log('ary2 === ary', ary2 === ary);
+  console.log('ary2', ary2);
+  console.log('ary2 === ary', ary2 === ary);
 }
 
 // testArrayConsFunc()
 
 //------------------------------------------------------------------------------------------------------
 function testThrowErrorInResolvedPromise() {
-	const p = Promise.resolve(3);
+  const p = Promise.resolve(3);
 
-	const p1 = p.then((value) =>
-		// null
-		{
-			throw value;
-		}
-	);
+  const p1 = p.then((value) =>
+    // null
+    {
+      throw value;
+    }
+  );
 
-	p1.then(
-		(value) => console.log('resolved', value),
-		(reason) => console.log('rejected', reason)
-	);
+  p1.then(
+    (value) => console.log('resolved', value),
+    (reason) => console.log('rejected', reason)
+  );
 }
 
 // testThrowErrorInResolvedPromise()
 
 //------------------------------------------------------------------------------------------------------
 function testObjAsKey() {
-	const a = {};
+  const a = {};
 
-	const b = { key: '123' };
+  const b = { key: '123' };
 
-	a[b] = 3;
+  a[b] = 3;
 
-	// console.log(a);
-	// console.log(a[b]);
-	// console.log(b.toString());
-	console.log(Object.keys(a)[0]);
-	console.log(typeof Object.keys(a)[0]);
+  // console.log(a);
+  // console.log(a[b]);
+  // console.log(b.toString());
+  console.log(Object.keys(a)[0]);
+  console.log(typeof Object.keys(a)[0]);
 }
 
 // testObjAsKey()
 
 //------------------------------------------------------------------------------------------------------
 function testIterateObj() {
-	const obj = {};
-	const ary = [1, 2, 3];
-	// console.log(ary.hasOwnProperty([Symbol.iterator]));
-	console.log(Symbol.iterator in ary);
-	console.log(Object.keys(ary));
-	console.log(ary);
+  const obj = {};
+  const ary = [1, 2, 3];
+  // console.log(ary.hasOwnProperty([Symbol.iterator]));
+  console.log(Symbol.iterator in ary);
+  console.log(Object.keys(ary));
+  console.log(ary);
 
-	// for(const item of obj){}
+  // for(const item of obj){}
 }
 
 // testIterateObj()
@@ -3315,32 +3315,32 @@ function testIterateObj() {
 //onFulfilled:计数加1，值置入结果数组，判断：如果计数值等于参数promises数组长度，即所有promise均为resolved，以结果数组为值resolve新promise
 //onRejected:以reason为值reject新promise
 function promiseAll(promises) {
-	return new Promise(function (resolve, reject) {
-		if (!Array.isArray(promises)) {
-			return reject(new TypeError('argument must be an array'));
-		}
+  return new Promise(function (resolve, reject) {
+    if (!Array.isArray(promises)) {
+      return reject(new TypeError('argument must be an array'));
+    }
 
-		let countNum = 0;
-		const promiseNum = promises.length;
-		let resolvedValues = new Array(promiseNum);
+    let countNum = 0;
+    const promiseNum = promises.length;
+    let resolvedValues = new Array(promiseNum);
 
-		for (let i = 0; i < promiseNum; i++) {
-			if (!(promise[i] instanceof Promise)) {
-				promise[i] = Promise.resolve(promise);
-			}
+    for (let i = 0; i < promiseNum; i++) {
+      if (!(promise[i] instanceof Promise)) {
+        promise[i] = Promise.resolve(promise);
+      }
 
-			promises[i].then(
-				(value) => {
-					countNum++;
-					resolvedValues[i] = value;
-					if (countNum === promiseNum) {
-						return resolve(resolvedValues);
-					}
-				},
-				(reason) => reject(reason)
-			);
-		}
-	});
+      promises[i].then(
+        (value) => {
+          countNum++;
+          resolvedValues[i] = value;
+          if (countNum === promiseNum) {
+            return resolve(resolvedValues);
+          }
+        },
+        (reason) => reject(reason)
+      );
+    }
+  });
 }
 
 // const p1 = Promise.resolve(3);
@@ -3365,11 +3365,11 @@ function promiseAll(promises) {
 
 //------------------------------------------------------------------------------------------------------
 function testStringAndNewString() {
-	console.log(typeof String(3));
-	console.log(typeof new String(3));
-	console.log((5678).toString().length);
+  console.log(typeof String(3));
+  console.log(typeof new String(3));
+  console.log((5678).toString().length);
 
-	console.log(Math.floor(5 / 2));
+  console.log(Math.floor(5 / 2));
 }
 
 //String()和toString()都返回一个被转化后的字符串
@@ -3385,22 +3385,22 @@ function testStringAndNewString() {
 
 //------------------------------------------------------------------------------------------------------
 function testArgumentsInFunc() {
-	function func(a) {
-		'use strict';
+  function func(a) {
+    'use strict';
 
-		// const a = 7;
+    // const a = 7;
 
-		console.log(Object.getOwnPropertyDescriptor(func, 'arguments'));
+    console.log(Object.getOwnPropertyDescriptor(func, 'arguments'));
 
-		console.log(a);
-		console.log(arguments);
-		a = 3;
-		console.log(a);
-		// console.log(arguments,arguments.callee,func.caller);
-		console.log(arguments);
-	}
+    console.log(a);
+    console.log(arguments);
+    a = 3;
+    console.log(a);
+    // console.log(arguments,arguments.callee,func.caller);
+    console.log(arguments);
+  }
 
-	func(1);
+  func(1);
 }
 
 //无论函数是否在严格模式下，参数的值都能被重写，但arguments对象无法被重写
@@ -3412,157 +3412,192 @@ function testArgumentsInFunc() {
 
 //------------------------------------------------------------------------------------------------------
 function testIfTwoTypesOfValueCanCoExistInAObj() {
-	const source = {};
+  const source = {};
 
-	source.a = 3;
-	source.b = 5;
+  source.a = 3;
+  source.b = 5;
 
-	const proxy = {};
+  const proxy = {};
 
-	function interceptor(key, value) {
-		Object.defineProperty(proxy, key, {
-			get: () => source[key],
-			set: () => (source[key] = value),
-		});
-	}
+  function interceptor(key, value) {
+    Object.defineProperty(proxy, key, {
+      get: () => source[key],
+      set: () => (source[key] = value),
+    });
+  }
 
-	// console.log(obj.a);
-	obj.a = 9;
-	console.log(Object.values(obj));
+  // console.log(obj.a);
+  obj.a = 9;
+  console.log(Object.values(obj));
 }
 
 // testIfTwoTypesOfValueCanCoExistInAObj()
 
 //------------------------------------------------------------------------------------------------------
 function testDifferentLogs() {
-	console.log(' '.length);
+  console.log(' '.length);
 
-	console.log(Number(undefined) / 100 || '');
-	console.log(undefined / 100);
+  console.log(Number(undefined) / 100 || '');
+  console.log(undefined / 100);
 
-	console.log(new Function() instanceof Object);
-	console.log(new Array() instanceof Object);
-	console.log(new Object() instanceof Object);
+  console.log(new Function() instanceof Object);
+  console.log(new Array() instanceof Object);
+  console.log(new Object() instanceof Object);
 
-	console.log('new Object()' instanceof Object);
-	console.log(123 instanceof Object);
-	console.log(null instanceof Object);
-	console.log((undefined && [undefined]) || 1);
+  console.log('new Object()' instanceof Object);
+  console.log(123 instanceof Object);
+  console.log(null instanceof Object);
+  console.log((undefined && [undefined]) || 1);
 
-	console.log(JSON.stringify({ key1: 'value1', key2: undefined }));
+  console.log(JSON.stringify({ key1: 'value1', key2: undefined }));
 }
 
 // testDifferentLogs()
 
 //------------------------------------------------------------------------------------------------------
 function testValuesPassedToAFunc() {
-	function add(a, b) {
-		// return a + b;
-	}
+  function add(a, b) {
+    // return a + b;
+  }
 
-	//表达式的结果是一个立刻计算出的值
-	//将表达式（即其值）置入函数，作为函数的返回值
-	//即可实现通过执行函数手动获取这个表达式的值
-	//亦即是可指定在何时何处获取一个特定的值
-	//这里的函数被称为Thunk函数
-	add.log((() => console.log(3))(), 8);
+  //表达式的结果是一个立刻计算出的值
+  //将表达式（即其值）置入函数，作为函数的返回值
+  //即可实现通过执行函数手动获取这个表达式的值
+  //亦即是可指定在何时何处获取一个特定的值
+  //这里的函数被称为Thunk函数
+  add.log((() => console.log(3))(), 8);
 
-	//在JavaScript中，Thunk函数替换一个单参数函数，这个单参数函数替换多参数函数的返回值
-	//用第一个参数调用Thunk，得到预置了这个参数的单参数函数
-	//再用第二个参数调用这个单参数函数，得到多参数函数的值
-	//从形式上可以表现为Thunk函数的连续调用
-	function multipleArgsFunc(argA, argB) {
-		return argA * argB;
-	}
+  //在JavaScript中，Thunk函数替换一个单参数函数，这个单参数函数替换多参数函数的返回值
+  //用第一个参数调用Thunk，得到预置了这个参数的单参数函数
+  //再用第二个参数调用这个单参数函数，得到多参数函数的值
+  //从形式上可以表现为Thunk函数的连续调用
+  function multipleArgsFunc(argA, argB) {
+    return argA * argB;
+  }
 
-	function singleArgsFunc(argA) {
-		return multipleArgsFunc(argA, argB);
-	}
+  function singleArgsFunc(argA) {
+    return multipleArgsFunc(argA, argB);
+  }
 
-	const thunk = function (argB) {
-		return function singleArgsFunc(argA) {
-			return multipleArgsFunc(argA, argB);
-		};
-	};
+  const thunk = function (argB) {
+    return function singleArgsFunc(argA) {
+      return multipleArgsFunc(argA, argB);
+    };
+  };
 
-	console.log(thunk(4)(8));
-	// thunk(4)(8).log();
+  console.log(thunk(4)(8));
+  // thunk(4)(8).log();
 
-	// function returnItSelf() {
-	// 	return returnItSelf();
-	// }
+  // function returnItSelf() {
+  // 	return returnItSelf();
+  // }
 
-	// returnItSelf();
+  // returnItSelf();
 }
 
 // testValuesPassedToAFunc();
 
 Boolean.prototype.log = function () {
-	console.log(this.toString());
+  console.log(this.toString());
 };
 
 function testPropertiesInAObjectInstance() {
-	new Object().hasOwnProperty('toString').log();
-	new Object().hasOwnProperty('constructor').log();
-	new Object().hasOwnProperty('valueOf').log();
-	new Object().hasOwnProperty('hasOwnProperty').log();
+  new Object().hasOwnProperty('toString').log();
+  new Object().hasOwnProperty('constructor').log();
+  new Object().hasOwnProperty('valueOf').log();
+  new Object().hasOwnProperty('hasOwnProperty').log();
 }
 
 // testPropertiesInAObjectInstance()
 
 function testDivAppendAnotherAiv() {
-	const div1 = document.createElement('div');
-	const div2 = document.createElement('div');
+  const div1 = document.createElement('div');
+  const div2 = document.createElement('div');
 
-	document.body.appendChild(div1);
+  document.body.appendChild(div1);
 
-	div1.appendChild(div2);
+  div1.appendChild(div2);
 }
 
 // testDivAppendAnotherAiv();
 
 Function.prototype.log = function () {
-	console.log(this);
+  console.log(this);
 };
 
 function prototypePropertyInFunctionInstance() {
-	(() => {}).prototype?.log();
-	(() => {}).hasOwnProperty('prototype').log();
+  (() => {}).prototype?.log();
+  (() => {}).hasOwnProperty('prototype').log();
 
-	(async () => {}).prototype?.log();
-	(async () => {}).hasOwnProperty('prototype').log();
+  (async () => {}).prototype?.log();
+  (async () => {}).hasOwnProperty('prototype').log();
 
-	new Object({ method() {} }).method.prototype?.log();
-	new Object({ method() {} }).hasOwnProperty('prototype').log();
+  new Object({ method() {} }).method.prototype?.log();
+  new Object({ method() {} }).hasOwnProperty('prototype').log();
 
-	(async function () {}.prototype?.log());
-	(async function () {}.hasOwnProperty('prototype').log());
+  (async function () {}.prototype?.log());
+  (async function () {}.hasOwnProperty('prototype').log());
 
-	console.log(function* () {}.prototype);
-	(function* () {}.hasOwnProperty('prototype').log());
+  console.log(function* () {}.prototype);
+  (function* () {}.hasOwnProperty('prototype').log());
 
-	console.log(async function* () {}.prototype);
-	(async function* () {}.hasOwnProperty('prototype').log());
+  console.log(async function* () {}.prototype);
+  (async function* () {}.hasOwnProperty('prototype').log());
 }
 
 // prototypePropertyInFunctionInstance();
 
 function testFunctionInClassForm() {
-	class ClassWhoseInstanceIsFunction extends Function {}
+  class ClassWhoseInstanceIsFunction extends Function {}
 
   // var k;
 
-	const aFunc = new ClassWhoseInstanceIsFunction(
-		'x',
-		'y',
-		`
+  const aFunc = new ClassWhoseInstanceIsFunction(
+    'x',
+    'y',
+    `
     var k = x + y;
     console.log('calculated: ',k );
     return {k};
   `
-	);
+  );
 
-	aFunc(1,2);
+  aFunc(1, 2);
 }
 
-testFunctionInClassForm();
+// testFunctionInClassForm();
+
+function testDifferentFormsOfKeysInObj() {
+  const str = 'str';
+  const num = 3;
+  const obj = {};
+  const func = () => {};
+  const ary = [];
+  const sym = Symbol();
+  const und = undefined;
+  const nul = null;
+
+  const toStr = [num,str, obj, func, ary, sym, und, nul].map((x) => x?.toString());
+
+  const testObj = {
+    [str]: 1,
+    [num]: 1,
+    [obj]: 1,
+    [func]: 1,
+    [ary]: 1,
+    [sym]: 1,
+    [und]: 1,
+    [nul]: 1,
+  };
+
+  const testObjKeys = Object.keys(testObj);
+  console.log(testObjKeys);
+
+  for (let i = 0; i < toStr.length; i++) {
+    console.log(i+1);
+    console.log(toStr[i], testObjKeys[i]);
+    console.log(toStr[i] === testObjKeys[i]);
+  }
+}
+
+testDifferentFormsOfKeysInObj();
