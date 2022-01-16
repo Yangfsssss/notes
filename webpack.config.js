@@ -29,7 +29,7 @@ const config = {
         exclude: /(node_modules)|(bower_components)/,
         loader: "babel-loader",
         options: {
-          presets: ["@babel/env","@babel/react","@babel/typescript"],
+          presets: ["@babel/react","@babel/typescript","@babel/preset-env"],
         },
         // include:includePath
         // resource:includePath[0]

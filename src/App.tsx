@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react';
 import { hot } from 'react-hot-loader';
+import MyRCFieldForm from '../react-special/Lecture1';
 // import "./App.css";
 
 // import FatherComponent from './components/fatherComponent';
@@ -36,7 +37,7 @@ const App = () => {
 
   return (
     <div>
-      react123
+      <MyRCFieldForm />
       {/* {count} */}
       {/* <FatherComponent /> */}
       {/* <ComponentWithHook /> */}

@@ -3600,4 +3600,22 @@ function testDifferentFormsOfKeysInObj() {
   }
 }
 
-testDifferentFormsOfKeysInObj();
+// testDifferentFormsOfKeysInObj();
+
+function testThisInArrowFunction(){
+  function wrapper(){
+    console.log('this in wrapper function',this);
+
+    const that = this;
+
+    (()=>{console.log('this in arrow function',this,this === that)})();
+  }
+
+  // wrapper();
+
+  Object.assign({},{wrapper}).wrapper()
+
+  wrapper.call(new Object())
+}
+
+testThisInArrowFunction()
