@@ -3577,7 +3577,7 @@ function testDifferentFormsOfKeysInObj() {
   const und = undefined;
   const nul = null;
 
-  const toStr = [num,str, obj, func, ary, sym, und, nul].map((x) => x?.toString());
+  const toStr = [num, str, obj, func, ary, sym, und, nul].map((x) => x?.toString());
 
   const testObj = {
     [str]: 1,
@@ -3594,7 +3594,7 @@ function testDifferentFormsOfKeysInObj() {
   console.log(testObjKeys);
 
   for (let i = 0; i < toStr.length; i++) {
-    console.log(i+1);
+    console.log(i + 1);
     console.log(toStr[i], testObjKeys[i]);
     console.log(toStr[i] === testObjKeys[i]);
   }
@@ -3602,20 +3602,86 @@ function testDifferentFormsOfKeysInObj() {
 
 // testDifferentFormsOfKeysInObj();
 
-function testThisInArrowFunction(){
-  function wrapper(){
-    console.log('this in wrapper function',this);
+function testThisInArrowFunction() {
+  function wrapper() {
+    console.log('this in wrapper function', this);
 
     const that = this;
 
-    (()=>{console.log('this in arrow function',this,this === that)})();
+    (() => {
+      console.log('this in arrow function', this, this === that);
+    })();
   }
 
   // wrapper();
 
-  Object.assign({},{wrapper}).wrapper()
+  Object.assign({}, { wrapper }).wrapper();
 
-  wrapper.call(new Object())
+  wrapper.call(new Object());
 }
 
-testThisInArrowFunction()
+// testThisInArrowFunction()
+
+function testCompose() {
+  function compose(...funcs) {
+  if (funcs.length === 0) {
+    return (arg) => arg;
+  }
+
+  if (funcs.length === 1) {
+    return funcs[0];
+  }
+
+  return funcs.reduce(
+    (a, b) =>
+      (...args) =>
+        a(b(...args))
+  );
+}
+
+  const a = (bx)=>(action1)=> {
+    // console.log('a',action1);
+    // console.log(cb(arg * arg));
+    const action1x = action1 + 100
+    console.log('action1x',action1x);
+    const returnedValue = bx(action1x)
+
+    return returnedValue
+  };
+  
+  const b = (dispatch)=>(action2)=> {
+    // console.log('b',next2);
+    // console.log('b',action2);
+    // console.log(cb(arg * arg * arg));
+    const action2x = action2 + 100
+    console.log('action2x',action2x);
+
+    const returnedValue = dispatch(action2x)
+    return returnedValue
+  };
+
+  const dispatch = (finalAction)=>{
+    console.log('finalAction',finalAction);
+    // console.log('c',action3);
+
+    // return action3
+  }
+
+
+  //(arg) => a(b(arg))
+  //value = a(b(c)) = a(b) = a = dispatch
+  //dispatch(x)
+  const finalDispatch = compose(a,b)(dispatch)
+
+  //1st m(a,b) = n
+ //2nd m(n,b) = n(n,b)
+  // console.log('composed',composed);
+  // console.log('composed',composed);
+  // console.log('composed',composed);
+
+  // composed(3)(console.log)
+
+  finalDispatch(100)
+}
+
+testCompose()
