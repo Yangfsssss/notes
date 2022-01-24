@@ -3600,4 +3600,25 @@ function testDifferentFormsOfKeysInObj() {
   }
 }
 
-testDifferentFormsOfKeysInObj();
+// testDifferentFormsOfKeysInObj();
+
+function testFunctionExecutesAsRefed(){
+  return 1 + function(){console.log(3)}
+}
+
+// testFunctionExecutesAsRefed()
+
+function testAPromise(){
+  const p = new Promise((resolve, reject) => {
+    console.log('immediately');
+
+    setTimeout(() => {
+      var k = 200;
+      resolve(k)
+    },2000)
+  }).then((res) =>res).then(res=>console.log(res + 300))
+}
+
+testAPromise()
+
+console.log(typeof (async ()=>{}));
