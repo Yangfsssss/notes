@@ -1,5 +1,4 @@
 import { Middleware } from '../kredux/applyMiddleware';
-import { createStore } from '../kredux/createStore';
 
 export const logger: Middleware = ({ middleDispatch, getState }) => {
   return (next) => (action) => {

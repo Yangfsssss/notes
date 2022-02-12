@@ -3624,64 +3624,371 @@ function testThisInArrowFunction() {
 
 function testCompose() {
   function compose(...funcs) {
-  if (funcs.length === 0) {
-    return (arg) => arg;
+    if (funcs.length === 0) {
+      return (arg) => arg;
+    }
+
+    if (funcs.length === 1) {
+      return funcs[0];
+    }
+
+    return funcs.reduce(
+      (a, b) =>
+        (...args) =>
+          a(b(...args))
+    );
   }
 
-  if (funcs.length === 1) {
-    return funcs[0];
-  }
-
-  return funcs.reduce(
-    (a, b) =>
-      (...args) =>
-        a(b(...args))
-  );
-}
-
-  const a = (bx)=>(action1)=> {
+  const a = (bx) => (action1) => {
     // console.log('a',action1);
     // console.log(cb(arg * arg));
-    const action1x = action1 + 100
-    console.log('action1x',action1x);
-    const returnedValue = bx(action1x)
+    const action1x = action1 + 100;
+    console.log('action1x', action1x);
+    const returnedValue = bx(action1x);
 
-    return returnedValue
+    return returnedValue;
   };
-  
-  const b = (dispatch)=>(action2)=> {
+
+  const b = (dispatch) => (action2) => {
     // console.log('b',next2);
     // console.log('b',action2);
     // console.log(cb(arg * arg * arg));
-    const action2x = action2 + 100
-    console.log('action2x',action2x);
+    const action2x = action2 + 100;
+    console.log('action2x', action2x);
 
-    const returnedValue = dispatch(action2x)
-    return returnedValue
+    const returnedValue = dispatch(action2x);
+    return returnedValue;
   };
 
-  const dispatch = (finalAction)=>{
-    console.log('finalAction',finalAction);
+  const dispatch = (finalAction) => {
+    console.log('finalAction', finalAction);
     // console.log('c',action3);
 
     // return action3
-  }
-
+  };
 
   //(arg) => a(b(arg))
   //value = a(b(c)) = a(b) = a = dispatch
   //dispatch(x)
-  const finalDispatch = compose(a,b)(dispatch)
+  const finalDispatch = compose(a, b)(dispatch);
 
   //1st m(a,b) = n
- //2nd m(n,b) = n(n,b)
+  //2nd m(n,b) = n(n,b)
   // console.log('composed',composed);
   // console.log('composed',composed);
   // console.log('composed',composed);
 
   // composed(3)(console.log)
 
-  finalDispatch(100)
+  finalDispatch(100);
 }
 
-testCompose()
+// testCompose()
+
+// console.log([] instanceof Object);
+// console.log([] instanceof Array);
+// console.log(typeof [] === 'object');
+// console.log(typeof [] === );
+// console.log();
+
+function test21123() {
+  const a = 3;
+  const b = 5;
+
+  const [c, d] = Object.values({ a, b });
+
+  console.log('c', c);
+  console.log('d', d);
+}
+
+// test21123()
+
+function testThisInInheritChain() {
+  class Super {
+    superMethod() {
+      console.log('this in superMethod', this === instance);
+    }
+  }
+
+  class Sub extends Super {
+    constructor() {
+      super();
+    }
+
+    subMethod() {
+      console.log('this in subMethod', this === instance);
+    }
+  }
+
+  const instance = new Sub();
+
+  instance.subMethod();
+  instance.superMethod();
+}
+
+// testThisInInheritChain();
+
+function testThisInCallback() {
+  const button = document.createElement('button');
+  // button.onclick = function () {
+  //   console.log('this in callback',this === button);
+  // }
+
+  button.addEventListener('click', function () {
+    console.log('this in callback', this === button);
+  });
+
+  document.body.appendChild(button);
+
+  //-------------------------------------------------------------------
+  class TestCallback {
+    handleChange() {
+      console.log('this in handleChange', this);
+    }
+
+    render() {
+      const input = document.createElement('input');
+      input.addEventListener('click', this.handleChange);
+      input.addEventListener('onchange', this.handleChange);
+      // input.addEventListener('onchange', () => {});
+      // input.onchange = () => {}
+      // input.onchange = this.handleChange
+
+      document.body.appendChild(input);
+
+      console.log(input);
+    }
+  }
+
+  const instance = new TestCallback();
+
+  instance.render();
+}
+
+// testThisInCallback();
+
+function testValueToRef() {
+  // console.log(Object(1234));
+
+  // console.log(Symbol());
+
+  // console.log(Number(''));
+  // console.log(Number('[object Object]'));
+
+  // console.log({} === {});
+  // console.log([] === []);
+  // console.log((() => {}) === (() => {}));
+
+  // const x = {
+  //   valueOf(){console.log('valueOf executed')},
+  //   toString(){console.log('toString executed')}
+  // }
+
+  const z = {};
+
+  Object.defineProperty(z, 'x', {
+    get: Symbol,
+  });
+
+  console.log(z.x);
+  console.log(z.x === z.x);
+
+  console.log(x);
+}
+
+// testValueToRef();
+
+function testHowAsyncFunctionWorks() {
+  (async function asyncTask() {
+    await fetch('http://localhost:3001/api/mockedApi/regularData1', { method: 'POST' });
+    console.log('async task executed');
+  })();
+
+  (function syncTask1() {
+    queueMicrotask(() => console.log('microtask in syncTask1 executed'));
+
+    new Promise((resolve, reject) => {
+      resolve();
+    }).then(() => {
+      const start = Date.now();
+      new Array(80000000).map((e) => (document.createElement('p').innerHTML = e));
+      console.log('time cost', Date.now() - start);
+      console.log('expensive promise resolved');
+    });
+
+    setTimeout(() => {
+      console.log('task in syncTask1 executed');
+      queueMicrotask(() => console.log('microtask in task1 executed'));
+    }, 0);
+    console.log('sync task1 executed');
+  })();
+
+  (function syncTask2() {
+    queueMicrotask(() => console.log('microtask in syncTask2 executed'));
+    setTimeout(() => {
+      console.log('task in syncTask2 executed');
+      queueMicrotask(() => console.log('microtask in task2 executed'));
+    }, 30);
+    console.log('sync task2 executed');
+  })();
+}
+
+//异步函数执行至await时，先执行await之后的表达式，
+//然后暂停异步函数的执行，让出控制权，等待该表达式返回的promise落定
+//当返回的promise落定时，异步函数以microtask的形式恢复执行
+//重复以上步骤，直到异步函数执行完毕
+// testHowAsyncFunctionWorks();
+
+// async function testOnce() {
+function testOnce() {
+  const once = (promiseGenerator) => {
+    let promise;
+
+    return async (...args) => {
+      console.log('promise1', promise);
+      promise = promise || promiseGenerator(...args);
+      console.log('promise2', promise);
+
+      const res = await promise;
+      promise = undefined;
+
+      console.log('promise3', promise);
+      console.log('res', res);
+
+      return res;
+    };
+  };
+
+  const generateAPromise = async () => {
+    const result = await fetch('http://localhost:3001/api/mockedApi/regularData1', { method: 'POST' });
+    console.log('result', result);
+    return result;
+  };
+
+  const onceFunc = once(generateAPromise);
+  // await onceFunc();
+  // await onceFunc();
+  // await onceFunc();
+  onceFunc();
+  // onceFunc();
+  setTimeout(() => onceFunc(), 3000);
+  // onceFunc();
+
+  // once(generateAPromise)()
+  // once(generateAPromise)()
+  // once(generateAPromise)()
+  // once(generateAPromise)()
+  // generateAPromise()
+}
+
+// testOnce()
+
+async function testMemoResultOfAsyncFunc() {
+  const async = async () => {
+    const result = await fetch('http://localhost:3001/api/mockedApi/regularData1', { method: 'POST' });
+    console.log('async executed', result);
+    return result.json();
+  };
+
+  const memoAsyncResult = (asyncFunc) => {
+    let result;
+
+    return async function memoedAsync() {
+      console.log('result before', result);
+      if (result) {
+        return result;
+      }
+
+      result = await asyncFunc();
+      console.log('result after', result);
+
+      return result;
+    };
+  };
+
+  const memoedAsync = memoAsyncResult(async);
+
+  const result = await memoedAsync();
+
+  setTimeout(async () => await memoedAsync(), 3000);
+  // const result2 = await memoedAsync();
+  // const result3 = await memoedAsync();
+  // const result4 = await memoedAsync();
+  // const result5 = await memoedAsync();
+
+  console.log('final result', result);
+}
+
+//异步函数用于异步求值，求异步值
+//如果求异步值，则必须等待（await）
+//如果只执行副作用，不求值，则不需要使用异步函数
+//获得网络请求成功与否的标识值也是求异步值
+// testMemoResultOfAsyncFunc();
+
+function testFuncInValueForm(){
+  'use strict'
+
+  const obj = {
+    methodA:function(){
+      console.log('this',this);
+      console.log(this === obj);
+
+      (0,()=>{
+        console.log('this in arrow func',this);
+        console.log(this === obj);
+      })()
+    },
+  };
+
+  obj.methodA();
+  // (obj.methodA)();
+  // (0,obj.methodA).call({});
+  (0,obj.methodA)();
+}
+
+//函数以值而非引用的形式调用时,this指向global
+//箭头函数的this指向外层最近的this,不管它是以什么形式调用
+testFuncInValueForm();
+
+function testDelete(){
+  const result = delete zxc;
+
+  console.log(result);
+
+  const obj = {};
+
+  Object.defineProperty(obj,'y',{
+    value:3,
+    enumerable:true,
+    configurable:false,
+    writable:false
+  })
+
+  console.log(obj);
+
+  delete obj.y;
+
+  console.log(obj);
+}
+
+// testDelete();
+
+function testObjectApi(){
+  const obj = {
+    a:3,
+    b:5,
+    c:7
+  }
+
+  const entries = Object.entries(obj);
+  console.log('entries', entries);
+
+  const map = new Map(entries)
+  console.log('map',map);
+
+  const fromEntries = Object.fromEntries(entries);
+  console.log('fromEntries', fromEntries);
+  console.log('fromEntries', fromEntries === obj);
+}
+
+// testObjectApi();

@@ -1,7 +1,9 @@
-import * as React from 'react'
-import * as ReactDOM from 'react-dom'
+import * as React from 'react';
+import * as ReactDOM from 'react-dom';
+import customRender from '../react-special/Lecture3/render';
 
-import App from './App'
+import App from './App';
 
+// const customRender: null | (() => ReturnType<typeof ReactDOM.render>) = null;
 
-ReactDOM.render(<App />, document.getElementById('root'))
+customRender ? customRender() : ReactDOM.render(<App />, document.getElementById('root'));
