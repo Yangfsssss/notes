@@ -10,6 +10,7 @@ const includePath = [
   // path.resolve(__dirname,'package.json')
 ];
 
+console.log('`${includePath[0]}/index.html`', `${includePath[0]}/index.html`);
 
 const config = {
   entry: './src/index.tsx',
