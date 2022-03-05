@@ -11,13 +11,12 @@ export function Provider({ children, store }: { children: ReactChild; store: Sto
 }
 
 //connect
-export function connect<T>(mapStateToProps: MapStateToProps<T>, mapDispatchToProps: MapDispatchToProps) {
+export function connect<T>(mapStateToProps: MapStateToProps<T>, mapDispatchToProps?: MapDispatchToProps) {
   return function (WrapperComponent: any) {
     return function (props: any) {
       const store = useContext(Context);
 
       const stateProps = mapStateToProps(store.getState());
-      console.log('stateProps', stateProps);
 
       let dispatchProps = { dispatch: store.dispatch };
 

@@ -10,8 +10,6 @@ const includePath = [
   // path.resolve(__dirname,'package.json')
 ];
 
-console.log('`${includePath[0]}/index.html`', `${includePath[0]}/index.html`);
-
 const config = {
   entry: './src/index.tsx',
   mode: 'none',
@@ -58,9 +56,10 @@ const config = {
     port: 3006,
     // publicPath: "http://localhost:3005/dist/",
     hot: true,
+    historyApiFallback: true
   },
   plugins: [
-    new webpack.HotModuleReplacementPlugin(),
+    // new webpack.HotModuleReplacementPlugin(),
     new webpack.SourceMapDevToolPlugin({
       filename: '[name].js.map',
       exclude: ['bundle.js'],

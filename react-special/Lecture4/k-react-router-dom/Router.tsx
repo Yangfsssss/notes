@@ -30,11 +30,13 @@ class Router extends Component<{ history: ReactRouterHistory }, { location: Reac
   }
 
   render() {
+    const { location } = this.state;
+
     return (
       <RouterContext.Provider
         value={{
           history: this.props.history,
-          location: this.state.location,
+          location,
           match: Router.computeRootMatch(this.state.location.pathname),
         }}
       >

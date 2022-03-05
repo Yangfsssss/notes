@@ -594,14 +594,14 @@ let aValue = {
 
 //为原生对象添加Iterator接口----------------------------------------------------------------------------
 
-const obj = {
-  key1: 'value1',
-  key2: 'value2',
-  key3: 'value3',
-  key4: 'value4',
-  key5: 'value5',
-  [Symbol('key6')]: 'value6',
-};
+// const obj = {
+//   key1: 'value1',
+//   key2: 'value2',
+//   key3: 'value3',
+//   key4: 'value4',
+//   key5: 'value5',
+//   [Symbol('key6')]: 'value6',
+// };
 
 //1，用生成器消费obj
 function* objectEntries1(obj) {
@@ -3838,3 +3838,193 @@ testHowAsyncFunctionWorks();
 //然后暂停异步函数的执行，让出控制权，等待该表达式返回的promise落定
 //当返回的promise落定时，异步函数以microtask的形式恢复执行
 //重复以上步骤，直到异步函数执行完毕
+
+// async function testOnce() {
+  function testOnce() {
+    const once = (promiseGenerator) => {
+      let promise;
+  
+      return async (...args) => {
+        console.log('promise1', promise);
+        promise = promise || promiseGenerator(...args);
+        console.log('promise2', promise);
+  
+        const res = await promise;
+        promise = undefined;
+  
+        console.log('promise3', promise);
+        console.log('res', res);
+  
+        return res;
+      };
+    };
+  
+    const generateAPromise = async () => {
+      const result = await fetch('http://localhost:3001/api/mockedApi/regularData1', { method: 'POST' });
+      console.log('result', result);
+      return result;
+    };
+  
+    const onceFunc = once(generateAPromise);
+    // await onceFunc();
+    // await onceFunc();
+    // await onceFunc();
+    onceFunc();
+    // onceFunc();
+    setTimeout(() => onceFunc(), 3000);
+    // onceFunc();
+  
+    // once(generateAPromise)()
+    // once(generateAPromise)()
+    // once(generateAPromise)()
+    // once(generateAPromise)()
+    // generateAPromise()
+  }
+  
+  // testOnce()
+  
+  async function testMemoResultOfAsyncFunc() {
+    const async = async () => {
+      const result = await fetch('http://localhost:3001/api/mockedApi/regularData1', { method: 'POST' });
+      console.log('async executed', result);
+      return result.json();
+    };
+  
+    const memoAsyncResult = (asyncFunc) => {
+      let result;
+  
+      return async function memoedAsync() {
+        console.log('result before', result);
+        if (result) {
+          return result;
+        }
+  
+        result = await asyncFunc();
+        console.log('result after', result);
+  
+        return result;
+      };
+    };
+  
+    const memoedAsync = memoAsyncResult(async);
+  
+    const result = await memoedAsync();
+  
+    setTimeout(async () => await memoedAsync(), 3000);
+    // const result2 = await memoedAsync();
+    // const result3 = await memoedAsync();
+    // const result4 = await memoedAsync();
+    // const result5 = await memoedAsync();
+  
+    console.log('final result', result);
+  }
+  
+  //异步函数用于异步求值，求异步值
+  //如果求异步值，则必须等待（await）
+  //如果只执行副作用，不求值，则不需要使用异步函数
+  //获得网络请求成功与否的标识值也是求异步值
+  // testMemoResultOfAsyncFunc();
+  
+  function testFuncInValueForm() {
+    'use strict';
+  
+    const obj = {
+      methodA: function () {
+        console.log('this', this);
+        console.log(this === obj);
+  
+        (0,
+        () => {
+          console.log('this in arrow func', this);
+          console.log(this === obj);
+        })();
+      },
+    };
+  
+    obj.methodA();
+    // (obj.methodA)();
+    // (0,obj.methodA).call({});
+    (0, obj.methodA)();
+  }
+  
+  //函数以值而非引用的形式调用时,this指向global
+  //箭头函数的this指向外层最近的this,不管它是以什么形式调用
+  // testFuncInValueForm();
+  
+  function testDelete() {
+    const result = delete zxc;
+  
+    console.log(result);
+  
+    const obj = {};
+  
+    Object.defineProperty(obj, 'y', {
+      value: 3,
+      enumerable: true,
+      configurable: false,
+      writable: false,
+    });
+  
+    console.log(obj);
+  
+    delete obj.y;
+  
+    console.log(obj);
+  }
+  
+  // testDelete();
+  
+  function testObjectApi() {
+    const obj = {
+      a: 3,
+      b: 5,
+      c: 7,
+    };
+  
+    const entries = Object.entries(obj);
+    console.log('entries', entries);
+  
+    const map = new Map(entries);
+    console.log('map', map);
+  
+    const fromEntries = Object.fromEntries(entries);
+    console.log('fromEntries', fromEntries);
+    console.log('fromEntries', fromEntries === obj);
+  }
+  
+  // Object.entries()：将object转换为[key:value][]，即iterable
+  // Object.fromEntries()：将iterable转换为object
+  // testObjectApi();
+  
+  function testHowValuesChangeInPromise() {
+    const p = new Promise((resolve, reject) => {
+      resolve(3);
+    })
+      .then((value) => {
+        console.log('2', value);
+        return 5;
+      })
+      .then((value) => {
+        console.log('3', value);
+        return 7;
+      });
+  
+    const p1 = new Promise((resolve, reject) => {
+      setTimeout(() => resolve(3), 1000);
+    });
+  
+    console.log('[ p1 ] >', p1);
+  
+    const thatP1 = p1;
+  
+    console.log('[ thatP1 ] >', thatP1);
+  
+    setTimeout(() => console.log('equals', thatP1 === p1), 2000);
+  }
+  
+  // promise是一个同步值，但其维护的内部值是异步值
+  // 这个异步值可以且仅会随promise状态的改变而变化
+  //promise可以调用其方法（then、catch、finally）
+  //在其状态落定时来处理落定为不同状态的不同值
+  //并返回一个包含处理过的新值的新的promise
+  // testHowValuesChangeInPromise();

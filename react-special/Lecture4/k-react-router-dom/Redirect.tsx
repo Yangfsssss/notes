@@ -1,7 +1,7 @@
 import React from 'react';
 import RouterContext from './RouterContext';
 
-export class Redirect extends React.Component<{ to: string }> {
+export class Redirect extends React.Component<{ to: { pathname: string; state?: { from: string } } }> {
   render() {
     return (
       <RouterContext.Consumer>
@@ -9,7 +9,7 @@ export class Redirect extends React.Component<{ to: string }> {
           const { to } = this.props;
           const { history } = context;
 
-          return <LifeCycle onMount={() => history.push(to)} />;
+          return <LifeCycle onMount={() => history.push(to.pathname)} />;
         }}
       </RouterContext.Consumer>
     );

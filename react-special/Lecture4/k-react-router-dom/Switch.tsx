@@ -22,7 +22,6 @@ class Switch extends Component {
             }
           });
 
-          console.log('match', match);
           return match ? React.cloneElement(element, { computedMatch: match }) : null;
         }}
       </RouterContext.Consumer>
