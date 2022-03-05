@@ -3833,7 +3833,6 @@ function testHowAsyncFunctionWorks() {
   })();
 }
 
-testHowAsyncFunctionWorks();
 //异步函数执行至await时，先执行await之后的表达式，
 //然后暂停异步函数的执行，让出控制权，等待该表达式返回的promise落定
 //当返回的promise落定时，异步函数以microtask的形式恢复执行
@@ -4028,3 +4027,6 @@ testHowAsyncFunctionWorks();
   //在其状态落定时来处理落定为不同状态的不同值
   //并返回一个包含处理过的新值的新的promise
   // testHowValuesChangeInPromise();
+// testHowAsyncFunctionWorks();
+
+// async function testOnce() {

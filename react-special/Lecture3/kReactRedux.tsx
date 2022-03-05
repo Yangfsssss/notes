@@ -1,5 +1,15 @@
 import React, { ReactChild, useCallback, useContext, useEffect, useLayoutEffect, useReducer } from 'react';
-import { Creator, Creators, Dispatch, MapDispatchToProps, MapStateToProps, Selector, Store } from './type';
+import {
+  BoundCreators,
+  Creator,
+  Creators,
+  Dispatch,
+  DispatchProps,
+  MapDispatchToProps,
+  MapStateToProps,
+  Selector,
+  Store,
+} from './type';
 
 //Provider
 //context 跨层级数据传递
@@ -11,20 +21,23 @@ export function Provider({ children, store }: { children: ReactChild; store: Sto
 }
 
 //connect
-export function connect<T>(mapStateToProps: MapStateToProps<T>, mapDispatchToProps?: MapDispatchToProps) {
-  return function (WrapperComponent: any) {
-    return function (props: any) {
+export function connect<T, U>(mapStateToProps: MapStateToProps<T>, mapDispatchToProps: MapDispatchToProps) {
+  return function hoc(WrapperComponent: React.ComponentType<T & U & { dispatch: Dispatch }>) {
+    return function Component(props: U) {
       const store = useContext(Context);
 
       const stateProps = mapStateToProps(store.getState());
 
-      let dispatchProps = { dispatch: store.dispatch };
+      // let dispatchProps = { dispatch: store.dispatch } as DispatchProps ;
 
-      if (typeof mapDispatchToProps === 'function') {
-        dispatchProps = { ...mapDispatchToProps(store.dispatch), ...dispatchProps };
-      } else if (typeof mapDispatchToProps === 'object') {
-        dispatchProps = { ...bindActionCreators(mapDispatchToProps, store.dispatch), ...dispatchProps };
-      }
+      // if (typeof mapDispatchToProps === 'function') {
+      //   dispatchProps = { ...bindActionCreators(mapDispatchToProps(),store.dispatch), ...dispatchProps };
+      // } else if (typeof mapDispatchToProps === 'object') {
+      const dispatchProps = {
+        ...bindActionCreators(mapDispatchToProps, store.dispatch),
+        dispatch: store.dispatch,
+      };
+      // }
 
       const forceUpdate = useForceUpdate();
 
@@ -56,7 +69,7 @@ function bindActionCreator(creator: Creator, dispatch: Dispatch) {
 }
 
 export function bindActionCreators(creators: Creators, dispatch: Dispatch) {
-  let result = {} as Record<string, () => void>;
+  let result: BoundCreators = {};
 
   Object.keys(creators).forEach((key) => {
     result[key] = bindActionCreator(creators[key], dispatch);

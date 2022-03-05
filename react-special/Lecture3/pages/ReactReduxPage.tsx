@@ -2,19 +2,20 @@ import React, { Component } from 'react';
 // import {connect} from "react-redux";
 // import {bindActionCreators} from "redux";
 import { bindActionCreators, connect } from '../kReactRedux';
-import { Dispatch } from '../type';
+import { Creator, Dispatch } from '../type';
 
 type ReactReduxPageProps = {
   count: number;
   dispatch: Dispatch;
   add: () => void;
   minus: () => void;
+  isStable: boolean;
 };
 
 class ReactReduxPage extends Component<ReactReduxPageProps> {
   render() {
     console.log('props', this.props); //sy-log
-    const { count, dispatch, add, minus } = this.props;
+    const { count, dispatch, add, minus, isStable } = this.props;
     return (
       <div>
         <h3>ReactReduxPage</h3>
@@ -40,24 +41,22 @@ class ReactReduxPage extends Component<ReactReduxPageProps> {
 //   }
 // )
 
-const WrappedReactReduxPage = connect<{ count: number }>(
+const Wrapper = connect<{ count: number }, { isStable: boolean }>(
   // mapStateToProps 把state map（映射） props上一份
   ({ count }) => ({ count }),
 
   // mapDispatchToProps object | function
-  // {
+  {
+    add: () => ({ type: 'ADD' }),
+    minus: () => ({ type: 'MINUS' }),
+  }
+  // () => ({
   //   add: () => ({ type: 'ADD' }),
   //   minus: () => ({ type: 'MINUS' }),
-  // }
-  (dispatch: Dispatch) => {
-    let creator = {
-      add: () => ({ type: 'ADD' }),
-      minus: () => ({ type: 'MINUS' }),
-    };
+  // })
+);
 
-    return bindActionCreators(creator, dispatch);
-  }
-)(ReactReduxPage);
+const WrappedReactReduxPage = Wrapper(ReactReduxPage);
 
 export default WrappedReactReduxPage;
 // export default ReactReduxPage;
