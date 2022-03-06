@@ -6,6 +6,7 @@
   "scripts": {
     "build": "webpack --mode development",
     "dev": "webpack-dev-server --mode development",
+    "type-check": "npx type-coverage --detail",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Yang",
