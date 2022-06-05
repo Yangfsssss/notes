@@ -7,8 +7,9 @@
     "module": "ESNext",
     "target": "es2017",
     "jsx": "react",
-    "allowJs": true,
+    "allowJs": false,
     "allowSyntheticDefaultImports": true,
-    "strictNullChecks": true
+    "strictNullChecks": true,
+    "strict": true
   }
 }
