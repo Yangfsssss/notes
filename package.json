@@ -20,6 +20,7 @@
     "@babel/preset-env": "^7.12.7",
     "@babel/preset-react": "^7.12.7",
     "@babel/preset-typescript": "^7.16.7",
+    "@type-challenges/utils": "^0.1.1",
     "@types/geojson": "^7946.0.8",
     "@types/lodash": "^4.14.179",
     "@types/react-router-dom": "^5.3.3",
