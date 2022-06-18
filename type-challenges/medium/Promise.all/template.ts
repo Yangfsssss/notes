@@ -16,7 +16,7 @@ declare function PromiseAll<T extends unknown[]>(values: readonly [...T]): Promi
 
 type testPromiseAll3 = readonly [1, 2, 3] extends readonly [infer U, ...infer W] ? U : never;
 type testPromiseAll4 = readonly [1, 2, Promise<number>] extends readonly [infer U, ...infer W] ? W : never;
-const testPromiseAll5 = PromiseAll([1, 2] as const);
+const testPromiseAll5 = PromiseAll([1, 2] as const); //类型“readonly [1, 2]”的参数不能赋给类型“[1, 2]”的参数。类型 "readonly [1, 2]" 为 "readonly"，不能分配给可变类型 "[1, 2]"。ts(2345)
 type testPromiseAll6 = GetPromise<Promise<2>>;
 type testPromiseAll7 = GetPromises<[1, 2, Promise<3>]>;
 type testPromiseAll8 = [1] extends [infer U, ...infer W] ? W : never;
