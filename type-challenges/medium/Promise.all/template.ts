@@ -8,7 +8,7 @@ type GetPromises<T extends unknown[]> = T extends [infer U, ...infer W]
 
 declare function PromiseAll<T extends unknown[]>(values: readonly [...T]): Promise<GetPromises<T>>;
 
-//
+//思路：
 //递归取出参数数组/元组中成员的类型，组成一个新的数组/元组类型。
 //用Promise<T>包裹
 
