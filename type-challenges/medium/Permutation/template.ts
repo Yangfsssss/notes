@@ -1,4 +1,4 @@
-// type Permutation<T, U = T> = [T] extends [never] ? [] : T extends U ? [T, ...Permutation<Exclude<U, T>>] : [];
+export type Permutation<T, U = T> = [T] extends [never] ? [] : T extends U ? [T, ...Permutation<Exclude<U, T>>] : [];
 //Permutation<[]> = []
 //Permutation<'C'> = ['C',...Permutation[]] = ['C']
 //Permutation<'B'> = ['B',...Permutation[]] = ['B']
@@ -7,11 +7,11 @@
 //= ['A','B','C']|['A','C','B']|['B','A','C']|['B','C','A']|['C','A','B']|['C','B','A']
 
 //对象类型取联合类型形式的索引：
-type Permutation<T extends keyof any> = [T] extends [never]
-  ? []
-  : {
-      [P in T]: [P, ...Permutation<Exclude<T, P>>];
-    }[T];
+// export type Permutation<T extends keyof any> = [T] extends [never]
+//   ? []
+//   : {
+//       [P in T]: [P, ...Permutation<Exclude<T, P>>];
+//     }[T];
 
 type resultObj = {
   A: ['A', 'B', 'C'] | ['A', 'C', 'B'];
@@ -37,6 +37,7 @@ type testPermutation7 = 'A' | 'B' extends [...infer U] ? U : never;
 type testPermutation8 = 'A' | 'B' | 'C' extends [infer U, infer V, infer Z][number] ? [U, V, Z] : never;
 type testPermutation9 = ['A', 'B', 'C'][number] extends 'A' | 'B' | 'C' ? true : false;
 type testPermutation10 = ['A', ...(['B', 'C'] | ['C', 'B'])];
+type testPermutation11 = Permutation<boolean>;
 
 //「元组类型」与「对象类型」的统一：
 type ObjectType = {
