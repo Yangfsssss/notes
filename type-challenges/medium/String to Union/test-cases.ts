@@ -1,4 +1,5 @@
 import type { Equal, Expect } from '@type-challenges/utils';
+import { StringToUnion } from './template';
 
 type cases = [
   Expect<Equal<StringToUnion<''>, never>>,
