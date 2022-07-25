@@ -612,7 +612,7 @@ function* objectEntries1(obj) {
   }
 }
 
-const objIteObj = objectEntries1(obj);
+// const objIteObj = objectEntries1(obj);
 
 // for(value of objIteObj){
 //   console.log(value);
@@ -627,7 +627,7 @@ function* objectEntries2() {
   }
 }
 
-obj[Symbol.iterator] = objectEntries2;
+// obj[Symbol.iterator] = objectEntries2;
 
 // for (value of obj) {
 //   console.log(value);
@@ -871,18 +871,18 @@ function* logReturned(genObj) {
 
 // console.log([...logReturned(genFuncWithReturn())]);
 
-function* a() {
-  yield 1;
-  yield 2;
-  yield 3;
-  return 'The result';
-}
+// function* a() {
+//   yield 1;
+//   yield 2;
+//   yield 3;
+//   return 'The result';
+// }
 
 // for(let i of a()){
 //   console.log(i);
 // }
 
-const aIteObj = a();
+// const aIteObj = a();
 
 // console.log(aIteObj.next());
 // console.log(aIteObj.next());
@@ -4029,4 +4029,16 @@ function testHowAsyncFunctionWorks() {
   // testHowValuesChangeInPromise();
 // testHowAsyncFunctionWorks();
 
-// async function testOnce() {
+function testVar() {
+
+  "use strict"
+console.log(a);
+if(true)var a = 3;
+// {
+// }
+function c(){
+  console.log(a);
+  var a = 1;
+}
+}
+testVar();
