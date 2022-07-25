@@ -1,3 +1,14 @@
 {
-  "cSpell.words": ["bbox", "Didact", "kredux", "middlewares", "nums", "RORO", "uncurrying"]
+  "cSpell.words": [
+    "bbox",
+    "Didact",
+    "instanceof",
+    "kredux",
+    "middlewares",
+    "nums",
+    "RORO",
+    "uncurrying",
+    "vmax",
+    "vmin"
+  ]
 }
