@@ -1,0 +1,16 @@
+const { WebSocketServer }  = require('ws');
+
+const wsServer = new WebSocketServer({ port: 8881 });
+
+wsServer.on('connection', (ws) => {
+  console.info('connected');
+
+  ws.on('message', (message) => {
+    console.info('收到了信息:', message.toString());
+
+    //服务端向客户端发送信息
+    setTimeout(() => {
+      ws.send('服务端已经收到了信息： ' + message.toString());
+    }, 2000);
+  });
+});
