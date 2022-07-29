@@ -20,5 +20,6 @@ process.on('message', (data) => {
   const sum = getSum();
 
   //发送消息给主进程
+  //@ts-ignore
   process.send(sum);
 });
