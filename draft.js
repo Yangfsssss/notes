@@ -4041,4 +4041,21 @@ function c(){
   var a = 1;
 }
 }
-testVar();
+// testVar();
+
+function testClass(){
+  class Baz {
+    constructor() {
+      this.baz = 'baz'
+    }
+  }
+  
+  function executor(fn){
+    const obj = Object.create(fn.prototype);
+    fn.apply(obj)
+  }
+  
+  console.log(executor(Baz))
+}
+
+testClass();
