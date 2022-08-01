@@ -37,8 +37,8 @@
 //5.2.1 JavaScript中的几种连续运算-------------------------------------------------------------
 //5.2.1.1 连续赋值
 function test() {
-	var a, b, c, d;
-	a = b = c = d = 100;
+  var a, b, c, d;
+  a = b = c = d = 100;
 }
 
 //5.2.1.2 三元表达式的连用
@@ -76,23 +76,23 @@ function test() {
 //5.2.2.2 通过函数递归消灭循环语句
 //循环语句可以通过函数递归来模拟，这一点也是经过证实的。
 function test1() {
-	var loop = 100;
-	var i = loop;
+  var loop = 100;
+  var i = loop;
 
-	do {
-		console.log(0);
-		i--;
-	} while (i > 0);
+  do {
+    console.log(0);
+    i--;
+  } while (i > 0);
 
-	function foo(i) {
-		console.log(1);
+  function foo(i) {
+    console.log(1);
 
-		if (--i > 0) {
-			foo(i);
-		}
-	}
+    if (--i > 0) {
+      foo(i);
+    }
+  }
 
-	foo(loop);
+  foo(loop);
 }
 
 // test1();
@@ -118,29 +118,29 @@ function test1() {
 //5.2.4 重新认识函数------------------------------------------------------------------------------
 //5.2.4.1 函数是对运算式语言的补充
 function test2() {
-	function chars() {
-		var result = [];
-		var c = 'a'.charCodeAt(0);
+  function chars() {
+    var result = [];
+    var c = 'a'.charCodeAt(0);
 
-		console.log('c', c);
+    console.log('c', c);
 
-		for (var i = 0; i < 26; i++) {
-			result.push(c + i);
-		}
+    for (var i = 0; i < 26; i++) {
+      result.push(c + i);
+    }
 
-		console.log('result', result);
+    console.log('result', result);
 
-		return String.fromCharCode(...result);
-	}
+    return String.fromCharCode(...result);
+  }
 
-	var str = `the string is "${chars()}"`;
-	console.log(str);
+  var str = `the string is "${chars()}"`;
+  console.log(str);
 
-	var str2 = `the strings is :\n${(function () {
-		return new Array(3).fill(chars());
-	})().join('\n')}`;
+  var str2 = `the strings is :\n${(function () {
+    return new Array(3).fill(chars());
+  })().join('\n')}`;
 
-	console.log(str2);
+  console.log(str2);
 }
 
 // test2();
@@ -155,26 +155,26 @@ function test2() {
 //对于运算式语言来说，使用函数来封装表达式是实现良好的代码组织的有效途径之一。
 //从语义上来讲，一个函数调用过程其实只相当于表达式运算中的一个求值操作：
 function test3() {
-	//表达式一
-	var a;
+  //表达式一
+  var a;
 
-	a = v1 + v2 * v3 - v4;
+  a = v1 + v2 * v3 - v4;
 
-	//示例1：
-	a =
-		v1 +
-		(function () {
-			return v2 * v3 - v4;
-		})();
+  //示例1：
+  a =
+    v1 +
+    (function () {
+      return v2 * v3 - v4;
+    })();
 
-	//示例2：
-	a = v1 + (v2 * v3 - v4);
+  //示例2：
+  a = v1 + (v2 * v3 - v4);
 
-	//示例3：
-	function calc() {
-		return v2 * v3 - v4;
-	}
-	a = v1 + calc();
+  //示例3：
+  function calc() {
+    return v2 * v3 - v4;
+  }
+  a = v1 + calc();
 }
 
 //在运算式语言中，函数不但是削减循环等语句的一个必要补充，也是一种削减代码复杂性的组织形式。
@@ -208,27 +208,27 @@ function test3() {
 //在JavaScript的函数中，函数内的私有变量可以被修改，而且当再次“进入”该函数内部时，
 //这个被修改的状态仍将持续。
 function test4() {
-	function MyFunc() {
-		//初值
-		var value = 100;
+  function MyFunc() {
+    //初值
+    var value = 100;
 
-		//内部的函数，用于访问value
-		function setValue(v) {
-			value = v;
-		}
-		function getValue() {
-			return value;
-		}
+    //内部的函数，用于访问value
+    function setValue(v) {
+      value = v;
+    }
+    function getValue() {
+      return value;
+    }
 
-		//将内部函数公布到全局
-		return [setValue, getValue];
-	}
+    //将内部函数公布到全局
+    return [setValue, getValue];
+  }
 
-	var [setter, getter] = MyFunc();
+  var [setter, getter] = MyFunc();
 
-	console.log(getter());
-	setter(300);
-	console.log(getter());
+  console.log(getter());
+  setter(300);
+  console.log(getter());
 }
 
 //在函数内保持数据的特性被称为“闭包（Closure）”，
@@ -305,25 +305,25 @@ function test4() {
 //■ 除了直接使用arguments[x]，其他方式得到的arguments成员都不会有上述（
 //与形式参数绑定）效果。
 function test5() {
-	function foo(filename) {
-		var [filename2, ...args] = arguments;
+  function foo(filename) {
+    var [filename2, ...args] = arguments;
 
-		//filename会影响arguments
-		filename = 'new file name';
-		console.log(arguments[0]);
-		console.log(filename2);
+    //filename会影响arguments
+    filename = 'new file name';
+    console.log(arguments[0]);
+    console.log(filename2);
 
-		//arguments也会影响filename
-		arguments[0] = filename2;
-		console.log(filename);
+    //arguments也会影响filename
+    arguments[0] = filename2;
+    console.log(filename);
 
-		//使用filename2时没有影响
-		filename2 = 'update again';
-		console.log(arguments[0]);
-		console.log(filename);
-	}
+    //使用filename2时没有影响
+    filename2 = 'update again';
+    console.log(arguments[0]);
+    console.log(filename);
+  }
 
-	foo('test.txt');
+  foo('test.txt');
 }
 
 // test5();
@@ -338,33 +338,33 @@ function test5() {
 //一般函数（Ordinary or normal function）是指用函数声明语法声明的具名函数或匿名函数，
 //其中匿名函数不能直接作为在代码上下文中的“声明”，只能作为表达式操作数，亦称为普通函数。
 function test6() {
-	function foo() {
-		function func() {}
+  function foo() {
+    function func() {}
 
-		if (true) {
-			//函数声明不是块级作用域
-			function func2() {}
-		}
+    if (true) {
+      //函数声明不是块级作用域
+      function func2() {}
+    }
 
-		console.log(typeof foo, typeof func, typeof func2);
-	}
+    console.log(typeof foo, typeof func, typeof func2);
+  }
 
-	foo();
+  foo();
 
-	console.log(typeof foo, typeof func, typeof func2);
+  console.log(typeof foo, typeof func, typeof func2);
 
-	var f = function func2() {
-		console.log(typeof func2);
-	};
+  var f = function func2() {
+    console.log(typeof func2);
+  };
 
-	f();
+  f();
 
-	console.log(typeof func2);
+  console.log(typeof func2);
 
-	var x = function () {};
-	var y = function foo() {};
+  var x = function () {};
+  var y = function foo() {};
 
-	console.log(x.name, y.name); //x,foo
+  console.log(x.name, y.name); //x,foo
 }
 
 // test6();
@@ -377,17 +377,17 @@ function test6() {
 
 //5.3.2.3 类
 function test7() {
-	const A = class {
-		value: number;
+  const A = class {
+    value: number;
 
-		constructor(props) {
-			this.value = props;
-		}
-	};
+    constructor(props) {
+      this.value = props;
+    }
+  };
 
-	const a = new A(3);
+  const a = new A(3);
 
-	console.log(a);
+  console.log(a);
 }
 
 // test7();
@@ -440,17 +440,17 @@ function test7() {
 
 //这些对thisArg和arg1...n参数的处理，以及在构造过程中处理new.target等逻辑，都是绑定函数所固有的，因此它被视为一类有确定行为的、独立的函数。
 function test8() {
-	const targetFunc = function () {};
-	targetFunc.method = () => console.log(3);
-	// targetFunc.__proto__.method = console.log(5);
-	Object.getPrototypeOf(targetFunc).method = () => console.log(5);
+  const targetFunc = function () {};
+  targetFunc.method = () => console.log(3);
+  // targetFunc.__proto__.method = console.log(5);
+  Object.getPrototypeOf(targetFunc).method = () => console.log(5);
 
-	const boundFunc = targetFunc.bind();
+  const boundFunc = targetFunc.bind();
 
-	boundFunc.method(); //5
-	console.log(boundFunc.prototype);
-	console.log(targetFunc.prototype);
-	console.log(Object.getPrototypeOf(targetFunc).prototype);
+  boundFunc.method(); //5
+  console.log(boundFunc.prototype);
+  console.log(targetFunc.prototype);
+  console.log(Object.getPrototypeOf(targetFunc).prototype);
 }
 
 // test8();
@@ -460,17 +460,17 @@ function test8() {
 //出于JavaScript代理机制的设计，代理对象（Proxy object）自身既可能是定制过apply/construct行为的对象，
 //也可能是没有使用陷阱而直接穿透到源对象。用户代码无法有效地检测这两种情况。
 function test9() {
-	class MyClass {}
+  class MyClass {}
 
-	// MyClass();
+  // MyClass();
 
-	const p = new Proxy(MyClass, {
-		apply() {
-			console.log('Hi,apply!');
-		},
-	});
+  const p = new Proxy(MyClass, {
+    apply() {
+      console.log('Hi,apply!');
+    },
+  });
 
-	p();
+  p();
 }
 
 // test9();
@@ -498,40 +498,40 @@ function test9() {
 
 //5.3.3.3 类与对象态的函数
 function test10() {
-	function foo() {}
+  function foo() {}
 
-	//函数是对象
-	console.log(foo instanceof Object); // true
+  //函数是对象
+  console.log(foo instanceof Object); // true
 
-	//所有函数都是Function()的实例
-	console.log(foo instanceof Function); // true
+  //所有函数都是Function()的实例
+  console.log(foo instanceof Function); // true
 
-	//Function()自身作为函数，也是它自己的实例
-	console.log(Function instanceof Function); // true
+  //Function()自身作为函数，也是它自己的实例
+  console.log(Function instanceof Function); // true
 
-	//Function自身作为对象，也是Object的实例
-	console.log(Function instanceof Object); // true
+  //Function自身作为对象，也是Object的实例
+  console.log(Function instanceof Object); // true
 
-	//由于Function也是构造器，因此它能作为其他类的父类（可以派生子类）
-	class MyFunction extends Function {}
-	//按照“面向对象系统”的概念，Function的子类（以及更深继承层次的子类）的实例也是函数，并且也当然还是对象：
-	console.log(typeof new MyFunction()); //'function'
-	console.log(new MyFunction() instanceof Function); // true
-	console.log(new MyFunction() instanceof Object); // true
+  //由于Function也是构造器，因此它能作为其他类的父类（可以派生子类）
+  class MyFunction extends Function {}
+  //按照“面向对象系统”的概念，Function的子类（以及更深继承层次的子类）的实例也是函数，并且也当然还是对象：
+  console.log(typeof new MyFunction()); //'function'
+  console.log(new MyFunction() instanceof Function); // true
+  console.log(new MyFunction() instanceof Object); // true
 
-	//综上，Function()类及其子类都是对象态的函数。当然，基于它们的性质，它们也是构造器。
-	//这样的子类在JavaScript原生的对象系统中还有三个，只不过它们都是隐藏的：
-	//在语义上，GeneratorFunction()时是Function的子类，类似如下声明：
-	class GeneratorFunction extends Function {}
-	GeneratorFunction = function* () {}.constructor;
+  //综上，Function()类及其子类都是对象态的函数。当然，基于它们的性质，它们也是构造器。
+  //这样的子类在JavaScript原生的对象系统中还有三个，只不过它们都是隐藏的：
+  //在语义上，GeneratorFunction()时是Function的子类，类似如下声明：
+  class GeneratorFunction extends Function {}
+  GeneratorFunction = function* () {}.constructor;
 
-	//在语义上，AsyncFunction()时是Function的子类，类似如下声明：
-	class AsyncFunction extends Function {}
-	AsyncFunction = (async () => {}).constructor;
+  //在语义上，AsyncFunction()时是Function的子类，类似如下声明：
+  class AsyncFunction extends Function {}
+  AsyncFunction = (async () => {}).constructor;
 
-	//在语义上，AsyncGeneratorFunction()时是Function的子类，类似如下声明：
-	class AsyncGeneratorFunction extends Function {}
-	AsyncGeneratorFunction = async function* () {}.constructor;
+  //在语义上，AsyncGeneratorFunction()时是Function的子类，类似如下声明：
+  class AsyncGeneratorFunction extends Function {}
+  AsyncGeneratorFunction = async function* () {}.constructor;
 }
 
 // test10();
@@ -572,23 +572,23 @@ function test10() {
 //代理函数也可以称为一个函数的代理态。并且这个代理函数在撤销（revoke）之后仍然是一个函数，
 //仍然处于代理态，只是由于不存在代理目标因而将无法实施行为。
 function test11() {
-	var { proxy: func, revoke } = Proxy.revocable(new Function('x', 'y', 'console.log("executed")'), {});
+  var { proxy: func, revoke } = Proxy.revocable(new Function('x', 'y', 'console.log("executed")'), {});
 
-	//可以实施行为
-	func();
+  //可以实施行为
+  func();
 
-	//撤销
-	revoke();
+  //撤销
+  revoke();
 
-	//仍然是函数
-	console.log(typeof func);
+  //仍然是函数
+  console.log(typeof func);
 
-	//无法实施行为
-	try {
-		func();
-	} catch (e) {
-		console.log('ERROR: ', e.message);
-	}
+  //无法实施行为
+  try {
+    func();
+  } catch (e) {
+    console.log('ERROR: ', e.message);
+  }
 }
 
 // test11();
@@ -618,70 +618,70 @@ function test11() {
 //由于可以使用函数参数来传递循环逻辑所必需的控制变量，因此—在不引入新的语义/概念的前提下—递归是实现循环逻辑的首选。
 //唯一需要解决的问题就是“在函数内识别函数自身”。
 Number.prototype.log = function () {
-	console.log(this.toString());
+  console.log(this.toString());
 };
 
 function test12() {
-	//方法1：具名函数
-	function foo() {
-		return foo();
-	}
+  //方法1：具名函数
+  function foo() {
+    return foo();
+  }
 
-	//方法2：匿名函数
-	(function () {
-		return arguments.callee();
-	});
+  //方法2：匿名函数
+  (function () {
+    return arguments.callee();
+  });
 
-	//再后来JavaScript有了严格模式，而在严格模式中的arguments.callee属性不再可用，
-	//于是“匿名函数该如何递归”的问题就再次出现了。
+  //再后来JavaScript有了严格模式，而在严格模式中的arguments.callee属性不再可用，
+  //于是“匿名函数该如何递归”的问题就再次出现了。
 
-	//解决这一问题的思路之一是多声明一个可访问的标识符
-	//方法3：使用const声明
-	const fact = (x) => (x && x * fact(x - 1)) || 1;
-	// console.log(fact(9));
+  //解决这一问题的思路之一是多声明一个可访问的标识符
+  //方法3：使用const声明
+  const fact = (x) => (x && x * fact(x - 1)) || 1;
+  // console.log(fact(9));
 
-	//但是在JavaScript中“声明标识符”是语句特性—你没有办法在一个表达式中为当前上下文声明出一个标识符。
-	//同样的原因，你也没有办法在类或对象的方法声明中使用这一技巧。
+  //但是在JavaScript中“声明标识符”是语句特性—你没有办法在一个表达式中为当前上下文声明出一个标识符。
+  //同样的原因，你也没有办法在类或对象的方法声明中使用这一技巧。
 
-	//并且，对于方法来说，在调用它的时候还存在一个关键问题：如何维护this引用。
-	//进一步地讲，方法不能递归的根本限制也与此有关：直接递归函数时，是不能传递this引用的。
+  //并且，对于方法来说，在调用它的时候还存在一个关键问题：如何维护this引用。
+  //进一步地讲，方法不能递归的根本限制也与此有关：直接递归函数时，是不能传递this引用的。
 
-	//在这种情况下可以选择一个特殊的实现技巧：用属性存取器来取代方法声明。
-	var obj = {
-		get foo() {
-			return 3;
-		},
-	};
-	//在这个声明中，如果get foo()声明中返回的是一个函数，那么这个属性使用起来跟方法就并没有什么区别。
-	// 考虑到我们需要维护this引用，因此在这里可以返回一个箭头函数来做递归
-	//方法4：用属性来替代方法，并在递归中维护this引用
-	var obj1 = {
-		get fact() {
-			const fact = (x) => (x && x * fact(x - 1)) || this.power || 1;
-			console.log(this === obj1);
+  //在这种情况下可以选择一个特殊的实现技巧：用属性存取器来取代方法声明。
+  var obj = {
+    get foo() {
+      return 3;
+    },
+  };
+  //在这个声明中，如果get foo()声明中返回的是一个函数，那么这个属性使用起来跟方法就并没有什么区别。
+  // 考虑到我们需要维护this引用，因此在这里可以返回一个箭头函数来做递归
+  //方法4：用属性来替代方法，并在递归中维护this引用
+  var obj1 = {
+    get fact() {
+      const fact = (x) => (x && x * fact(x - 1)) || this.power || 1;
+      console.log(this === obj1);
 
-			return fact;
-		},
-	};
+      return fact;
+    },
+  };
 
-	obj1.power = 100;
-	obj1.fact(9).log();
+  obj1.power = 100;
+  obj1.fact(9).log();
 
-	//当然，既然我们事实上是使用箭头函数来维护this引用的，
-	//那么如下声明方法的方式也是可行的（在原理上与声明属性并无不同）
-	//方法5：直接声明方法，以及递归调用
-	var obj2 = {
-		fact(...args) {
-			const fact = (x) => (x && x * fact(x - 1)) || this.power || 1;
-			return fact(...args);
-		},
-	};
+  //当然，既然我们事实上是使用箭头函数来维护this引用的，
+  //那么如下声明方法的方式也是可行的（在原理上与声明属性并无不同）
+  //方法5：直接声明方法，以及递归调用
+  var obj2 = {
+    fact(...args) {
+      const fact = (x) => (x && x * fact(x - 1)) || this.power || 1;
+      return fact(...args);
+    },
+  };
 
-	obj2.fact(8).log();
+  obj2.fact(8).log();
 
-	//最后讨论一下绑定函数。
-	//因为绑定函数是执行结果，所以它自身没有函数体，也就不能“在绑定函数内调用自身”。
-	//但是通过声明常量的方法，也是可以对绑定函数做安全的递归调用的。
+  //最后讨论一下绑定函数。
+  //因为绑定函数是执行结果，所以它自身没有函数体，也就不能“在绑定函数内调用自身”。
+  //但是通过声明常量的方法，也是可以对绑定函数做安全的递归调用的。
 }
 
 // test12();
@@ -701,3 +701,5 @@ function test14() {}
 //因此函数初始化的位置与运行期性能有关，这也是更推荐将函数放在模块中的原因：
 //相较于在函数甚至循环体内“即用即声明”，在最外层的块级作用域中初始化次数最少。
 //简而言之，不要将函数声明作为循环逻辑的一部分。
+
+export default {};
