@@ -68,35 +68,7 @@ const config = {
       template: './src/index.html',
     }),
   ],
+  devtool:'source-map'
 };
-
-// const config = {
-// mode: 'none',
-// entry: './src/main.js',
-// entry: './src/index.js',
-// output: { filename: "bundle.js" },
-// plugins: [
-//     new CleanWebpackPlugin(),
-//     new HtmlWebpackPlugin({
-//         title: 'Webpack Plugin Sample',
-//         template: './src/index.html'
-//     }),
-// new HtmlWebpackPlugin({
-//     filename:'about.html'
-// })
-// new CopyWebpackPlugin({
-//     patterns: ['public']
-// }),
-// new RemoveCommentsPlugin()
-// ],
-// module: {
-//     rules: [
-//         {
-//             test: /\.md$/,
-//             use: ['html-loader', './markdown-loader']
-//         }
-//     ]
-// }
-// }
 
 module.exports = config;

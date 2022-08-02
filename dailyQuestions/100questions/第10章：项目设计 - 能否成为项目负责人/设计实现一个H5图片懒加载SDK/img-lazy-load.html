@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>img lazy load</title>
+    <style>
+      .item-container {
+        border-top: 1px solid #ccc;
+        margin-bottom: 30px;
+      }
+      .item-container img {
+        width: 100%;
+        border: 1px solid #eee;
+        border-radius: 10px;
+        overflow: hidden;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>img lazy load</h1>
+
+    <div class="item-container">
+      <p>新闻标题</p>
+      <img src="./images/default.png" data-src="./images/1.png" />
+    </div>
+
+    <div class="item-container">
+      <p>新闻标题</p>
+      <img src="./images/default.png" data-src="./images/2.jpg" />
+    </div>
+
+    <div class="item-container">
+      <p>新闻标题</p>
+      <img src="./images/default.png" data-src="./images/3.jpg" />
+    </div>
+
+    <div class="item-container">
+      <p>新闻标题</p>
+      <img src="./images/default.png" data-src="./images/4.jpg" />
+    </div>
+
+    <div class="item-container">
+      <p>新闻标题</p>
+      <img src="./images/default.png" data-src="./images/5.jpg" />
+    </div>
+
+    <div class="item-container">
+      <p>新闻标题</p>
+      <img src="./images/default.png" data-src="./images/6.jpg" />
+    </div>
+
+    <div class="item-container">
+      <p>新闻标题</p>
+      <img src="./images/default.png" data-src="./images/7.jpg" />
+    </div>
+
+    <div class="item-container">
+      <p>新闻标题</p>
+      <img src="./images/default.png" data-src="./images/8.jpg" />
+    </div>
+
+    <div class="item-container">
+      <p>新闻标题</p>
+      <img src="./images/default.png" data-src="./images/9.jpg" />
+    </div>
+
+    <div class="item-container">
+      <p>新闻标题</p>
+      <img src="./images/default.png" data-src="./images/10.jpg" />
+    </div>
+
+    <div class="item-container">
+      <p>新闻标题</p>
+      <img src="./images/default.png" data-src="./images/11.jpg" />
+    </div>
+
+    <div class="item-container">
+      <p>新闻标题</p>
+      <img src="./images/default.png" data-src="./images/12.jpg" />
+    </div>
+
+    <div class="item-container">
+      <p>新闻标题</p>
+      <img src="./images/default.png" data-src="./images/13.jpg" />
+    </div>
+
+    <div class="item-container">
+      <p>新闻标题</p>
+      <img src="./images/default.png" data-src="./images/14.jpg" />
+    </div>
+
+    <div class="item-container">
+      <p>新闻标题</p>
+      <img src="./images/default.png" data-src="./images/15.jpg" />
+    </div>
+
+    <div class="item-container">
+      <p>新闻标题</p>
+      <img src="./images/default.png" data-src="./images/16.jpg" />
+    </div>
+
+    <script src="https://cdn.bootcdn.net/ajax/libs/lodash.js/4.17.21/lodash.min.js"></script>
+
+    <script>
+      function mapImagesAndTryLoad() {
+        const images = document.querySelectorAll('img[data-src]');
+        if (images.length === 0) return;
+
+        for (const img of images) {
+          const rect = img.getBoundingClientRect();
+
+          if (rect.top < window.innerHeight) {
+            // 已经露出来了
+            console.log('loading image', img.dataset.src);
+            img.src = img.dataset.src;
+            img.removeAttribute('data-src'); // 移除 data-src 属性，为了下次执行时减少计算成本
+          }
+        }
+      }
+
+      window.addEventListener('scroll', _.throttle(mapImagesAndTryLoad, 100));
+
+      // 初始化时，先加载一次
+      mapImagesAndTryLoad();
+    </script>
+  </body>
+</html>

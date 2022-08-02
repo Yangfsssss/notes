@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>统计 SDK</title>
+  </head>
+  <body>
+    <p></p>
+
+    <script>
+      const PV_URL_SET = new Set();
+
+      class MyStatistic {
+        constructor(productId) {
+          this.productId = productId;
+
+          this.initPerformance(); // 性能统计
+          this.initError(); // 错误监控
+        }
+
+        // 发送统计数据
+        send(url, params = {}) {
+          params.productId = this.productId;
+
+          const paramArr = [];
+          for (const key of Object.keys(params)) {
+            const val = params[key];
+
+            paramArr.push(`${key}=${val}`);
+          }
+
+          const newUrl = `${url}?${paramArr.join('&')}`; // url?a=10&b=20&c=30
+
+          // 用<img>发送：1，可跨域；2，兼容性非常好
+          const img = document.createElement('img');
+          img.src = newUrl; // get方法
+        }
+
+        // 初始化性能统计
+        initPerformance() {
+          const url = 'yyy';
+          this.send(url, performance.timing); // 给最原始的，完整的结果，原始数据
+        }
+
+        // 初始化错误监控
+        initError() {
+          window.addEventListener('error', (e) => {
+            const { message, lineno, colno } = e.error;
+            this.error(error, { lineno, colno });
+          });
+
+          // Promise 未 catch 的报错
+          window.addEventListener('unhandledrejection', (e) => {
+            const { reason } = e;
+            this.error(new Error(reason), { type: 'unhandledrejection' });
+          });
+        }
+
+        // pv
+        pv() {
+          const href = location.href;
+          if (PV_URL_SET.get(href)) return; // 不重复发送 pv
+
+          // 特殊的event
+          this.event('pv');
+          PV_URL_SET.add(href); // 路由切换 hash webAPI
+        }
+
+        // 自定义事件统计
+        event(key, val) {
+          const url = 'xxx'; // 自定义事件统计 server API
+          this.send(url, { key: val });
+        }
+
+        // 错误
+        error(err, info = {}) {
+          const url = 'zzz';
+          const { message, stack } = err;
+          this.send(url, { message, stack, ...info });
+        }
+      }
+
+      // const s = new MyStatistic('a1'); // DOMContentLoaded
+
+      // s.pv(); // SPA 路由切换 PV
+      // s.event();
+
+      // try {
+      // } catch (ex) {
+      //   s.error(ex, {});
+      // }
+
+      // Vue
+      // React ErrorBoundary
+    </script>
+  </body>
+</html>
