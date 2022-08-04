@@ -21,7 +21,7 @@
 
 解题思路：
     反转，即节点next指向前一个节点；
-    但这很容易曹政nextNode的丢失；
+    但这很容易造成nextNode的丢失；
     需要三个指针prevNode curNode nextNode； 
 
 划重点：
