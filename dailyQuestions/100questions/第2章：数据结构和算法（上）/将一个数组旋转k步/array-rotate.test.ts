@@ -3,19 +3,20 @@
  * @author Yang
  */
 
-import { rotate1, rotate2 } from './array-rotate';
+import { rotatePop, rotateSlice } from './array-rotate';
 
 describe('数组旋转', () => {
   test('正常情况', () => {
     const arr = [1, 2, 3, 4, 5, 6, 7];
     const k = 3;
+    const res = rotateSlice(arr, k);
 
-    const res = rotate2(arr, k);
     expect(res).toEqual([5, 6, 7, 1, 2, 3, 4]);
   });
 
   test('数组为空', () => {
-    const res = rotate2([], 3);
+    const res = rotateSlice([], 3);
+
     expect(res).toEqual([]);
   });
 
@@ -23,7 +24,7 @@ describe('数组旋转', () => {
     const arr = [1, 2, 3, 4, 5, 6, 7];
     const k = -3;
 
-    const res = rotate2(arr, k);
+    const res = rotateSlice(arr, k);
     expect(res).toEqual([5, 6, 7, 1, 2, 3, 4]);
   });
 
@@ -31,7 +32,7 @@ describe('数组旋转', () => {
     const arr = [1, 2, 3, 4, 5, 6, 7];
     const k = 0;
 
-    const res = rotate2(arr, k);
+    const res = rotateSlice(arr, k);
     expect(res).toEqual([1, 2, 3, 4, 5, 6, 7]);
   });
 
@@ -40,7 +41,7 @@ describe('数组旋转', () => {
     const k = 'abc';
 
     //@ts-ignore
-    const res = rotate2(arr, k);
+    const res = rotateSlice(arr, k);
     expect(res).toEqual([1, 2, 3, 4, 5, 6, 7]);
   });
 });

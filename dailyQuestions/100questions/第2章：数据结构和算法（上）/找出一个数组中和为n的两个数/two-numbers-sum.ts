@@ -9,7 +9,7 @@
  * @param n n
  */
 
-export function findTwoNumbers1(arr: number[], n: number): number[] {
+export function findTwoNumbersDualCycle(arr: number[], n: number): number[] {
   const res: number[] = [];
 
   const length = arr.length;
@@ -40,7 +40,7 @@ export function findTwoNumbers1(arr: number[], n: number): number[] {
  * @param arr
  * @param n
  */
-export function findTwoNumbers2(arr: number[], n: number): number[] {
+export function findTwoNumbers2TwoPointer(arr: number[], n: number): number[] {
   const res: number[] = [];
 
   const length = arr.length;
@@ -81,12 +81,12 @@ const arr = [1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1
 // 性能测试
 console.time('findTwoNumbers1');
 for (let i = 0; i < 1000 * 1000; i++) {
-  findTwoNumbers1(arr, 15);
+  findTwoNumbersDualCycle(arr, 15);
 }
 console.timeEnd('findTwoNumbers1'); // 730ms
 
 console.time('findTwoNumbers2');
 for (let i = 0; i < 1000 * 1000; i++) {
-  findTwoNumbers2(arr, 15);
+  findTwoNumbers2TwoPointer(arr, 15);
 }
 console.timeEnd('findTwoNumbers2'); // 102ms
