@@ -4,15 +4,15 @@
  */
 
 export class MyQueue {
-  private stack1: number[] = [];
-  private stack2: number[] = [];
+  private mainStack: number[] = [];
+  private subStack: number[] = [];
 
   /**
    * 入队
    * @param n n
    */
   add(n: number) {
-    this.stack1.push(n);
+    this.mainStack.push(n);
   }
 
   /**
@@ -21,25 +21,25 @@ export class MyQueue {
   delete(): number | null {
     let res;
 
-    const stack1 = this.stack1;
-    const stack2 = this.stack2;
+    const mainStack = this.mainStack;
+    const subStack = this.subStack;
 
-    // 将 stack1 所有元素移动到 stack2 中
-    while (stack1.length) {
-      const n = stack1.pop();
+    // 将 mainStack 所有元素移动到 subStack 中
+    while (mainStack.length) {
+      const n = mainStack.pop();
       if (n !== undefined && n !== null) {
-        stack2.push(n);
+        subStack.push(n);
       }
     }
 
-    // stack2 pop
-    res = stack2.pop();
+    // subStack pop
+    res = subStack.pop();
 
-    // 将 stack2 所有元素“还给” stack1
-    while (stack2.length) {
-      const n = stack2.pop();
+    // 将 subStack 所有元素“还给” mainStack
+    while (subStack.length) {
+      const n = subStack.pop();
       if (n !== undefined && n !== null) {
-        stack1.push(n);
+        mainStack.push(n);
       }
     }
 
@@ -47,7 +47,7 @@ export class MyQueue {
   }
 
   get length(): number {
-    return this.stack1.length;
+    return this.mainStack.length;
   }
 }
 

@@ -18,27 +18,30 @@ export function reverseLinkList(listNode: ILinkListNode): ILinkListNode {
   let curNode: ILinkListNode | undefined = undefined;
   let nextNode: ILinkListNode | undefined = listNode;
 
-  // 以nextNode为主，遍历链表
+  // nextNode指向头节点，开始遍历链表
   while (nextNode) {
-    // 第一个元素不存在next，所以删掉next，防止循环引用
+    // 以 curNode 为处理对象
+    // 处理第一个元素，反转后它由头变为尾，不应存在next，所以删掉next，防止循环引用
     if (curNode && !prevNode) {
       delete curNode.next;
     }
 
-    // 反转指针
+    // 主流程：指针变向
     if (curNode && prevNode) {
       curNode.next = prevNode;
     }
 
-    // 整体向后移动指针
+    // 处理完毕，指针移动
     prevNode = curNode;
     curNode = nextNode;
     nextNode = nextNode?.next;
   }
 
-  // 最后一个的补充，当nextNode为空时，curNode尚未设置next
+  // nextNode 离开尾部的时候，遍历结束，但此时 curNode 指向的尾部还没有被处理
+  // 处理最后一个元素，指针变向
   curNode!.next = prevNode;
 
+  // 返回链表头节点
   return curNode!;
 }
 

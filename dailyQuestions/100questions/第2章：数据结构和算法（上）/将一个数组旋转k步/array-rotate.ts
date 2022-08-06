@@ -9,7 +9,7 @@
  * @param k
  */
 
-export function rotate1(arr: number[], k: number): number[] {
+export function rotatePop(arr: number[], k: number): number[] {
   const length = arr.length;
   if (!k || length === 0) return arr;
 
@@ -33,7 +33,7 @@ export function rotate1(arr: number[], k: number): number[] {
  * @param k
  */
 
-export function rotate2(arr: number[], k: number): number[] {
+export function rotateSlice(arr: number[], k: number): number[] {
   const length = arr.length;
   if (!k || length === 0) return arr;
 
@@ -63,7 +63,7 @@ for (let i = 0; i < 100 * 1000; i++) {
   arr1.push(i);
 }
 console.time('rotate1');
-rotate1(arr1, 90 * 1000);
+rotatePop(arr1, 90 * 1000);
 console.timeEnd('rotate1'); // 747ms
 
 const arr2 = [];
@@ -71,5 +71,5 @@ for (let i = 0; i < 100 * 1000; i++) {
   arr2.push(i);
 }
 console.time('rotate2');
-rotate2(arr2, 90 * 1000);
+rotateSlice(arr2, 90 * 1000);
 console.timeEnd('rotate2'); // 0.96ms

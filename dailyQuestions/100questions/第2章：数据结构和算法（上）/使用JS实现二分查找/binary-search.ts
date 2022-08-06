@@ -49,7 +49,7 @@ export function binarySearchRecursive(arr: number[], target: number, startIndex?
   if (!endIndex === null || endIndex === undefined) endIndex = length - 1;
 
   // 如果 start 和 end 相等，继续计算
-  // 当 start 和 end 相交并错开时，说明没有找到
+  // 当 start 和 end 相交并错开时，说明没有找到（相交时有可能就是相交点的值）
   if (startIndex > endIndex) return -1;
 
   // 计算中间索引

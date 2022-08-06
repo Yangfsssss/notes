@@ -24,6 +24,13 @@
     但这很容易造成nextNode的丢失；
     需要三个指针prevNode curNode nextNode； 
 
+    核心：
+        三指针，nextNode指向头节点；
+        三部分操作：
+            1，处理原头节点现尾节点的next，删掉；
+            2，中间节点指针变向；
+            3，处理尾节点，新建next指向前一个节点；
+
 划重点：
     链表，链表 vs 数组；
     如何让nextNode不丢失；
