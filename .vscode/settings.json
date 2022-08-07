@@ -11,8 +11,10 @@
     "RORO",
     "uncurrying",
     "unshift",
+    "vdom",
     "vmax",
     "vmin",
+    "vnode",
     "Vuex"
   ]
 }
