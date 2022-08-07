@@ -12,6 +12,7 @@
     "uncurrying",
     "unshift",
     "vmax",
-    "vmin"
+    "vmin",
+    "Vuex"
   ]
 }
