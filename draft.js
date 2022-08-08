@@ -4027,8 +4027,345 @@ function testHowAsyncFunctionWorks() {
   //在其状态落定时来处理落定为不同状态的不同值
   //并返回一个包含处理过的新值的新的promise
   // testHowValuesChangeInPromise();
-// testHowAsyncFunctionWorks();
-
+  
+  function testNewMethodsAndOperators() {
+    //String.prototype.replaceAll()
+    //const newStr = str.replaceAll(regexp|substr, newSubstr|function)
+    const p = 'The quick brown fox jumps over the lazy dog. If the dog reacted, was it really lazy?';
+    // console.log(p.replaceAll('dog', 'monkey'));
+  
+    //String.prototype.matchAll()
+    //str.matchAll(regexp)
+    const regexp = /t(e)(st(\d?))/g;
+    const str = 'test1test2';
+    // console.log(str.matchAll(regexp));
+    // console.log(...str.matchAll(regexp));
+    // const array = [...str.matchAll(regexp)];
+    // console.log(array[0]);
+    // console.log(array[1]);
+  
+    //逻辑与运算符、逻辑或运算符、逻辑非运算符
+    //逻辑与指第一个操作数为truth时进行第二个操作数的运算
+    //逻辑或指第一个操作数为falsy时进行第二个操作数的运算，falsy：false、undefined、null、0、-0、0n、""、''、``、NaN
+    //逻辑非指第一个操作数为nullish时进行第二个操作数的运算，nullish：undefined、null
+    //即逻辑非运算被包含于逻辑或运算
+    //&&=、||=、??=
+    // let x, y;
+    // x &&= y === x && (x = y);
+    // x ||= y === x || (x = y);
+    // x ??= y === x ?? (x = y);
+  
+    //Array.prototype.at
+    //at(index)
+    const array1 = [5, 12, 8, 130, 44];
+    // console.log(array1.at(0)); //5
+    // console.log(array1.at(-1)); //44
+  }
+  
+  //String.prototype.replaceAll()
+  //String.prototype.matchAll()
+  //&&=、||=、??=
+  //Array.prototype.at
+  // testNewMethodsAndOperators();
+  
+  function testArraySpliceInForEach() {
+    const result = [
+      {
+        id: '43747',
+        areaCode: '820000',
+        areaName: '澳门',
+        childList: [{ id: '43764', areaCode: '820010', areaName: '澳门特别行政区直辖' }],
+      },
+      {
+        id: '1',
+        areaCode: '110000',
+        areaName: '北京市',
+        childList: [
+          {
+            id: '2',
+            areaCode: '110100',
+            areaName: '北京市',
+            childList: [{ id: '105', areaCode: '110114', areaName: '昌平区' }],
+          },
+        ],
+      },
+    ];
+  
+    function handleAreaEnumData(data, level = 0) {
+      const result = [{ key: '', areaCode: '', areaName: '所有' }, ...data].map(
+        ({ id, areaCode, areaName, childList }) => {
+          return {
+            key: id,
+            value: areaCode,
+            label: areaName,
+            children:
+              childList && childList.length > 0 && level < 1 ? handleAreaEnumData(childList, level + 1) : undefined,
+          };
+        }
+      );
+  
+      return result;
+    }
+  
+    const result1 = handleAreaEnumData(result);
+  
+    console.log('result1', result1);
+  
+    // const filterACertainOption = (result) => {
+    //   result.forEach((item, index) => {
+    //     if (item.label === '所有') {
+    //       // console.log('result', result);
+    //       // console.log('item', item);
+    //       // item.label += '1';
+    //       result.splice(index, 1);
+    //       // result.unshift(result[index]);
+    //     }
+  
+    //     if (item.children === undefined) {
+    //       return;
+    //     }
+  
+    //     filterACertainOption(item.children);
+    //   });
+  
+    const filterACertainOption = (result) => {
+      for (let i = 0; i < result.length; i++) {
+        const item = result[i];
+  
+        if (item.label === '所有') {
+          result.splice(i, 1);
+          i--;
+  
+          continue;
+        }
+  
+        if (!item.children) {
+          continue;
+        }
+  
+        filterACertainOption(item.children);
+      }
+  
+      // for (let item of result) {
+      //   if (item.label === '所有') {
+      //     // console.log('result', result);
+      //     // console.log('item', item);
+      //     // item.label += '1';
+      //     result.splice(0, 1);
+      //     // result.unshift(result[index]);
+      //   }
+  
+      //   if (item.children === undefined) {
+      //     continue;
+      //   }
+  
+      //   filterACertainOption(item.children);
+      // }
+  
+      // return result;
+    };
+  
+    filterACertainOption(result1);
+  
+    console.log('result2', result1);
+  }
+  
+  //在Array.prototype.forEach()和for...of...执行中
+  //若数组的长度发生变化，例如splice(index, 1)
+  //会使数组里值的索引发生变化
+  //实时影响到迭代的执行
+  //使用readonly类型来预防未被期望的数组和元组的值变
+  // testArraySpliceInForEach();
+  
+  function testFilterItems(items, query) {
+    query = query.toLowerCase();
+    return items.filter((item) => item.name.split(' ').some((word) => word.toLowerCase().startsWith(query)));
+  }
+  
+  function testAliases() {
+    const polygon = {
+      x: 1,
+    };
+  
+    const { y: y } = polygon;
+  
+    console.log('y', y);
+    // console.log('polygon.y.z', polygon.y.z);
+  
+    if (!y) {
+      polygon.y = 3;
+    }
+  
+    undefined?.map((polygon) => polygon);
+    polygon?.map;
+    // polygon?.map();
+    polygon.y.z?.map((polygon) => polygon);
+  
+    console.log('polygon', polygon);
+  }
+  
+  //已存在对象的不存在键可以读取，值为undefined；
+  //但undefined不可读取任何键，会抛出 TypeError: Cannot read properties of undefined。
+  //使用可选链操作符("?.")可以保证在无法确保对象不为undefined时，
+  //读取其键不会抛出错误，并返回undefined。
+  
+  //读取方法并调用时，可选链操作符可以确保在被读取对象为undefined时不抛出错误并继续执行，
+  //但当读取对象存在但方法不存在时，会抛出 TypeError: polygon.map is not a function，
+  //原因是可选链操作符只能保证不抛出错误并返回undefined，并不能阻止返回的undefined被继续调用，
+  //使用TypeScript
+  // testAliases();
+  
+  function testReplaceAll() {
+    const reg = /(\s+)/g;
+  
+    const testStr1 = 'aaa bbb  ccc';
+    const testStr2 = 'AAA BBB  CCC';
+  
+    const result1 = testStr1.replaceAll(reg, '');
+    const result2 = testStr2.replaceAll(reg, '');
+  
+    console.log('result1', result1);
+    console.log('result2', result2);
+    console.log('result2', result2);
+  }
+  
+  // testReplaceAll();
+  
+  function testPlus() {
+    // const result = [7903.9, 3951.95].reduce((a, b) => a + Number(b || 0), 0);
+    // const result1 = [7903.9, 3951.95]
+    //   .map((number) => number / 100 || 0)
+    //   ?.reduce((a, b) => a + b, 0)
+    //   ?.toFixed(2);
+    // console.log(result);
+    // console.log(result1);
+  
+    const totalAmount = Number(
+      ['10000.00', '6600.00']
+        ?.map((invoice) => Number(invoice) || 0)
+        ?.reduce((a, b) => a + b, 0)
+        ?.toFixed(2)
+    );
+  
+    console.log('[ totalAmount ] >', totalAmount);
+  }
+  // testPlus();
+  
+  // const totalAmount = Number(
+  //   invoiceList
+  //     ?.map((invoice) => Number(invoice?.amount) / 100 || 0)
+  //     ?.reduce((a, b) => a + b, 0)
+  //     ?.toFixed(2)
+  // );
+  
+  // function flattenDepth(ary, depth = 1) {
+  function flattenDepth(ary, depth = 1) {
+    let result = [];
+  
+    for (const i of ary) {
+      Array.isArray(i) ? result.push(...i) : result.push(i);
+    }
+  
+    if (depth - 1 === 0) return result;
+    return flattenDepth(result, depth - 1);
+  }
+  
+  //   return flattenOnce(ary, depth);
+  // }
+  
+  // console.log(flattenDepth([1, 2, [3, 4], [[[5]]]], 3));
+  
+  function testRecentDaysInMoment() {
+    const tenDays = moment().subtract(10, 'days').calendar();
+  
+    console.log('tenDays', tenDays);
+  }
+  // testRecentDaysInMoment();
+  
+  function testWeakMap() {
+    const weakMap = new WeakMap();
+  
+    const objKey1 = {};
+    const objKey2 = {};
+  
+    weakMap.set(objKey1, 3);
+    weakMap.set(objKey2, 5);
+  
+    console.log('weakMap', weakMap.get({}));
+    console.log('weakMap', weakMap.get(objKey1));
+    console.log('weakMap', weakMap.get(objKey2));
+  }
+  
+  // testWeakMap();
+  
+  function testIfTrue() {
+    let a = 10;
+  
+    if (true) {
+      // a++;
+  
+      if (a === 10) {
+        console.log('over', a);
+        return;
+      }
+    }
+  }
+  
+  // testIfTrue();
+  
+  function testCurry() {
+    const add = (a, b) => a + b;
+    const three = add(1, 2);
+  
+    function curry(fn) {
+      let argAry = [];
+      let executor = fn;
+  
+      return function curryingFn(args) {
+        if (!args) {
+          argAry.push(args);
+          while (argAry.length > 1) {
+            executor = executor.call(null, argAry.shift());
+          }
+  
+          return executor.call(null, argAry.shift());
+        } else {
+          argAry.push(args);
+          return curryingFn;
+        }
+      };
+    }
+  
+    const curryAdd = curry(add);
+    console.log(curryAdd(2)(3)());
+  }
+  
+  // testCurry();
+  
+  async function testPromiseAll() {
+    const promiseList1 = Promise.all([async () => Promise.resolve(3), async () => Promise.resolve(5)]);
+    const promiseListResult2 = [];
+    try {
+      promiseListResult2 = await Promise.all([Promise.reject(3), async () => Promise.resolve(5)]);
+    } catch (err) {
+      console.log([promiseListResult2[0], promiseListResult2[1]]);
+    }
+  
+    // const promiseListResult1 = await promiseList1;
+  
+    // try {
+    //   const [value1, value2] = await promiseList2;
+    // } catch (reason) {
+    //   console.log([value1, value2]);
+    //   console.log(reason);
+    // }
+    // console.log(promiseListResult1);
+    // console.log([value1, value2]);
+  }
+  
+  //使用try catch捕获await Promise.all抛出的异常
+  // testPromiseAll();
+  
 function testVar() {
 
   "use strict"

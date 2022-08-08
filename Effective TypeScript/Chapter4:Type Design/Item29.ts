@@ -42,7 +42,5 @@ declare function setCamera1(camera: CameraOptions1): void;
 declare function viewportForBounds1(bounds: LngLatBounds1): Camera;
 
 //Things to Remember
-//• Input types tend to be broader than output types. Optional properties and union
-//types are more common in parameter types than return types.
-//• To reuse types between parameters and return types, introduce a canonical form
-//(for return types) and a looser form (for parameters).
+//• Input types tend to be broader than output types. Optional properties and union types are more common in parameter types than return types.
+//• To reuse types between parameters and return types, introduce a canonical form (for return types) and a looser form (for parameters).

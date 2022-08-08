@@ -1,7 +1,8 @@
 {
   "compilerOptions": {
     "target": "es6",
-    "noImplicitAny": false,
+    "noImplicitAny": true,
+    "strictNullChecks": true,
     "module": "es6",
     "jsx": "react",
     "removeComments": false,

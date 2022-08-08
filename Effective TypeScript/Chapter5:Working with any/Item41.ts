@@ -2,6 +2,7 @@
 
 function rangeX(start: number, limit: number) {
   const out = [];
+  // const out: any= [];
 
   // if (start === limit) {
   //   return out;
@@ -17,12 +18,13 @@ function rangeX(start: number, limit: number) {
 function makeSquares(start: number, limit: number) {
   const out = [];
 
-  rangeX(start, limit).forEach((i) => out.push(i * i));
+  // rangeX(start, limit).forEach((i) => out.push(i * i));
+  const result =  rangeX(start, limit).map((i) => out.push(i * i));
 
   // return out;
+  return result;
 }
 
 //Things to Remember
-//• While TypeScript types typically only refine, implicit any and any[] types are
-//allowed to evolve. You should be able to recognize and understand this construct where it occurs.
+//• While TypeScript types typically only refine, implicit any and any[] types are allowed to evolve. You should be able to recognize and understand this construct where it occurs.
 //• For better error checking, consider providing an explicit type annotation instead of using evolving any.

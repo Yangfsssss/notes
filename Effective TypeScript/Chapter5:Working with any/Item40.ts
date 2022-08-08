@@ -33,5 +33,4 @@ function cacheLast<T extends Function>(fn: T): T {
 }
 
 //Things to Remember
-//• Sometimes unsafe type assertions are necessary or expedient. When you need to
-//use one, hide it inside a function with a correct signature.
+//• Sometimes unsafe type assertions are necessary or expedient. When you need to use one, hide it inside a function with a correct signature.
