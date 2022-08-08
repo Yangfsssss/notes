@@ -8,3 +8,13 @@
 //先写出完整的类型签名有助于得到想要的函数（TDD）。
 
 //eslint-inferrable-types;
+
+//使用更宽的类型声明可以覆盖掉推断出来的窄的类型。
+export const x = '3'; //x:'3'
+const y: string = '3'; //y:string
+
+//Things to Remember
+//• Avoid writing type annotations when TypeScript can infer the same type.
+//• Ideally your code has type annotations in function/method signatures but not on local variables in their bodies.
+//• Consider using explicit annotations for object literals and function return types
+//even when they can be inferred. This will help prevent implementation errors from surfacing in user code.

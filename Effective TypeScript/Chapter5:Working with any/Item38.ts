@@ -17,7 +17,7 @@ function processBar(b: Bar) {
 
 function fy() {
   const x = expressionReturningFoo();
-  //@ts-ignore
+  // @ts-ignore
   processBar(x);
 }
 
@@ -48,8 +48,6 @@ const config: Config = {
 } as any;
 
 //Things to Remember
-//• Make your uses of any as narrowly scoped as possible to avoid undesired loss of
-//type safety elsewhere in your code.
-//• Never return an any type from a function. This will silently lead to the loss of
-//type safety for any client calling the function.
+//• Make your uses of any as narrowly scoped as possible to avoid undesired loss of type safety elsewhere in your code.
+//• Never return an any type from a function. This will silently lead to the loss of type safety for any client calling the function.
 //• Consider @ts-ignore as an alternative to any if you need to silence one error.

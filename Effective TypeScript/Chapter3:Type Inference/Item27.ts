@@ -1,5 +1,5 @@
 /** Item27: 使用函数式构造和库来帮助类型流转，Use Functional Constructs and Libraries to Help Types Flow*/
-interface BasketballPlayers {
+export interface BasketballPlayers {
   name: string;
   team: string;
   salary: number;

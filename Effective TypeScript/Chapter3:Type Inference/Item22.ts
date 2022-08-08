@@ -14,7 +14,9 @@ if (el) {
 //属性检查;
 //内置检查函数，如Array.isArray();
 //switch;
-//##自定义类型保护：
+//##自定义类型保护 is：
+//场景：函数参数是一个联合类型，但函数内部存在一些处理过程，使得函数的返回值一定是联合类型的某个成员，
+//此时可以使用自定义类型保护来确保函数返回值的类型。
 function isDefined<T>(x: T | undefined): x is T {
   return x !== undefined;
 }

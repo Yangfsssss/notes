@@ -1,6 +1,7 @@
 /** Item49: 提供回调中this的类型，Provide a Type for this in Callbacks */
 
 //因为this是JavaScript中的一部分，所以TypeScript会为其建模。
+//如果函数在参数中声明了this，那么它必须是第一个参数。
 function addKeyListener(element: HTMLElement, fn: (this: HTMLElement, e: KeyboardEvent) => void) {
   element.addEventListener('keydown', (e) => {
     //this是特殊的参数
@@ -9,7 +10,7 @@ function addKeyListener(element: HTMLElement, fn: (this: HTMLElement, e: Keyboar
     //TypeScript会强制要求使用正确的this上下文来调用函数
     // fn(e)
 
-    fn.call(el, e);
+    fn.call(element, e);
   });
 }
 

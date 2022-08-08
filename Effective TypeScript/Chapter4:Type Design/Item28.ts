@@ -78,7 +78,5 @@ function getStickSetting1(controls: CockpitControls1) {
 }
 
 //Things to Remember
-//• Types that represent both valid and invalid states are likely to lead to confusing
-//and error-prone code.
-//• Prefer types that only represent valid states. Even if they are longer or harder to
-//express, they will save you time and pain in the end!
+//• Types that represent both valid and invalid states are likely to lead to confusing and error-prone code.
+//• Prefer types that only represent valid states. Even if they are longer or harder to express, they will save you time and pain in the end!

@@ -88,5 +88,4 @@ const okExpression: Expression4[] = [
 //Things to Remember
 //• Avoid the uncanny valley of type safety: incorrect types are often worse than no types.
 //• If you cannot model a type accurately, do not model it inaccurately! Acknowledge the gaps using any or unknown.
-//• Pay attention to error messages and autocomplete as you make typings increas‐
-//ingly precise. It’s not just about correctness: developer experience matters, too.
+//• Pay attention to error messages and autocomplete as you make typings increasingly precise. It’s not just about correctness: developer experience matters, too.
