@@ -9,7 +9,6 @@
     "type-check": "npx type-coverage --detail",
     "test": "echo \"Error: no test specified\" && exit 1",
     "ws-test": "nodemon dailyQuestions/100questions/第6章：知识广度-从前端到全栈/WebSocket和HTTP有什么区别？/index.js",
-    // 正常使用需将 framework & interview 文件夹改名为 framework_interview
     "webpack-test-build": "webpack --config dailyQuestions/framework_interview/第10章：webpack和babel/webpack-demo/build-optimization/webpack.dev.js",
     "webpack-test-dev": "webpack-dev-server --config dailyQuestions/framework_interview/第10章：webpack和babel/webpack-demo/build-optimization/webpack.dev.js",
     "webpack-test-prod": "webpack --config dailyQuestions/framework_interview/第10章：webpack和babel/webpack-demo/build-optimization/webpack.prod.js",
