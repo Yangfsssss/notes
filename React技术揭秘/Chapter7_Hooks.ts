@@ -3,7 +3,7 @@
 //7.2 极简Hooks实现-----------------------------------------------------------------
 
 //7.2.1 工作原理
-function App() {
+export function App() {
 	const [num, updateNum] = useState(0);
 
 	return <p onClick={() => updateNum((num) => num + 1)}>{num}</p>;
