@@ -60,9 +60,83 @@
     <!-- 加载我们的 React 组件。-->
     <!-- <script src="like_button.js"></script> -->
     <!-- <script src="./base64.js"></script> -->
-    <script src="./draft.js"></script>
+    <!-- <script src="./draft.js"></script> -->
     <!-- <script src="./didact.js"></script> -->
   </body>
+  <!-- <script>
+    // const container = document.createElement('div');
+    // container.style.width = '400px';
+    // container.style.height = '1000px';
+    // container.style.border = '1px solid black';
+    // container.style.overflow = 'scroll';
+
+    const father = document.createElement('div');
+    father.style.position = 'relative';
+    father.style.width = '400px';
+    father.style.height = '600px';
+    father.style.border = '1px solid black';
+    father.style.overflow = 'scroll';
+    father.style.margin = 0;
+    father.style.padding = 0;
+    father.style.zIndex = 20;
+
+    const child = document.createElement('div');
+    child.style.width = '400px';
+    child.style.height = '2000px';
+    child.style.zIndex = 10;
+    child.style.border = '1px solid blue';
+
+    const mask = document.createElement('div');
+    mask.style.position = 'fixed';
+    mask.style.top = '8px';
+    mask.style.left = '8px';
+    mask.style.width = '400px';
+    mask.style.height = '800px';
+    mask.style.zIndex = 1;
+    mask.style.backdropFilter = 'blur(10px)';
+    mask.style.opacity = 0.3;
+    mask.style.background = 'rgba(7, 17, 27, 0.6)';
+    mask.style.overflow = 'scroll';
+
+    const maskChild = document.createElement('div');
+    maskChild.style.position = 'fixed';
+    maskChild.id = 'mask-child';
+    maskChild.style.width = '400px';
+    maskChild.style.height = '2000px';
+
+    mask.appendChild(maskChild);
+    father.appendChild(child);
+    father.appendChild(mask);
+    // container.appendChild(father);
+    // document.body.appendChild(container);
+    document.body.appendChild(father);
+    // document.body.appendChild(mask);
+
+    father.addEventListener('click', () => {
+      console.log('father clicked');
+    });
+    father.addEventListener('scroll', () => {
+      console.log('father scrolling!!!');
+    });
+
+    father.onscroll = () => {
+      console.log('father scrolling!!!');
+    };
+
+    child.addEventListener('scroll', () => {
+      console.log('child scrolling!!!');
+    });
+
+    child.onscroll = () => {
+      console.log('child scrolling!!!');
+    };
+
+    // child.scroll({ top: 1000, behavior: 'smooth' });
+    // father.scrollTo(0, 1000);
+    // mask.scrollTo(0, 1000);
+    mask.scrollTo(0, 1000);
+    mask.click();
+  </script> -->
 
   <!-- No.155 -->
   <!-- <style>

@@ -3,39 +3,24 @@
 const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-// const SourceMapDevToolPlugin = require("source-map");
 
-const includePath = [
-  path.resolve(__dirname, './src'),
-  // path.resolve(__dirname,'package.json')
-];
+console.log('join',path.join(__dirname, 'dist/', 'react.manifest.json'));
+console.log(    'path:', path.resolve(__dirname, 'dist/'));
+
 
 const config = {
   entry: './src/index.tsx',
   mode: 'none',
   module: {
     rules: [
-      // {
-      // test: /\.tsx?$/,
-      // use: "ts-loader",
-      // exclude: "/node_modules/",
-      // include:includePath
-      // resource:includePath[0]
-      // },
       {
         test: /\.(js)|(jsx)$|(ts)$|(tsx)$/,
         exclude: /(node_modules)|(bower_components)/,
         loader: 'babel-loader',
         options: {
           presets: ['@babel/react', '@babel/typescript', '@babel/preset-env'],
-          plugins: [
-            ['@babel/plugin-proposal-decorators',
-            { "legacy": true },],
-            '@babel/plugin-proposal-class-properties',
-          ],
+          plugins: [['@babel/plugin-proposal-decorators', { legacy: true }], '@babel/plugin-proposal-class-properties'],
         },
-        // include:includePath
-        // resource:includePath[0]
       },
       {
         test: /\.css$/,
@@ -48,27 +33,35 @@ const config = {
   },
   output: {
     path: path.resolve(__dirname, 'dist/'),
-    publicPath: '/',
-    filename: 'bundle.js',
+    // publicPath: '/',
+    filename: 'bundle888.js',
   },
   devServer: {
-    // contentBase: path.join(__dirname, "dist/"),
     port: 3006,
-    // publicPath: "http://localhost:3005/dist/",
     hot: true,
-    historyApiFallback: true
+    historyApiFallback: true,
   },
   plugins: [
     // new webpack.HotModuleReplacementPlugin(),
-    new webpack.SourceMapDevToolPlugin({
-      filename: '[name].js.map',
-      exclude: ['bundle.js'],
-    }),
+    // new webpack.SourceMapDevToolPlugin({
+    //   filename: '[name].js.map',
+    //   exclude: ['bundle.js'],
+    // }),
+
     new HtmlWebpackPlugin({
       template: './src/index.html',
+      filename: 'index.html',
+    }),
+
+    
+    // 第三，告诉 Webpack 使用了哪些动态链接库
+    new webpack.DllReferencePlugin({
+      // 描述 react 动态链接库的文件内容
+      // manifest: require(path.join(__dirname, 'dist/', 'react.manifest.json')),
+      manifest: require('./dist/react.manifest.json'),
     }),
   ],
-  devtool:'source-map'
+  // devtool: 'source-map',
 };
 
 module.exports = config;
