@@ -1,4 +1,1 @@
-**/node_modules
-**/dist
-.DS_Store
-.next
+/Users/yangxiaoyao/Desktop/code/draft/.gitignore_global

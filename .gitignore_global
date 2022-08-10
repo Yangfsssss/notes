@@ -1,0 +1,5 @@
+**/node_modules
+**/dist
+**/dll_dist
+.DS_Store
+.next
