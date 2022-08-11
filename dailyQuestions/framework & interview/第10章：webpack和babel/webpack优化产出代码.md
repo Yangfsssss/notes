@@ -12,6 +12,7 @@ webpack性能优化 - 产出代码：
         1，配置打包cdn地址：output['publicPath'] = 'https://cdn.example.com/assets/'；
         2，将打包结果上传至cdn；
         适用于JS、CSS、图片、字体等资源；
+
     使用 production：
         自动开启代码压缩；
         Vue React 等会自动删掉调试代码（如开发环境的warning）；
@@ -23,6 +24,7 @@ webpack性能优化 - 产出代码：
                 ES6 Module 静态引入，编译时引入；
                 Commonjs 动态引入，执行时引入；
                 只有ES6 Module才能静态分析，实现Tree-Shaking；
+                
     Scope Hoisting：
         webpack打包的产物是一些函数，使用Scope Hoisting将这些函数放置在同一个作用域；
         代码体积更小；
