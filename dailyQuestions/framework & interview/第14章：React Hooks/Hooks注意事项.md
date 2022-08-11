@@ -1,0 +1,3 @@
+useState初始化值，只有第一次有效；
+useEffect内部不能修改state；
+useEffect可能出现死循环；
