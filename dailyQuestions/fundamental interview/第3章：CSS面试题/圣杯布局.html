@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>圣杯布局</title>
+    <style type="text/css">
+      body {
+        min-width: 550px;
+      }
+
+      #header {
+        text-align: center;
+        background-color: #f1f1f1;
+      }
+
+      #container .column {
+        float: left;
+      }
+
+      #container {
+        padding-left: 200px;
+        padding-right: 150px;
+      }
+
+      #center {
+        background-color: #ccc;
+        width: 100%;
+      }
+
+      #left {
+        position: relative;
+        right: 200px;
+        background-color: yellow;
+        width: 200px;
+        margin-left: -100%;
+      }
+
+      #right {
+        background-color: red;
+        width: 150px;
+        /* 忽视了自身宽度 */
+        margin-right: -150px;
+      }
+
+      #footer {
+        /* 使用clearfix实现 */
+        /* clear:both; */
+        text-align: center;
+        background-color: #f1f1f1;
+      }
+
+      .clearfix:after {
+        content: ' ';
+        display: table;
+        clear: both;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="header">this is a header</div>
+
+    <div id="container"  class="clearfix">
+      <div id="center" class="column">this is center</div>
+      <div id="left" class="column">this is left</div>
+      <div id="right" class="column">this is right</div>
+    </div>
+
+    <div id="footer">this is a footer</div>
+  </body>
+</html>

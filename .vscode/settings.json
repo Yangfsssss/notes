@@ -1,6 +1,7 @@
 {
   "cSpell.words": [
     "bbox",
+    "clearfix",
     "concat",
     "corejs",
     "Didact",
@@ -11,6 +12,7 @@
     "middlewares",
     "nums",
     "RORO",
+    "typeof",
     "uncurrying",
     "unshift",
     "vdom",

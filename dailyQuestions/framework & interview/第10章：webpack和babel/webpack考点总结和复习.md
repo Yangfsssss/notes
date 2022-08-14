@@ -5,6 +5,7 @@ webpack：
         处理ES6；
         处理样式；
         处理图片；
+
     高级配置；
         多入口；
         抽离CSS文件；
@@ -12,6 +13,7 @@ webpack：
         懒加载；
         处理JSX；
         处理 Vue；
+
     优化打包效率；
         可用于生产环境：
             优化babel-loader；
@@ -23,6 +25,7 @@ webpack：
             自动更新；
             热更新；
             DllPlugin；
+
     优化产出代码；
         小图片base64编码；
         bundle加hash；
@@ -32,7 +35,9 @@ webpack：
         IgnorePlugin；
         使用 production；
         Scope Hoisting；
+
     构建流程概述；
+    
     babel：
         环境搭建 & 基本配置；
         babel-polyfill；
