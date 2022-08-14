@@ -12,6 +12,7 @@
     "middlewares",
     "nums",
     "RORO",
+    "typeof",
     "uncurrying",
     "unshift",
     "vdom",
