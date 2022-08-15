@@ -34,9 +34,9 @@ export default class jQuery {
 }
 
 // 插件
-jQuery.prototype.dialog = function (info: string) {
-  alert(info);
-}
+// jQuery.prototype.dialog = function (info: string) {
+//   alert(info);
+// }
 
 // 造轮子
 export class myJQuery extends jQuery {
