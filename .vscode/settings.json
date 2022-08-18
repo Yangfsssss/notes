@@ -5,6 +5,7 @@
     "concat",
     "corejs",
     "Didact",
+    "Etag",
     "happypack",
     "instanceof",
     "kredux",
