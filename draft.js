@@ -1256,8 +1256,8 @@ Array.prototype.splice = function () {};
 // flex:flex-grow flex-shrink flex-basis
 // flex-grow:将父元素的剩余空间按子元素flex-grow值的比例分配，值越大，分配越多
 // flex-shrink:若子元素占用空间之和大于父元素，则将子元素按其flex-shrink值缩小，值越大，缩小越多
-// flex-basis:指定元素在主轴方向上的初始大小，优先级大于width或height
-// 占用空间为宽还是高由flex-direction决定
+// flex-basis:指定元素在主轴方向上的初始宽或长，单位px等，优先级大于width或height
+// flex:1 等于 flex-grow:1; flex-shrink:1; flex-basis:0px;
 
 //---------------------------------------------------------------------------------------
 //No.153 实现一个批量请求函数 multiRequest(urls, maxNum)
