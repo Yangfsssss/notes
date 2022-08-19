@@ -4,6 +4,7 @@
     "clearfix",
     "concat",
     "corejs",
+    "CSSOM",
     "Didact",
     "Etag",
     "happypack",
