@@ -13,7 +13,7 @@ interface IListNode {
 export default class LRUCache {
   private length: number;
   private data: { [key: string]: IListNode } = {};
-  private dataLength: number = 0;
+  private dataLength = 0;
   private listHead: IListNode | null = null;
   private listTail: IListNode | null = null;
 

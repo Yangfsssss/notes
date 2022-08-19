@@ -9,7 +9,7 @@
  * @param origin class or function
  */
 
-export function myInstanceof(instance: any, origin: any): boolean {
+export function myInstanceof(instance: unknown, origin: unknown): boolean {
   if (instance === null) return false;
 
   const type = typeof instance;

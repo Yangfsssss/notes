@@ -18,7 +18,7 @@ app.use(async (ctx, next) => {
 
 // response
 app.use(async (ctx) => {
-  ctx.body = 'Hello World';
+  ctx.body = await Promise.resolve('Hello World');
 });
 
 app.listen(3000);
