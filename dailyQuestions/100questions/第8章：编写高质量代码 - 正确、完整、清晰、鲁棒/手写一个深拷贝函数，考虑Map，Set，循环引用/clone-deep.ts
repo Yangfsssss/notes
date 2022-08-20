@@ -39,14 +39,14 @@
  * @param map WeakMap 为了避免循环引用
  */
 
-export function cloneDeep(obj: any, map = new WeakMap()): any {
-  if (typeof obj !== 'object' || obj === null) return obj;
+export function cloneDeep(obj:Record<keyof any ,unknown>|unknown , map = new WeakMap()): unknown {
+  if (typeof obj !== 'object' || obj == null) return obj;
 
   // 避免循环引用
-  const objFromMap = map.get(obj);
+  const objFromMap = map.get(obj) as typeof target;
   if (objFromMap) return objFromMap;
 
-  let target: any = {};
+  let target:Map<unknown,unknown>|Set<unknown>|unknown[]| Record<keyof any ,unknown>= {};
   map.set(obj, target);
 
   // Map
@@ -80,14 +80,14 @@ export function cloneDeep(obj: any, map = new WeakMap()): any {
     const value = obj[key];
     const cloneValue = cloneDeep(value, map);
 
-    target[key] = cloneValue;
+    (target as Record<keyof any ,unknown>)[key] = cloneValue;
   }
 
   return target;
 }
 
 // 功能测试
-const a: any = {
+const a:Record<keyof any,unknown> = {
   set: new Set([10, 20, 30]),
   map: new Map([
     ['x', 10],
@@ -97,7 +97,7 @@ const a: any = {
     city: 'Shanghai',
   },
   fn: () => console.log(100),
+  self:a,
 };
-a.self = a;
 
 console.log(cloneDeep(a));

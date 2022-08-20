@@ -6,14 +6,14 @@
 export default class EventBus {
   // 数组是有序结构，对象不是。
   private events: {
-    [key: string]: Array<{ fn: Function; isOnce: boolean }>;
+    [key: string]: Array<{ fn: (...args:unknown[])=>unknown; isOnce: boolean }>;
   };
 
   constructor() {
     this.events = {};
   }
 
-  on(type: string, fn: Function, isOnce: boolean = false) {
+  on(type: string, fn: (...args:unknown[])=>unknown, isOnce = false) {
     const events = this.events;
 
     // 第一次订阅，在events中注册这个type。
@@ -24,11 +24,11 @@ export default class EventBus {
     events[type].push({ fn, isOnce });
   }
 
-  once(type: string, fn: Function) {
+  once(type: string, fn: (...args:unknown[])=>unknown) {
     this.on(type, fn, true);
   }
 
-  off(type: string, fn?: Function) {
+  off(type: string, fn?: (...args:unknown[])=>unknown) {
     if (!fn) {
       // this.events[type] = [];
       delete this.events[type];
@@ -37,7 +37,7 @@ export default class EventBus {
     }
   }
 
-  emit(type: string, ...args: any[]) {
+  emit(type: string, ...args: unknown[]) {
     const fnList = this.events[type];
     if (fnList == null || fnList == undefined) return;
 
@@ -57,13 +57,13 @@ export default class EventBus {
 
 const e = new EventBus();
 
-function fn1(a: any, b: any) {
+function fn1(a: unknown, b: unknown) {
   console.log('fn1', a, b);
 }
-function fn2(a: any, b: any) {
+function fn2(a: unknown, b: unknown) {
   console.log('fn2', a, b);
 }
-function fn3(a: any, b: any) {
+function fn3(a: unknown, b: unknown) {
   console.log('fn3', a, b);
 }
 

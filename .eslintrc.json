@@ -12,10 +12,11 @@
   ],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
-    "project":"./tsconfig.json",
+    // "project":"./tsconfig.json",
     "ecmaFeatures": {
       "jsx": true
     },
+    // "extraFileExtensions":[".tsx"],
     "ecmaVersion": "latest"
   },
   "plugins": ["react", "@typescript-eslint", "react-hooks"],
