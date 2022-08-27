@@ -276,6 +276,7 @@ function n4() {
 
 	// document.body.removeChild(div);
 
+  // @ts-ignore
 	const Animate = fft();
 
 	// moveButton.onclick = function () {
