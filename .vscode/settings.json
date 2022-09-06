@@ -22,6 +22,7 @@
     "vmax",
     "vmin",
     "vnode",
-    "Vuex"
+    "Vuex",
+    "webp"
   ]
 }

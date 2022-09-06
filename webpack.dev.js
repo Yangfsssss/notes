@@ -2,6 +2,7 @@ const webpack = require('webpack');
 const path = require('path');
 const { merge } = require('webpack-merge');
 const AddAssetHtmlPlugin = require('add-asset-html-webpack-plugin');
+// const  OpenBrowserPlugin = require('open-browser-webpack4-plugin')
 
 const webpackCommonConf = require('./webpack.common.js');
 const srcPath = path.join(__dirname, 'src');
@@ -36,7 +37,23 @@ module.exports = merge(webpackCommonConf, {
       {
         test: /\.less$/,
         // 增加 'less-loader' ，注意顺序
-        use: ['style-loader', 'css-loader', 'less-loader'],
+        use: [
+          'style-loader',
+          'css-loader',
+          {
+            loader: 'less-loader',
+            options: {
+              lessOptions: {
+                javascriptEnabled: true,
+              },
+            },
+          },
+        ],
+      },
+      {
+        test: /\.(sc|c)ss/,
+        // 增加 'sass-loader' ，注意顺序
+        use: ['style-loader', 'css-loader', 'sass-loader'],
       },
     ],
   },
@@ -66,6 +83,10 @@ module.exports = merge(webpackCommonConf, {
       // dll最终输出的目录
       outputPath: './dll_dist',
     }),
+
+    // new OpenBrowserPlugin({
+    //   url:`http://localhost:3006/#/`
+    // })
   ],
   devServer: {
     port: 3006,
@@ -94,4 +115,5 @@ module.exports = merge(webpackCommonConf, {
       },
     },
   },
+  devtool: 'eval-source-map',
 });

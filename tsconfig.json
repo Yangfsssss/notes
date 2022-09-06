@@ -1,15 +1,15 @@
 {
   "compilerOptions": {
-    "experimentalDecorators": true,
-    "outDir": "./dist/",
-    "moduleResolution": "node",
-    "noImplicitAny": true,
-    "module": "ESNext",
     "target": "esnext",
-    "jsx": "react",
+    "module": "ESNext",
+    "moduleResolution": "node",
+    "outDir": "./dist/",
+    "experimentalDecorators": true,
     "allowJs": false,
+    "jsx": "react",
     "allowSyntheticDefaultImports": true,
+    "strict": true,
     "strictNullChecks": true,
-    "strict": true
+    "noImplicitAny": true,
   }
 }
