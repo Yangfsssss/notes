@@ -4,6 +4,7 @@
     "es2021": true
   },
   "extends": [
+    "airbnb",
     "eslint:recommended",
     "plugin:@typescript-eslint/recommended",
     "plugin:@typescript-eslint/recommended-requiring-type-checking",
@@ -29,9 +30,20 @@
       {
         "additionalHooks": "(useMyCustomHook|useMyOtherCustomHook)"
       }
-    ]
+    ],
+    "react/jsx-filename-extension": ["error", { "extensions": [".js", ".jsx", ".ts", ".tsx"] }],
+    "no-unused-vars": "warn",
+    "no-use-before-define": "off",
+    "import/no-unresolved": ["error", { "ignore": [".png$", ".webp$", ".jpg$"] }],
+    "import/extensions": ["error", "never", { "svg": "always" }]
   },
   "settings": {
+    "import/resolver": {
+      "alias": {
+        "map": [["pages", "./src/pages"]],
+        "extensions": [".js", ".jsx", ".ts", ".tsx", ".json", ".d.ts"]
+      }
+    },
     "react": {
       "createClass": "createReactClass", // Regex for Component Factory to use,
       // default to "createReactClass"

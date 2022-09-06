@@ -65,7 +65,24 @@ module.exports = merge(webpackCommonConf, {
           MiniCssExtractPlugin.loader,
           //  'style-loader', // 注意：这里不再使用 style-loader
           'css-loader',
-          'less-loader',
+          {
+            loader: 'less-loader',
+            options: {
+              lessOptions: {
+                javascriptEnabled: true,
+              },
+            },
+          },
+        ],
+      },
+      {
+        // 抽离SASS
+        test: /\.(sc|c)ss/,
+        use: [
+          MiniCssExtractPlugin.loader,
+          //  'style-loader', // 注意：这里不再使用 style-loader
+          'css-loader',
+          'sass-loader',
         ],
       },
     ],
@@ -75,7 +92,10 @@ module.exports = merge(webpackCommonConf, {
   },
   plugins: [
     // 每次打包前清理 output.path 目录
-    new CleanWebpackPlugin(),
+    new CleanWebpackPlugin({
+      protectWebpackAssets: true,
+    }),
+
     new webpack.DefinePlugin({
       // window.ENV = 'production';
       ENV: JSON.stringify('production'),
