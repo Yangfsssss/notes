@@ -2,9 +2,7 @@ import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 import './style.scss';
 
-interface Props extends RouteComponentProps {}
-
-class App extends React.Component<Props> {
+class App extends React.Component<RouteComponentProps> {
   handleRoute = () => {
     const { location, history } = this.props;
     const { pathname } = location;

@@ -1,8 +1,14 @@
 import React from 'react';
 
-interface Props {}
+import utilsIndex from '@utils/index';
+// import utilsIndex from '../../utils/index';
 
-class LoginPage extends React.Component<Props> {
+class LoginPage extends React.Component {
+  componentDidMount() {
+    const id = utilsIndex.getUrlParam('id');
+    console.log('id', id);
+  }
+
   render() {
     return (
       <div className="box">

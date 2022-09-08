@@ -13,14 +13,17 @@
   ],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
-    // "project":"./tsconfig.json",
+    // "project":["./tsconfig.json","./State Manage in React/code/tsconfig.json"],
+    // "project":"./State Manage in React/code/tsconfig.json",
+    "project":"./tsconfig.json",
     "ecmaFeatures": {
       "jsx": true
     },
-    // "extraFileExtensions":[".tsx"],
+    "extraFileExtensions": [".ts", ".tsx"],
     "ecmaVersion": "latest"
   },
   "plugins": ["react", "@typescript-eslint", "react-hooks"],
+  "ignorePatterns": ["**/*.js"],
   "rules": {
     "react/jsx-uses-react": "error",
     "react/jsx-uses-vars": "error",
@@ -35,12 +38,20 @@
     "no-unused-vars": "warn",
     "no-use-before-define": "off",
     "import/no-unresolved": ["error", { "ignore": [".png$", ".webp$", ".jpg$"] }],
-    "import/extensions": ["error", "never", { "svg": "always" }]
+    "import/extensions": ["error", "never", { "svg": "always" }],
+    "no-console": "off",
+    "import/no-extraneous-dependencies":"off",
+    "max-classes-per-file":"warn",
+    "no-plusplus":"off",
+    "react/jsx-one-expression-per-line":"off"
   },
   "settings": {
     "import/resolver": {
       "alias": {
-        "map": [["pages", "./src/pages"]],
+        "map": [
+          ["pages", "./State Manage in React/code/src/pages"],
+          ["@utils", "./State Manage in React/code/src/utils"]
+        ],
         "extensions": [".js", ".jsx", ".ts", ".tsx", ".json", ".d.ts"]
       }
     },

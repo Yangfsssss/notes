@@ -2,12 +2,16 @@ const webpack = require('webpack');
 const path = require('path');
 const { merge } = require('webpack-merge');
 const AddAssetHtmlPlugin = require('add-asset-html-webpack-plugin');
+const SpeedMeasurePlugin = require('speed-measure-webpack-plugin');
 // const  OpenBrowserPlugin = require('open-browser-webpack4-plugin')
+const mockMiddleware = require('./mock.config');
 
 const webpackCommonConf = require('./webpack.common.js');
 const srcPath = path.join(__dirname, 'src');
 
-module.exports = merge(webpackCommonConf, {
+const smp = new SpeedMeasurePlugin();
+
+const webpackDevConf = {
   mode: 'development',
   entry: [
     'webpack-dev-server/client?http://localhost:3006/',
@@ -69,20 +73,24 @@ module.exports = merge(webpackCommonConf, {
     new webpack.HotModuleReplacementPlugin(),
 
     // 第三，告诉 Webpack 使用了哪些动态链接库
-    new webpack.DllReferencePlugin({
-      // 描述 react 动态链接库的文件内容
-      manifest: require(path.join(__dirname, 'dll_dist', 'react.manifest.json')),
-    }),
+    // new webpack.DllReferencePlugin({
+    //   // 描述 react 动态链接库的文件内容
+    //   // manifest: require(path.join(__dirname, 'dll_dist', 'react.manifest.json')),
+    //   manifest: require('/Users/yangxiaoyao/Desktop/code/draft/dll_dist/react.manifest.json'),
+    // }),
 
     // 将 dll 注入到 生成的 html 模板中
-    new AddAssetHtmlPlugin({
-      // dll文件位置
-      filepath: path.join(__dirname, 'dll_dist', 'react.dll.js'),
-      // dll 引用路径
-      publicPath: './dll_dist',
-      // dll最终输出的目录
-      outputPath: './dll_dist',
-    }),
+    // new AddAssetHtmlPlugin({
+    //   // dll文件位置
+    //   // filepath: path.join(__dirname, 'dll_dist', 'react.dll.js'),
+    //   filepath: '/Users/yangxiaoyao/Desktop/code/draft/dll_dist/react.dll.js',
+    //   // dll 引用路径
+    //   // publicPath: './dll_dist',
+    //   publicPath: '/Users/yangxiaoyao/Desktop/code/draft/dll_dist',
+    //   // dll最终输出的目录
+    //   // outputPath: './dll_dist',
+    //   outputPath: '/Users/yangxiaoyao/Desktop/code/draft/dll_dist',
+    // }),
 
     // new OpenBrowserPlugin({
     //   url:`http://localhost:3006/#/`
@@ -114,6 +122,25 @@ module.exports = merge(webpackCommonConf, {
         },
       },
     },
+
+    setupMiddlewares: (middlewares, devServer) => {
+      if (!devServer) {
+        throw new Error('webpack-dev-server is not defined');
+      }
+
+      const projectDir = '/Users/yangxiaoyao/Desktop/code/draft/State Manage in React/code';
+      const mockDir = './mock';
+
+      middlewares.unshift({
+        name: 'mock',
+        middleware: mockMiddleware({ projectDir, mockDir }),
+      });
+
+      return middlewares;
+    },
   },
   devtool: 'eval-source-map',
-});
+};
+
+// module.exports = merge(webpackCommonConf, webpackDevConf);
+module.exports = smp.wrap(merge(webpackCommonConf,webpackDevConf ));
