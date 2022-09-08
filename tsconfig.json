@@ -5,11 +5,19 @@
     "moduleResolution": "node",
     "outDir": "./dist/",
     "experimentalDecorators": true,
-    "allowJs": false,
+    "allowJs": true,
     "jsx": "react",
     "allowSyntheticDefaultImports": true,
     "strict": true,
     "strictNullChecks": true,
     "noImplicitAny": true,
+    "paths": {
+      "pages/*":[
+        "./State Manage in React/code/src/pages/*"
+      ],
+      "@utils/*":[
+        "./State Manage in React/code/src/utils/*"
+      ],
+    },      
   }
 }
